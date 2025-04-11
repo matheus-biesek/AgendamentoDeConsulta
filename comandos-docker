@@ -1,0 +1,5 @@
+Permite acessar o painel de administrador do wildfly que roda no container. 
+command: >
+    /opt/jboss/wildfly/bin/standalone.sh 
+    -b 0.0.0.0 
+    -bmanagement 0.0.0.0
