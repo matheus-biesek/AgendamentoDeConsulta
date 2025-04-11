@@ -1,0 +1,16 @@
+footer {
+    background-color: #2b66a2; /* Cor de fundo escura */
+    color: white; /* Texto branco */
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.footer-content {
+    max-width: 500px;
+    margin: auto;
+    padding: 8px auto;
+}
