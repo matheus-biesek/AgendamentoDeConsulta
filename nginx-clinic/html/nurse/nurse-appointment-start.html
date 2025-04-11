@@ -6,17 +6,21 @@
         <title>Document</title>
         
         <!-- Css -->
-        <link rel="stylesheet" href="../styles/base.css">
+        <link rel="stylesheet" href="../styles/layout.css">
 
     </head>
     <body>
 
+        <header class="navbar"></header>
+
         <!-- Conteúdo principal da página -->
-        <div>
-            <h1>
-                NURSE - Página para iniciar consulta e ver consultas do dia.
-            </h1>
-        </div>
+        <main class="content">
+            <div>
+                <h1>NURSE - Página para iniciar consulta e ver consultas do dia.</h1>
+            </div>
+        </main>
+
+        <footer class="footer"></footer>
 
         <!-- Componentes -->
         <script src="../scripts/components/navbars/navbarNurse.js"></script>
@@ -25,6 +29,6 @@
         <!-- Funções -->
         <script type="module" src="../scripts/dom/nurse/nurse-appointment-startDOM.js"></script>
         <script type="module" src="../scripts/dom/sessionDOM.js"></script>
-        
+
     </body>
 </html>

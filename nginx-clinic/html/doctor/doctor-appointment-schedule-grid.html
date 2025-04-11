@@ -6,15 +6,21 @@
         <title>Doctor</title>
 
         <!-- Css -->
-        <link rel="stylesheet" href="../styles/base.css">
+        <link rel="stylesheet" href="../styles/layout.css">
 
     </head>
     <body>
 
+        <header class="navbar"></header>
+
         <!-- Conteúdo principal da página -->
-        <div>
-            <h1>DOCTOR - pagina para vizualizar grade horaria e consultas marcadas</h1>
-        </div>
+        <main class="content">
+            <div>
+                <h1>DOCTOR - pagina para vizualizar grade horaria e consultas</h1>
+            </div>
+        </main>
+
+        <footer class="footer"></footer>
 
         <!-- Componentes -->
         <script src="../scripts/components/navbars/navbarDoctor.js"></script>
@@ -23,6 +29,6 @@
         <!-- Funções -->
         <script type="module" src="../scripts/dom/doctor/doctor-appointment-schedule-gridDOM.js"></script>
         <script type="module" src="../scripts/dom/sessionDOM.js"></script>
-
+        
     </body>
 </html>
