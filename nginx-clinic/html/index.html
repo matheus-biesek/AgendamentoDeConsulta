@@ -7,21 +7,27 @@
         <title>Login</title>
         
         <!-- Css -->
+        <link rel="stylesheet" href="/styles/layout.css">
         <link rel="stylesheet" href="/styles/index.css">
-        <link rel="stylesheet" href="/styles/base.css">
 
     </head>
     <body>
-        
+
+        <header class="navbar"></header>
+
         <!-- Conteúdo principal da página -->
-        <div class="login-container">
-            <h2>Login</h2>
-            <form>
-                <input type="text" id="username" placeholder="Usuário" required>
-                <input type="password" id="password" placeholder="Senha" required> 
-                <button type="submit" id="login-btn">Entrar</button>
-            </form>
-        </div>
+        <main class="content">
+            <div class="login-container">
+                <h2>Login</h2>
+                <form>
+                    <input type="text" id="username" placeholder="Usuário" required>
+                    <input type="password" id="password" placeholder="Senha" required> 
+                    <button type="submit" id="login-btn">Entrar</button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="footer"></footer>
 
         <!-- Componentes -->
         <script src="/scripts/components/navbars/navbarIndex.js"></script>
