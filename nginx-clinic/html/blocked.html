@@ -6,20 +6,28 @@
         <title>Blocked</title>
 
         <!-- Css -->
-        <link rel="stylesheet" href="styles/base.css">
+        <link rel="stylesheet" href="/styles/layout.css">
+        <link rel="stylesheet" href="scripts/components/authentication/blockedComponent.css">
 
     </head>
     <body>
 
+        <header class="navbar"></header>
+
         <!-- Conteúdo principal da página -->
-        <div>
-            <h1>Você não tempermisão para acessar a página.</h1>
-            <button id="logout">Voltar</button>
-        </div>
+        <main class="content">
+            
+            <!-- Componentes da pagina principal -->
+            <div class="blocked-component"></div>
+        
+        </main>
+
+        <footer class="footer"></footer>
 
         <!-- Componentes -->
         <script src="scripts/components/navbars/navbarIndex.js"></script>
         <script src="scripts/components/footer.js"></script>
+        <script src="scripts/components/authentication/blockedComponent.js"></script>
 
         <!-- Funções -->
         <script type="module" src="scripts/dom/sessionDOM.js"></script>
