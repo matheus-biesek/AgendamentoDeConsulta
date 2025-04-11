@@ -1,0 +1,32 @@
+embed-server --server-config=standalone.xml --std-out=echo
+
+# Alterando a porta HTTP e ADMIN
+/socket-binding-group=standard-sockets/socket-binding=http:write-attribute(name=port, value=8180)
+/socket-binding-group=standard-sockets/socket-binding=management-http:write-attribute(name=port, value=9999)
+
+# Remove o datasource padrão do H2
+/subsystem=datasources/data-source=ExampleDS:remove()
+
+# Remove o driver H2
+/subsystem=datasources/jdbc-driver=h2:remove()
+
+module add --name=org.postgresql \
+           --resources=/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/main/postgresql-42.7.2.jar \
+           --dependencies=javax.api,javax.transaction.api
+
+/subsystem=datasources/jdbc-driver=postgresql:add(\
+    driver-name=postgresql,\
+    driver-module-name=org.postgresql,\
+    driver-class-name=org.postgresql.Driver)
+
+/subsystem=datasources/data-source=PostgresDS:add(\
+    jndi-name=java:/jdbc/PostgresDS,\
+    driver-name=postgresql,\
+    connection-url=jdbc:postgresql://postgres_db_container_java_ee_clinic:5432/java_ee_clinic,\
+    user-name=usuario,\
+    password=1234,\
+    use-ccm=false,\
+    max-pool-size=25,\
+    enabled=true)
+
+stop-embedded-server
