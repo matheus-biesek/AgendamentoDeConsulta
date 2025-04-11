@@ -1,15 +1,7 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-/* Variáveis CSS */
 :root {
     --font-family: Arial, sans-serif;
     --background-image: url('../images/hospitalatendimento.jpg');
     --background-color: white;
-    --primary-color: #28a745;
     --error-color: red;
     --input-border-color: #ccc;
     --box-shadow: 0px 0px 10px rgba(176, 69, 69, 0.1);
@@ -17,30 +9,23 @@
     --padding: 10px;
     --container-width: 350px;
 }
-/* Estilos do body */
-body {
-    font-family: var(--font-family);
-    background: var(--background-image) no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Garante que o body ocupe toda a altura da tela */
 
+body{
+    background: var(--background-image);
 }
-/* Estilos do container de login */
+
 .login-container {
     background: var(--background-color);
     padding: 40px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    width: var(--container-width); /* Largura fixa para centralizar */
-    max-width: 90%; /* Garante que o container não ultrapasse a tela em telas menores */
+    width: var(--container-width);
+    max-width: 90%;
     display: flex;
     flex-direction: column;
-    text-align: center; /* Centraliza o texto dentro do container */
+    text-align: center;
 }
-/* Estilização dos inputs dentro do login */
+
 input {
     width: 100%;
     padding: var(--padding);
@@ -48,16 +33,17 @@ input {
     border: 1px solid var(--input-border-color);
     border-radius: 8px;
 }
+
 input:focus {
-    border-color: var(--primary-color);
+    border-color: rgb(17, 0, 255);
     outline: none;
-    box-shadow: 0 0 5px var(--primary-color); /* Sombra ao focar no input */
+    box-shadow: 0 0 5px rgb(0, 89, 255); 
 }
-/* Estilização do botão */
+
 button {
     width: 50%;
     padding: var(--padding);
-    background-color:#1d8734c6;
+    background-color:#06ad2ac6;
     color: white;
     border: none;
     border-radius: var(--border-radius);
@@ -65,6 +51,7 @@ button {
     margin: 15px auto 0;
     cursor: pointer;
 }
+
 button:hover {
-    background-color: #114d1eb1; /* Cor mais escura ao passar o mouse */
+    background-color: #026618b1;
 }
