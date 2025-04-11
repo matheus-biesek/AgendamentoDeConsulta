@@ -1,0 +1,57 @@
+:root {
+    --font-family: Arial, sans-serif;
+    --background-image: url('../images/hospitalatendimento.jpg');
+    --background-color: white;
+    --error-color: red;
+    --input-border-color: #ccc;
+    --box-shadow: 0px 0px 10px rgba(176, 69, 69, 0.1);
+    --border-radius: 12px;
+    --padding: 10px;
+    --container-width: 350px;
+}
+
+body{
+    background: var(--background-image);
+}
+
+.login-component {
+    background: var(--background-color);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: var(--container-width);
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: var(--padding);
+    margin: 10px 0;
+    border: 1px solid var(--input-border-color);
+    border-radius: 8px;
+}
+
+input:focus {
+    border-color: rgb(17, 0, 255);
+    outline: none;
+    box-shadow: 0 0 5px rgb(0, 89, 255); 
+}
+
+button {
+    width: 50%;
+    padding: var(--padding);
+    background-color:#06ad2ac6;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    display: block;
+    margin: 15px auto 0;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #026618b1;
+}
