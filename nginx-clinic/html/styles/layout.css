@@ -5,6 +5,7 @@
 :root {
     --primary-color: #6191c5;
     --secondary-color: #2468b1;
+    --footer-color: #18518e;
     --hover-bg: white;
     --text-color: white;
     --font-size-default: 14px;  
@@ -75,7 +76,7 @@ main.content {
 }
 
 footer {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    background: var(--footer-color);
     flex-shrink: 0;
     color: var(--text-color);
     display: flex;
