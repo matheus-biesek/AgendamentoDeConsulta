@@ -116,15 +116,15 @@
 # DOING
 
 Matheus 
-	Implementar schema `auth_service` para autenticação e usuários
-	Implementar schema `worker_service` para gerenciamento de profissionais
-	Implementar schema `schedule_service` para agendamentos e salas
-	Configurar tabelas de auditoria para todos os serviços
-	Criar scripts de migração e inicialização do banco
+	- Implementar schema `auth_service` para autenticação e usuários
+	- Implementar schema `worker_service` para gerenciamento de profissionais
+	- Implementar schema `schedule_service` para agendamentos e salas
+	- Configurar tabelas de auditoria para todos os serviços
+	- Criar scripts de migração e inicialização do banco
 
 Bruna
-	 Páginas para profissionais da saúde
-		Componente para buscar consultas.
-		Componente para cancelar consulta.
-		Componente para Iniciar consulta.
-		Componente para buscar consultas próximas.
+	 - Páginas para profissionais da saúde
+		- Componente para buscar consultas.
+		- Componente para cancelar consulta.
+		- Componente para Iniciar consulta.
+		- Componente para buscar consultas próximas.
