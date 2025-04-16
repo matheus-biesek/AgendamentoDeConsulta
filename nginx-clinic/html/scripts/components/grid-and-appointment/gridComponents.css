@@ -1,0 +1,56 @@
+:root {
+    --main-color: #898989;
+    --button-color: #4CAF50;
+    --border-radius-date: 4px;
+    --bg-color: white;
+  }
+  .appointment-component {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border: 1px solid var(--main-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+  }
+   .appointment-component th, .appointment-component td {
+    padding: 10px;
+    border-right: 1px solid var(--main-color);
+    border-bottom: 1px solid var(--main-color);
+    background-color:var(--bg-color);
+  }  
+  .appointment-component th:last-child, .appointment-component td:last-child {
+    border-right: none;
+  }
+  .appointment-component tbody tr:last-child td {
+    border-bottom: none; 
+}
+  
+  /*Data de Referência*/
+  .date-filter-component {
+    display: flex;
+    background-color: var(--bg-color);
+    flex-direction: row; 
+    padding: 15px;
+    border: 1px solid var(--main-color); 
+    border-radius: var(--border-radius-date); 
+    margin-bottom: 40px;
+}
+.reference-date-input {
+    padding: 8px;
+    border: 1px solid var(--main-color);
+    border-radius: var(--border-radius-date); 
+    outline: none; 
+    transition: border-color 0.3s;
+}
+.search-button {
+    padding: 8px 12px;
+    background-color:var(--button-color) ; 
+    color: white; 
+    border: none; 
+    border-radius: var(--border-radius-date); 
+    cursor: pointer; 
+}
+.search-button:hover {
+    background-color: #085c0fe2; 
+    transition: background-color 0.3s ease; 
+}

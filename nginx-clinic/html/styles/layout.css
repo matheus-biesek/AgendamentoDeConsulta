@@ -70,6 +70,8 @@ header {
 main.content {
     flex-grow: 1;
     display: flex;
+    gap: 20px;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
@@ -82,4 +84,13 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 12px;
+}
+footer p, footer span, footer a {
+    margin: 0; 
+    font-size: 15px; 
+}
+/*Imagem Outras Páginas*/
+body{
+    background: url('../images/90d0f266-21fd-4042-876e-9ebd23cd742b.png');
 }

@@ -7,7 +7,7 @@
         
         <!-- Css -->
         <link rel="stylesheet" href="../styles/layout.css">
-
+        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/gridComponents.css">
     </head>
     <body>
 
@@ -15,9 +15,8 @@
 
         <!-- Conteúdo principal da página -->
         <main class="content">
-            <div>
-                <H1>PATIENT - Página para ver consultas marcadas.</H1>
-            </div>
+            <div class="date-filter-component"></div>
+            <div class="appointment-component"></div>
         </main>
 
         <footer class="footer"></footer>
@@ -25,6 +24,8 @@
         <!-- Componentes -->
         <script src="../scripts/components/navbars/navbarPatient.js"></script>
         <script src="../scripts/components/footer.js"></script>
+        <script src="../scripts/components/grid-and-appointment/gridComponent.js"></script>
+        <script src="../scripts/components/grid-and-appointment/dateFilterComponent.js"></script>
 
         <!-- Funções -->
         <script type="module" src="../scripts/dom/patient/patient-appointmentDOM.js"></script>
