@@ -105,9 +105,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx-clinic/nginx.conf:/etc/nginx/nginx.conf:ro             # 🔧 Corrigido caminho e adicionado ":ro" para leitura
-      - ./nginx-clinic/certs:/etc/nginx/certs:ro                        # 🔐 Certificados (futuramente, em produção)
-      - ./nginx-clinic/html:/usr/share/nginx/html:ro                   # 📁 Correto para servir arquivos estáticos
+      - ./nginx-clinic/nginx.conf:/etc/nginx/nginx.conf:ro                             
+      - ./nginx-clinic/html:/usr/share/nginx/html:ro                   
     depends_on:
       - wildfly-auth
       - wildfly-clinic
