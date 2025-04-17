@@ -1,11 +1,14 @@
 // scripts/utils/request.js
 
 export async function makeRequest(url, method = 'GET', body = null, headers = {}, timeout = 5000) {
+    const csrfToken = localStorage.getItem("csrf-token");
+
     const options = {
         method,
         headers: {
             'Content-Type': 'application/json',
-            ...headers
+            ...headers,
+            ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {})
         },
         credentials: 'include'
     };
