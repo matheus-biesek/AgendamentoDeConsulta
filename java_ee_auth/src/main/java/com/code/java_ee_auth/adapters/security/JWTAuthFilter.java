@@ -55,6 +55,8 @@ public class JWTAuthFilter implements ContainerRequestFilter {
             String username = claims.getSubject();
             UserRole role = UserRole.valueOf(claims.get("role", String.class));
 
+            validateCsrfIfNecessary(requestContext, claims);
+
             SecurityContext securityContext = new CustomSecurityContext(username, role, requestContext.getSecurityContext());
             requestContext.setSecurityContext(securityContext);
 
@@ -65,6 +67,23 @@ public class JWTAuthFilter implements ContainerRequestFilter {
 
         } catch (Exception e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build());
+        }
+    }
+
+    private void validateCsrfIfNecessary(ContainerRequestContext requestContext, Claims claims) {
+        String method = requestContext.getMethod();
+        boolean isSensitiveMethod = method.equalsIgnoreCase("POST") ||
+                method.equalsIgnoreCase("PUT") ||
+                method.equalsIgnoreCase("DELETE");
+
+        if (isSensitiveMethod) {
+            String csrfHeader = requestContext.getHeaderString("X-CSRF-TOKEN");
+            String csrfClaim = claims.get("csrf", String.class);
+
+            if (csrfHeader == null || !csrfHeader.equals(csrfClaim)) {
+                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                        .entity("CSRF token inválido ou ausente").build());
+            }
         }
     }
 
