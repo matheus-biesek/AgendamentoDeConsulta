@@ -11,7 +11,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.Optional;
-
+import java.util.UUID;
 
 @Path("/auth-session")
 public class AuthRest {
@@ -35,7 +35,7 @@ public class AuthRest {
                 .entity("{\"message\": \"Logout realizado com sucesso\"}")  // Retorna um JSON
                 .build();
     }
-    
+
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,20 +49,29 @@ public class AuthRest {
                     .build();
         }
 
-        String token = JWTUtils.generateToken(userOpt.get().getUsername(), userOpt.get().getRole().name());
+        // 🆕 Gerar CSRF token
+        String csrfToken = UUID.randomUUID().toString();
 
-        // Cria o cabeçalho Set-Cookie manualmente
-        String cookieValue = String.format(
-                "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Lax",
+        String token = JWTUtils.generateToken(userOpt.get().getUsername(), userOpt.get().getRole().name(), csrfToken);
+
+        // 🍪 Cookie seguro com o JWT (HttpOnly) - Secure para PROD
+        String jwtCookie = String.format(
+                "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
                 token,
-                60 * 60
+                60 * 60 * 6
         );
 
-        // Em produção, adicione "; Secure" também:
-        // cookieValue += "; Secure";
+        // 🍪 Cookie com o CSRF (sem HttpOnly!) - Secure para PROD
+        String csrfCookie = String.format(
+                "csrf=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                csrfToken,
+                60 * 60 * 6
+        );
+
         LoginDTO dto = new LoginDTO(userOpt.get().getRole());
         return Response.ok(dto)
-                .header("Set-Cookie", cookieValue)
+                .header("Set-Cookie", jwtCookie)
+                .header("Set-Cookie", csrfCookie)
                 .build();
     }
 
