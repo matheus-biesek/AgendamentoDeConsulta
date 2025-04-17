@@ -11,11 +11,24 @@ const routes = {
 };
 
 export async function loginSession(username, password) {
+
     const response = await makeRequest("/rest-auth/auth-session/login", "POST", { username, password });
+
+    const csrfToken = getCookie("csrf");
+    if (csrfToken) {
+        localStorage.setItem("csrf-token", csrfToken);
+    }
+
     const role = response.role;
     return routes[role] || "blocked.html";
 }
 
 export async function logoutSession() {
     await makeRequest("/rest-auth/auth-session/logout", "POST");
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 }
