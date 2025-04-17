@@ -25,12 +25,13 @@ public class JWTUtils {
                 .getBody();
     }
 
-    public static String generateToken(String username, String role) {
+    public static String generateToken(String username, String role, String csrfToken) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)
+                .claim("csrf", csrfToken)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 dia de expiração
+                .setExpiration(new Date(System.currentTimeMillis() + ((60 * 60) * 60000))) // 6 horas
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
