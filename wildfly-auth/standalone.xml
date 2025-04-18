@@ -130,16 +130,13 @@
         <subsystem xmlns="urn:jboss:domain:core-management:1.0"/>
         <subsystem xmlns="urn:jboss:domain:datasources:7.2">
             <datasources>
-                <datasource jndi-name="java:/PostgresDS" pool-name="PostgresDS">
-                    <connection-url>jdbc:postgresql://postgres_db_container_java_ee_auth:5432/java_ee_auth</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                <datasource jndi-name="java:/jdbc/PostgresDS" pool-name="PostgresDS" enabled="true" use-ccm="false">
+                    <connection-url>jdbc:postgresql://postgres_db_auth:5432/java_ee_auth</connection-url>
                     <driver>postgresql</driver>
+                    <pool>
+                        <max-pool-size>25</max-pool-size>
+                    </pool>
                     <security user-name="usuario" password="1234"/>
-                    <validation>
-                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
-                        <validate-on-match>true</validate-on-match>
-                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
-                    </validation>
                 </datasource>
                 <drivers>
                     <driver name="postgresql" module="org.postgresql">
@@ -181,7 +178,7 @@
                     <managed-scheduled-executor-service name="default" jndi-name="java:jboss/ee/concurrency/scheduler/default" context-service="default" hung-task-termination-period="0" hung-task-threshold="60000" keepalive-time="3000"/>
                 </managed-scheduled-executor-services>
             </concurrent>
-            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:/PostgresDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
+            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:/jdbc/PostgresDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>
         <subsystem xmlns="urn:jboss:domain:ejb3:10.0">
