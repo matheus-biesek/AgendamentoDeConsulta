@@ -1,7 +1,6 @@
 services:
   postgres_db_auth:
     image: postgres
-    container_name: postgres_db_container_java_ee_auth
     environment:
       POSTGRES_USER: usuario
       POSTGRES_PASSWORD: 1234
@@ -13,41 +12,8 @@ services:
     networks:
       - app-network
 
-  postgres_db_clinic:
-    image: postgres
-    container_name: postgres_db_container_java_ee_clinic
-    environment:
-      POSTGRES_USER: usuario
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: java_ee_clinic
-    ports:
-      - "5433:5432"
-    volumes:
-      - ./postgres_data_java_ee_clinic:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin_container
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgres_db_auth
-      - postgres_db_clinic
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-    - app-network
-
   wildfly-auth:
-    image: wildfly-drive-postgres
-    ports:
-      - "8080:8080"
-      - "9990:9990"
+    image: wildfly-auth
     depends_on:
       - postgres_db_auth
       - rabbitmq
@@ -61,35 +27,12 @@ services:
     volumes:
       - ./wildfly-auth/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
       - ~/Documentos/projetos/clinic/java_ee_auth/target/java_ee_auth-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_auth-1.0-SNAPSHOT.war # LOCAL
-      # ./wildfly-auth/java_ee_auth-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_auth-1.0-SNAPSHOT.war PRODUÇÃO
-    networks:
-      - app-network
-
-  wildfly-clinic:
-    image: wildfly-clinic
-    ports:
-      - "8180:8180"
-      - "9999:9999"
-    depends_on:
-      - postgres_db_clinic
-      - rabbitmq
-    environment:
-      - TZ=America/Sao_Paulo
-      - DB_HOST=postgres_db_clinic
-      - DB_PORT=5432
-      - DB_NAME=java_ee_clinic
-      - DB_USER=usuario
-      - DB_PASSWORD=1234
-    volumes:
-      - ./wildfly-clinic/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
-      - ~/Documentos/projetos/clinic/java_ee_clinic/target/java_ee_clinic-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_clinic-1.0-SNAPSHOT.war # LOCAL
-      # ./wildfly-clinic/java_ee_clinic-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_clinic-1.0-SNAPSHOT.war PRODUÇÃO
+      # ./wildfly-auth/java_ee_auth-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_auth-1.0-SNAPSHOT.war #PRODUÇÃO
     networks:
       - app-network
 
   rabbitmq:
     image: rabbitmq:management
-    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -100,7 +43,6 @@ services:
       - app-network
   nginx-clinic:
     image: nginx:latest
-    container_name: nginx-clinic
     ports:
       - "80:80"
       - "443:443"
@@ -109,13 +51,25 @@ services:
       - ./nginx-clinic/html:/usr/share/nginx/html:ro                   
     depends_on:
       - wildfly-auth
-      - wildfly-clinic
     networks:
       - app-network
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres_db_auth
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+    - app-network
+
 volumes:
   postgres_data_java_ee_auth:
-  postgres_data_java_ee_clinic:
   pgadmin_data:
 
 networks:
