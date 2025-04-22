@@ -78,7 +78,7 @@ main.content {
 }
 
 footer {
-    background: var(--footer-color);
+    background: var(--secondary-color);
     flex-shrink: 0;
     color: var(--text-color);
     display: flex;
