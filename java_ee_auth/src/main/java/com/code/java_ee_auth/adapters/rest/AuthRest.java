@@ -26,7 +26,7 @@ public class AuthRest {
         // Invalida o cookie 'token' definindo Max-Age=0
         String expiredCookie = "token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax";
 
-        // Em produção, inclua "; Secure" se estiver usando HTTPS
+        // Em produção, inclua "; Secure" se estiver a usar HTTPS
         // expiredCookie += "; Secure";
 
         // Retorne um JSON contendo uma mensagem de sucesso
