@@ -105,6 +105,20 @@ services:
     networks:
       - app-network
 
+  consumer-status-appointment:
+    image: consumer-status-appointment
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+    
+  consumer-change-password:
+    image: consumer-change-password
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
   rabbitmq:
     image: rabbitmq:management
     ports:

@@ -24,14 +24,17 @@ public class AuthRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout() {
         // Invalida o cookie 'token' definindo Max-Age=0
-        String expiredCookie = "token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax";
+        String expiredCookieToken = "token=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict";
+
+        String expiredCookieCsrfToken = "csrf=; Path=/; Max-Age=0; SameSite=Strict";
 
         // Em produção, inclua "; Secure" se estiver a usar HTTPS
         // expiredCookie += "; Secure";
 
         // Retorne um JSON contendo uma mensagem de sucesso
         return Response.ok()
-                .header("Set-Cookie", expiredCookie)
+                .header("Set-Cookie", expiredCookieToken)
+                .header("Set-Cookie", expiredCookieCsrfToken)
                 .entity("{\"message\": \"Logout realizado com sucesso\"}")  // Retorna um JSON
                 .build();
     }

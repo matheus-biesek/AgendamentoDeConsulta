@@ -25,6 +25,7 @@ export async function loginSession(username, password) {
 
 export async function logoutSession() {
     await makeRequest("/rest-auth/auth-session/logout", "POST");
+    localStorage.removeItem("csrf-token");
 }
 
 function getCookie(name) {
