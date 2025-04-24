@@ -24,8 +24,6 @@ export async function fetchAppointmentsByDate(selectedDate) {
         }
     ];
 
-    // Filtra os dados com base na data selecionada
-    return mockData.filter(appointment => appointment.date === selectedDate);
-}   
-
-// Função para trocar a senha do paciente
+    // Filtra as consultas com base na data selecionada
+    return mockData.filter(appointment => appointment.date >= selectedDate);
+}
