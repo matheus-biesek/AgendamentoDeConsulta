@@ -1,0 +1,28 @@
+.date-filter-component {
+    display: flex;
+    background-color: var(--bg-color);
+    flex-direction: row; 
+    padding: 15px;
+    border: 1px solid var(--main-color); 
+    border-radius: var(--border-radius-date); 
+    margin-bottom: 40px;
+}
+.reference-date-input {
+    padding: 8px;
+    border: 1px solid var(--main-color);
+    border-radius: var(--border-radius-date); 
+    outline: none; 
+    transition: border-color 0.3s;
+}
+.search-button {
+    padding: 8px 12px;
+    background-color:var(--button-color) ; 
+    color: white; 
+    border: none; 
+    border-radius: var(--border-radius-date); 
+    cursor: pointer; 
+}
+.search-button:hover {
+    background-color: #085c0fe2; 
+    transition: background-color 0.3s ease; 
+}
