@@ -3,21 +3,21 @@ package com.code.java_ee_auth.adapters.security;
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import jakarta.ws.rs.core.SecurityContext;
 import java.security.Principal;
-
+import java.util.UUID;
 public class CustomSecurityContext implements SecurityContext {
-    private final String username;
+    private final UUID userId;
     private final UserRole role;
     private final SecurityContext originalSecurityContext;
 
-    public CustomSecurityContext(String username, UserRole role, SecurityContext originalSecurityContext) {
-        this.username = username;
+    public CustomSecurityContext(UUID userId, UserRole role, SecurityContext originalSecurityContext) {
+        this.userId = userId;
         this.role = role;
         this.originalSecurityContext = originalSecurityContext;
     }
 
     @Override
     public Principal getUserPrincipal() {
-        return () -> username;
+        return () -> userId.toString();
     }
 
     @Override
