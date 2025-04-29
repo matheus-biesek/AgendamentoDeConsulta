@@ -1,15 +1,21 @@
 // scripts/utils/request.js
 
 export async function makeRequest(url, method = 'GET', body = null, headers = {}, timeout = 5000) {
-    const csrfToken = localStorage.getItem("csrf-token");
+    const csrfToken = getCookie("csrf");
+
+    const customHeaders = {
+        'Content-Type': 'application/json',
+        ...headers,
+    };
+
+    // Adiciona o CSRF somente em métodos que modificam estado
+    if (csrfToken && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method.toUpperCase())) {
+        customHeaders['X-CSRF-TOKEN'] = csrfToken;
+    }
 
     const options = {
         method,
-        headers: {
-            'Content-Type': 'application/json',
-            ...headers,
-            ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {})
-        },
+        headers: customHeaders,
         credentials: 'include'
     };
 
@@ -28,6 +34,7 @@ export async function makeRequest(url, method = 'GET', body = null, headers = {}
 
         if (!response.ok) {
             let errorMessage = `Erro na requisição. Status: ${response.status}`;
+            
             if (contentType && contentType.includes("application/json")) {
                 const errorData = await response.json();
                 errorMessage = errorData.message || errorMessage;
@@ -50,6 +57,8 @@ export async function makeRequest(url, method = 'GET', body = null, headers = {}
         }
     } catch (error) {
         clearTimeout(timer);
+        console.log('Erro capturado:', error);
+
         if (error.name === 'AbortError') {
             console.error("A requisição foi abortada devido ao timeout.");
         } else {
@@ -57,4 +66,13 @@ export async function makeRequest(url, method = 'GET', body = null, headers = {}
         }
         throw error;
     }
+}
+
+export function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [key, value] = cookie.trim().split('=');
+        if (key === name) return decodeURIComponent(value);
+    }
+    return null;
 }
