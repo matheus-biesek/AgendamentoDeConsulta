@@ -1,24 +1,20 @@
 package com.code.java_ee_auth.domain.dto.request;
 
+import java.util.UUID;
+
 import com.code.java_ee_auth.domain.enuns.Gender;
-import com.code.java_ee_auth.domain.enuns.UserRole;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class UserInfoDTO {
+public class ChangeDataUserDTO {
 
     @NotBlank(message = "O nome de usuário não pode ser nulo, vazio ou em branco!")
     @Size(min = 3, max = 15, message = "O nome de usuário deve ter entre 3 e 15 caracteres!")
     private String name;
-
-    @NotBlank(message = "A senha não pode ser vazia!")
-    @Size(min = 2, message = "A senha deve ter no mínimo 8 caracteres!")
-    private String password;
-    
-    private UserRole role;
 
     @NotNull(message = "O sexo do usuário (gender) não pode ser nulo!")
     private Gender gender;
@@ -29,4 +25,7 @@ public class UserInfoDTO {
 
     @NotBlank(message = "O email não pode ser nulo, vazio ou em branco!")
     private String email;
+
+    @NotNull(message = "O ID do usuário não pode ser nulo!")
+    private UUID id;
 }
