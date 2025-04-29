@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 3000;
 const publicPaths = [
   '/rest-auth/auth-session/login',
   '/rest-auth/auth-session/logout',
+  '/rest-auth/auth-session/register',
+  '/rest-auth/token/refresh',
   '/',
   '/index.html',
   '/blocked.html'
