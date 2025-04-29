@@ -12,7 +12,8 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception exception) {
-        logger.severe("Erro capturado: " + exception.getMessage());
+        logger.severe("Erro capturado no GlobalExceptionHandler: " + exception.getMessage() + " - " + exception);
+        exception.printStackTrace();
 
         if (exception instanceof UserDAOException e) {
             return buildResponse(e.getHttpStatus(), e.getMessage());
@@ -22,7 +23,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
             return buildResponse(Response.Status.CONFLICT, e.getMessage());
         }
 
-        if (exception instanceof UserNoExistException e) {
+        if (exception instanceof UserNotFoundException e) {
             return buildResponse(Response.Status.CONFLICT, e.getMessage());
         }
 
