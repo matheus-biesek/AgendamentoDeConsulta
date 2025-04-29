@@ -1,8 +1,9 @@
 package com.code.java_ee_auth.adapters.messaging.consumer;
 
-import com.code.java_ee_auth.adapters.security.jwt.JWTUtils;
+import com.code.java_ee_auth.application.service.security.AccessJWTService;
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import com.rabbitmq.client.*;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -13,13 +14,16 @@ import java.util.concurrent.TimeoutException;
 @WebListener
 public class TokenValidationConsumer implements ServletContextListener {
 
+    // CRIAR ARQUIVO DE CONFIGURAÇÃO PARA RABBITMQ
     private static final String QUEUE_NAME = "minha_fila";
     private static final String HOST = "rabbitmq";
     private static final String USERNAME = "guest";
     private static final String PASSWORD = "guest";
-
     private Connection connection;
     private Channel channel;
+
+    @Inject
+    private AccessJWTService accessJWTService;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -53,7 +57,7 @@ public class TokenValidationConsumer implements ServletContextListener {
                         String roleString = parts[1].trim();
                         UserRole role = UserRole.valueOf(roleString);
 
-                        boolean isValid = JWTUtils.validateTokenRole(token, role);
+                        boolean isValid = accessJWTService.validateTokenRole(token, role);
                         response = isValid ? "VALID" : "INVALID";
                     } else {
                         response = "Formato de mensagem inválido.";
