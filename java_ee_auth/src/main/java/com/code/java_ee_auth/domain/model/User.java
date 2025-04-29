@@ -1,77 +1,43 @@
 package com.code.java_ee_auth.domain.model;
 
-import com.code.java_ee_auth.domain.enuns.SexRole;
+import com.code.java_ee_auth.domain.enuns.Gender;
 import com.code.java_ee_auth.domain.enuns.UserRole;
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.util.UUID;
 
-@Entity
-@Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long id;
 
-    @Column(nullable = false)
+    private UUID id;
+
+    private String name;
+
+    private boolean active;
+    
+    private String cpf;
+    
+    private String email;
+
     private String password;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private UserRole role;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SexRole sex;
+    private Gender gender;
 
-    public User() {}
+    private boolean blocked;
 
-    public User(String username, String password, UserRole role, SexRole sex) {
+    public User(String name, String cpf, String email, String password, UserRole role, Gender gender) {
         this.password = password;
-        this.username = username;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
         this.role = role;
-        this.sex = sex;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public UserRole getRole() {
-        return this.role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public SexRole getSex(){
-        return this.sex;
-    }
-
-    public void setSex(SexRole sex) {
-        this.sex = sex;
+        this.gender = gender;
     }
 }
