@@ -1,37 +1,43 @@
 import pika
+import logging
+import time
+
+# Configuração do logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
 
 def callback(ch, method, properties, body):
-    print(f"Mensagem recebida: {body.decode()}")
+    logger.info(f"Mensagem recebida: {body.decode()}")
 
 def main():
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(
-            host='rabbitmq',
-            port=5672,
-            credentials=pika.PlainCredentials('guest', 'guest'),
-            virtual_host='/',
-            connection_attempts=3,
-            retry_delay=5
-        ))
-        print("Conectado ao RabbitMQ com sucesso!")
-        channel = connection.channel()
+    while True:
+        try:
+            connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host='rabbitmq',
+                port=5672,
+                credentials=pika.PlainCredentials('guest', 'guest'),
+                virtual_host='/',
+                connection_attempts=3,
+                retry_delay=5
+            ))
+            logger.info("Conectado ao RabbitMQ com sucesso!")
+            channel = connection.channel()
 
-        # Declara a fila que deseja consumir (ela deve existir ou ser criada aqui)
-        queue_name = 'change-password'
-        channel.queue_declare(queue=queue_name, durable=True)
+            queue_name = 'change-password'
+            channel.queue_declare(queue=queue_name, durable=True)
 
-        # Define qual função será chamada ao receber uma mensagem
-        channel.basic_consume(
-            queue=queue_name,
-            on_message_callback=callback,
-            auto_ack=True  # Pode mudar para False se quiser controlar o ack manualmente
-        )
+            channel.basic_consume(
+                queue=queue_name,
+                on_message_callback=callback,
+                auto_ack=True
+            )
 
-        print("Aguardando mensagens. Pressione CTRL+C para sair.")
-        channel.start_consuming()  # Isso mantém o processo rodando
+            logger.info("Aguardando mensagens. Pressione CTRL+C para sair.")
+            channel.start_consuming()
 
-    except pika.exceptions.AMQPConnectionError as e:
-        print(f"Erro ao conectar ao RabbitMQ: {e}")
+        except pika.exceptions.AMQPConnectionError as e:
+            logger.error(f"Erro ao conectar ao RabbitMQ: {e}. Tentando novamente...")
+            time.sleep(5)
 
 if __name__ == "__main__":
     main()
