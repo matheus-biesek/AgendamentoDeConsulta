@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.application.service.security;
+package com.code.java_ee_auth.adapters.in.services.security;
 
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import io.jsonwebtoken.Claims;
@@ -13,11 +13,11 @@ import java.util.UUID;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class AccessJWTService {
+public class AccessTokenService {
 
-    // Adicione a chave secreta aqui
+    // Adicione a chave secreta aqui via env
     private static final String SECRET_KEY = "ewoCu39mGULU1oFgkIoy6Z2OEjvXd4Y1jzL/p60Xu1I=";
-    private static final long REFRESH_TOKEN_EXPIRATION_MS = 15 * 60 * 1000; // 1 minutos em milissegundos
+    private static final long REFRESH_TOKEN_EXPIRATION_MS = 1 * 60 * 1000; // 1 minutos em milissegundos
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
@@ -32,10 +32,10 @@ public class AccessJWTService {
                 .getBody();
     }
 
-    public String generateToken(UUID userId, String role, String csrfToken) {
+    public String generateToken(UUID userId, String csrfToken) {       
         return Jwts.builder()
+                .setIssuer("auth-service")
                 .setSubject(userId.toString())
-                .claim("role", role)
                 .claim("csrf", csrfToken)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((long) (System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))) 

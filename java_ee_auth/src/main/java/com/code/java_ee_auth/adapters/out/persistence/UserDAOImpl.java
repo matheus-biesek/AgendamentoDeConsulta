@@ -1,10 +1,9 @@
-package com.code.java_ee_auth.adapters.persistence;
+package com.code.java_ee_auth.adapters.out.persistence;
 
-import com.code.java_ee_auth.adapters.rest.exeception.UserDAOException;
-import com.code.java_ee_auth.adapters.rest.exeception.UserNotFoundException;
+import com.code.java_ee_auth.adapters.out.rest.exeception.UserDAOException;
+import com.code.java_ee_auth.adapters.out.rest.exeception.UserNotFoundException;
 import com.code.java_ee_auth.domain.enuns.Gender;
 import com.code.java_ee_auth.domain.enuns.UserRole;
-import com.code.java_ee_auth.domain.model.RefreshToken;
 import com.code.java_ee_auth.domain.model.User;
 import com.code.java_ee_auth.domain.port.out.UserDAOPort;
 import jakarta.enterprise.context.ApplicationScoped;

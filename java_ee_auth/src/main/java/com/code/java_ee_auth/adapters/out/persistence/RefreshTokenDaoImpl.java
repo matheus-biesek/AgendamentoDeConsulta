@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.persistence;
+package com.code.java_ee_auth.adapters.out.persistence;
 
 import java.util.UUID;
 import com.code.java_ee_auth.domain.model.RefreshToken;
@@ -91,14 +91,12 @@ public class RefreshTokenDaoImpl {
                     .setParameter(5, requesterDevice)
                     .getSingleResult();
                 
-            // Verificar se o resultado é um booleano
             if (result instanceof Boolean) {
                 boolean success = (Boolean) result;
                 if (!success) {
                     throw new RuntimeException("Falha ao atualizar status do token de atualização");
                 }
             } else if (result instanceof Number) {
-                // Alguns drivers podem retornar 1/0 como Number
                 int success = ((Number) result).intValue();
                 if (success != 1) {
                     throw new RuntimeException("Falha ao atualizar status do token de atualização");

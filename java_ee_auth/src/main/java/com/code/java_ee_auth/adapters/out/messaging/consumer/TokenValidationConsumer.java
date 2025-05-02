@@ -1,6 +1,6 @@
-package com.code.java_ee_auth.adapters.messaging.consumer;
+package com.code.java_ee_auth.adapters.out.messaging.consumer;
 
-import com.code.java_ee_auth.application.service.security.AccessJWTService;
+import com.code.java_ee_auth.adapters.in.services.security.AccessTokenService;
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import com.rabbitmq.client.*;
 import jakarta.inject.Inject;
@@ -23,7 +23,7 @@ public class TokenValidationConsumer implements ServletContextListener {
     private Channel channel;
 
     @Inject
-    private AccessJWTService accessJWTService;
+    private AccessTokenService accessTokenService;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -57,7 +57,7 @@ public class TokenValidationConsumer implements ServletContextListener {
                         String roleString = parts[1].trim();
                         UserRole role = UserRole.valueOf(roleString);
 
-                        boolean isValid = accessJWTService.validateTokenRole(token, role);
+                        boolean isValid = accessTokenService.validateTokenRole(token, role);
                         response = isValid ? "VALID" : "INVALID";
                     } else {
                         response = "Formato de mensagem inválido.";

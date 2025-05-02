@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.application.service.security;
+package com.code.java_ee_auth.adapters.in.services.security;
 
 import java.security.Key;
 import java.util.Date;
@@ -11,7 +11,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class RefreshJWTService {
+public class RefreshTokenService {
     
     // Adicione a chave secreta aqui
     private static final String SECRET_KEY = "ewoCu39mGULU1oFgkIoy6Z2OEjvXd4Y1jzL/p60Xu1I=";

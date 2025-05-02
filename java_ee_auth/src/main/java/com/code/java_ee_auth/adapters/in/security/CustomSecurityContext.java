@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.security;
+package com.code.java_ee_auth.adapters.in.security;
 
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import jakarta.ws.rs.core.SecurityContext;
@@ -21,8 +21,8 @@ public class CustomSecurityContext implements SecurityContext {
     }
 
     @Override
-    public boolean isUserInRole(String role) {
-        return this.role.name().equalsIgnoreCase(role);
+    public boolean isUserInRole(String role) {        
+        return this.role.name().equals(role);
     }
 
     @Override

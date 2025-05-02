@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.rest.exeception;
+package com.code.java_ee_auth.adapters.out.rest.exeception;
 
 import com.code.java_ee_auth.domain.dto.response.MessageDTO;
 import jakarta.ws.rs.core.Response;

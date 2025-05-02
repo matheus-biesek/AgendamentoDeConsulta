@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.application.service.security;
+package com.code.java_ee_auth.adapters.in.services.security;
 
 import org.mindrot.jbcrypt.BCrypt;
 import jakarta.enterprise.context.ApplicationScoped;

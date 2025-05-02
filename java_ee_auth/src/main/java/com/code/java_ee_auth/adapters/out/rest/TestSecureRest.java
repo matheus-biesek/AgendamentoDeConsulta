@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.rest;
+package com.code.java_ee_auth.adapters.out.rest;
 
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -9,7 +9,6 @@ public class TestSecureRest {
     @POST
     @Path("/admin")
     public String adminOnly() {
-        System.out.println("Apenas ADMIN pode ler está mensagem");
         return "Apenas ADMIN pode ler está mensagem";
     }
 

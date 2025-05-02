@@ -1,11 +1,9 @@
-package com.code.java_ee_auth.adapters.rest;
+package com.code.java_ee_auth.adapters.in.services.security;
 
 import java.util.Optional;
 import java.util.UUID;
-import com.code.java_ee_auth.adapters.persistence.RefreshTokenDaoImpl;
-import com.code.java_ee_auth.adapters.persistence.UserDAOImpl;
-import com.code.java_ee_auth.application.service.security.AccessJWTService;
-import com.code.java_ee_auth.application.service.security.RefreshJWTService;
+import com.code.java_ee_auth.adapters.out.persistence.RefreshTokenDaoImpl;
+import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
 import com.code.java_ee_auth.domain.dto.response.RefreshTokenResultDTO;
 import com.code.java_ee_auth.domain.model.RefreshToken;
 import com.code.java_ee_auth.domain.model.User;
@@ -15,16 +13,16 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class RefreshTokenService {
+public class AuthRefreshTokenService {
     
     @Inject
-    private RefreshJWTService refreshJWTService;
+    private RefreshTokenService refreshTokenService;
     @Inject
     private UserDAOImpl userDao;
     @Inject
     private RefreshTokenDaoImpl refreshTokenDao;
     @Inject
-    private AccessJWTService accessJWTService;
+    private AccessTokenService accessTokenService;
     
     public RefreshTokenResultDTO autheticationRefreshToken(String sendRefreshToken, String requesterDevice, String requesterIp) {
         if (sendRefreshToken == null || requesterDevice == null || requesterIp == null) {
@@ -33,7 +31,7 @@ public class RefreshTokenService {
         }
         String refreshTokenId = null;
         try {
-            Claims claims = refreshJWTService.parseToken(sendRefreshToken);
+            Claims claims = refreshTokenService.parseToken(sendRefreshToken);
             if ( !claims.getIssuer().equals("auth-service")) {
                 System.out.println("Token de refresh nao condiz com o issuer!");
                 return new RefreshTokenResultDTO(false, null, null, "Token de refresh inválido");
@@ -61,22 +59,24 @@ public class RefreshTokenService {
                 System.out.println("Token de refresh nao encontrado!");
                 return new RefreshTokenResultDTO(false, null, null, "Token de refresh não encontrado");
             }
-            if ( !refreshTokenDao.validateRefreshTokenOwnership(UUID.fromString(refreshTokenId), user.get().getId())) {
+            if (!refreshTokenDao.validateRefreshTokenOwnership(UUID.fromString(refreshTokenId), user.get().getId())) {
                 System.out.println("Token de refresh nao condiz com o id do usuario!");
                 return new RefreshTokenResultDTO(false, null, null, "Token de refresh não pertence ao usuário");
             }
             if ( !requesterIp.equals(refreshToken.getUserIp()) || !requesterDevice.equals(refreshToken.getUserDevice())) {
                 System.out.println("Ip ou dispositivo nao bate com o do banco de dados!");
+                // É NECESSARIO SALVAR NO BANCO DE DADOS QUE ALGUEM NAO ALTORIZADO TENTOU ENTRAR NO SISTEMA E APÓS ISSO DESATIVAR TODOS OS REFRESH TOKENS DO USUARIO
                 return new RefreshTokenResultDTO(false, null, null, "IP ou dispositivo não corresponde ao registrado");
             }
             if (refreshToken.isActive() == false) {
                 System.out.println("Token de refresh nao esta ativo!");
+                // É NECESSARIO SALVAR NO BANCO DE DADOS QUE ALGUEM NAO ALTORIZADO TENTOU ENTRAR NO SISTEMA E APÓS ISSO DESATIVAR TODOS OS REFRESH TOKENS DO USUARIO
                 return new RefreshTokenResultDTO(false, null, null, "Token de refresh não está ativo");
             }
             System.out.println("Passou da validacao do refresh token");
 
             String csrfToken = UUID.randomUUID().toString();
-            String accessToken = accessJWTService.generateToken(user.get().getId(), user.get().getRole().name(), csrfToken);
+            String accessToken = accessTokenService.generateToken(user.get().getId(), csrfToken);
             
             refreshTokenDao.updateRefreshTokenAndAudit(
                 UUID.fromString(refreshTokenId), 
