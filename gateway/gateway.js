@@ -4,50 +4,74 @@ const authMiddleware = require('./authMiddleware');
 const path = require('path');
 require('dotenv').config();
 
-const app = express();
+// Constantes
 const PORT = process.env.PORT || 3000;
-
-const publicPaths = [
+const PUBLIC_PATHS = [
   '/rest-auth/auth-session/login',
   '/rest-auth/auth-session/logout',
   '/rest-auth/auth-session/register',
   '/rest-auth/token/refresh',
   '/',
   '/index.html',
-  '/blocked.html'
+  '/blocked.html',
+  '/refresh.html'
 ];
 
-app.use((req, res, next) => {
-  const isPublic = publicPaths.includes(req.path) ||
-    req.path.match(/\.(js|css|png|jpg|ico|woff2?)$/);
-  if (isPublic) return next();
+const STATIC_FILE_EXTENSIONS = /\.(js|css|png|jpg|ico|woff2?)$/;
 
+// Configurações dos serviços
+const SERVICES = {
+  AUTH: {
+    path: '/rest-auth',
+    target: 'http://wildfly-auth:8080/java_ee_auth-1.0-SNAPSHOT',
+    pathRewrite: (path) => `/rest-auth${path}`
+  },
+  SCHEDULE: {
+    path: '/rest-schedule',
+    target: 'http://wildfly-schedule:8080/java_ee_schedule-1.0-SNAPSHOT',
+    pathRewrite: (path) => `/rest-schedule${path}`
+  },
+  WORKERS: {
+    path: '/rest-workers',
+    target: 'http://wildfly-workers:8080/java_ee_workers-1.0-SNAPSHOT',
+    pathRewrite: (path) => `/rest-workers${path}`
+  },
+  FRONTEND: {
+    path: '/',
+    target: 'http://nginx-clinic:80'
+  }
+};
+
+// Funções auxiliares
+const isPublicPath = (path) => {
+  return PUBLIC_PATHS.includes(path) || path.match(STATIC_FILE_EXTENSIONS);
+};
+
+const createProxyConfig = (service) => ({
+  target: service.target,
+  changeOrigin: true,
+  ...(service.pathRewrite && { pathRewrite: service.pathRewrite })
+});
+
+// Configuração do Express
+const app = express();
+
+// Middleware de autenticação
+app.use((req, res, next) => {
+  if (isPublicPath(req.path)) return next();
   return authMiddleware(req, res, next);
 });
 
-app.use('/rest-auth', createProxyMiddleware({
-  target: 'http://wildfly-auth:8080/java_ee_auth-1.0-SNAPSHOT',
-  changeOrigin: true,
-  pathRewrite: (path, req) => `/rest-auth${path}`
-}));
+// Configuração dos proxies
+Object.values(SERVICES).forEach(service => {
+  app.use(service.path, createProxyMiddleware(createProxyConfig(service)));
+});
 
-app.use('/rest-schedule', createProxyMiddleware({
-  target: 'http://wildfly-schedule:8080/java_ee_schedule-1.0-SNAPSHOT',
-  changeOrigin: true,
-  pathRewrite: (path, req) => `/rest-schedule${path}`
-}));
-
-app.use('/rest-workers', createProxyMiddleware({
-  target: 'http://wildfly-workers:8080/java_ee_workers-1.0-SNAPSHOT',
-  changeOrigin: true,
-  pathRewrite: (path, req) => `/rest-workers${path}`
-}));
-
-app.use('/', createProxyMiddleware({
-  target: 'http://nginx-clinic:80',
-  changeOrigin: true,
-}));
-
+// Inicialização do servidor
 app.listen(PORT, () => {
-  console.log(`Gateway rodando em http://localhost:${PORT}`);
+  console.log(`🚀 Gateway rodando em http://localhost:${PORT}`);
+  console.log('📡 Serviços configurados:');
+  Object.entries(SERVICES).forEach(([name, service]) => {
+    console.log(`   - ${name}: ${service.target}`);
+  });
 });
