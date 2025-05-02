@@ -37,13 +37,13 @@ public class RefreshTokenRest {
 
         // Em produção, inclua "; Secure" se estiver a usar HTTPS
         String jwtCookie = String.format(
-            "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Lax",
+            "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
             newAccessToken,
             60 * 60 * 6
         );
 
         String csrfCookie = String.format(
-            "csrf=%s; Path=/; Max-Age=%d; SameSite=Lax",
+            "csrf=%s; Path=/; Max-Age=%d; SameSite=Strict",
             newCsrfToken,
             60 * 60 * 6
         );

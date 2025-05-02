@@ -1,13 +1,14 @@
-package com.code.java_ee_auth.adapters.rest;
+package com.code.java_ee_auth.adapters.out.rest;
 
-import com.code.java_ee_auth.adapters.persistence.RefreshTokenDaoImpl;
-import com.code.java_ee_auth.adapters.persistence.UserDAOImpl;
-import com.code.java_ee_auth.adapters.rest.exeception.UserAlreadyExistsException;
-import com.code.java_ee_auth.adapters.rest.exeception.UserNotFoundException;
-import com.code.java_ee_auth.application.service.UserServiceImpl;
-import com.code.java_ee_auth.application.service.security.AccessJWTService;
-import com.code.java_ee_auth.application.service.security.PasswordService;
-import com.code.java_ee_auth.application.service.security.RefreshJWTService;
+import com.code.java_ee_auth.adapters.in.services.UserServiceImpl;
+import com.code.java_ee_auth.adapters.in.services.security.AccessTokenService;
+import com.code.java_ee_auth.adapters.in.services.security.PasswordService;
+import com.code.java_ee_auth.adapters.in.services.security.RefreshTokenService;
+import com.code.java_ee_auth.adapters.out.persistence.RefreshTokenDaoImpl;
+import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
+import com.code.java_ee_auth.adapters.out.rest.exeception.UserAlreadyExistsException;
+import com.code.java_ee_auth.adapters.out.rest.exeception.UserNotFoundException;
+import com.code.java_ee_auth.adapters.utils.IpUtils;
 import com.code.java_ee_auth.domain.dto.request.LoginDTO;
 import com.code.java_ee_auth.domain.dto.request.UpdateRoleDTO;
 import com.code.java_ee_auth.domain.dto.request.UserInfoDTO;
@@ -26,21 +27,20 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
  
 @Path("/auth-session")
-public class AuthRest {
+public class SessionRest {
 
     @Inject
     private UserDAOImpl userRepository;
     @Inject
-    private AccessJWTService accessJWTService;
+    private AccessTokenService accessTokenService;
     @Inject
-    private RefreshJWTService refreshJWTService;
+    private RefreshTokenService refreshTokenService;
     @Inject
     private PasswordService passwordService;
     @Inject
@@ -55,14 +55,20 @@ public class AuthRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@CookieParam("token") String tokenString) {
 
+        String requesterIp = IpUtils.getClientIp(request);
+        String requesterDevice = request.getHeader("User-Agent");
+
         // Em produção, inclua "; Secure" se estiver a usar HTTPS
-        String expiredCookieToken = "token=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict";
+        String expiredCookieToken = "token=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict" ;
         String expiredCookieCsrfToken = "csrf=; Path=/; Max-Age=0; SameSite=Strict";
         String expiredCookieRefreshToken = "refreshToken=; Path=/rest-auth; Max-Age=0; HttpOnly; SameSite=Strict";
         
-
+        if (tokenString == null) {
+            return Response.status(Response.Status.OK)
+                    .build();
+        }
         try {
-            Claims calims = accessJWTService.parseToken(tokenString);
+            Claims calims = accessTokenService.parseToken(tokenString);
 
             UUID userId = UUID.fromString(calims.getSubject());
             
@@ -70,18 +76,16 @@ public class AuthRest {
      
             for (RefreshToken token : refreshTokens) {
                 token.setActive(false);
-                refreshTokenDao.updateRefreshTokenStatus(token, "REVOKED", request.getRemoteAddr(), request.getHeader("User-Agent"));
+                refreshTokenDao.updateRefreshTokenStatus(token, "REVOKED", requesterIp, requesterDevice);
             }
         } catch (ExpiredJwtException e) {
             System.out.println("Token expirado");
-
         }
 
         return Response.ok()
                 .header("Set-Cookie", expiredCookieToken)
                 .header("Set-Cookie", expiredCookieCsrfToken)
                 .header("Set-Cookie", expiredCookieRefreshToken)
-                .entity("{\"message\": \"Logout realizado com sucesso\"}")
                 .build();
     }
 
@@ -89,9 +93,15 @@ public class AuthRest {
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(LoginDTO credentials, @HeaderParam("User-Agent") String userAgent) {
-        if (userAgent == null || request.getRemoteAddr() == null) {
+    public Response login(LoginDTO credentials) {
+
+        String requesterDevice = request.getHeader("User-Agent");
+        String requesterIp = IpUtils.getClientIp(request);
+
+        if (requesterDevice == null || requesterIp == null) {
             System.out.println("Usuário está tentando acessar o sistema sem informar o User-Agent ou o IP do sistema!");
+            System.out.println("User-Agent: " + requesterDevice);
+            System.out.println("X-Forwarded-For: " + requesterIp);
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Credenciais inválidas")
                     .build();
@@ -119,7 +129,7 @@ public class AuthRest {
         List<RefreshToken> refreshTokens = refreshTokenDao.findRefreshTokensByUserId(userOpt.get().getId(), true);
         
         if (refreshTokens.isEmpty()){
-            System.out.println("Nenhum token de atualização ativo encontrado para o usuário");
+            System.out.println("Nenhum refresh token ativo encontrado para o usuário");
         }
 
         if (refreshTokens.size() >= 2) {
@@ -130,50 +140,48 @@ public class AuthRest {
             }
 
             if (refreshTokens.size() == 2){
-                System.out.println("2 rokens ativos");
+                System.out.println("2 tokens ativos");
             }
 
-            // Encontra o token mais antigo
             RefreshToken oldestToken = refreshTokens.stream()
                 .min((t1, t2) -> t1.getCreatedAt().compareTo(t2.getCreatedAt()))
                 .get();
             
-            // Marca o token mais antigo como inativo
             oldestToken.setActive(false);
-            refreshTokenDao.updateRefreshTokenStatus(oldestToken, "REVOKED", request.getRemoteAddr() , request.getHeader("User-Agent"));
+            refreshTokenDao.updateRefreshTokenStatus(oldestToken, "REVOKED", requesterIp , requesterDevice);
         }
 
         //Gerar o token de refresh e salvar no banco de dados
         RefreshToken refreshTokenEntity = new RefreshToken(
             UUID.randomUUID(),
             userOpt.get().getId(), 
-            request.getRemoteAddr(),  
-            userAgent, 
+            requesterIp,  
+            requesterDevice, 
             LocalDateTime.now().plusHours(7));
-        String refreshToken = refreshJWTService.generateToken(refreshTokenEntity.getUserId(), refreshTokenEntity.getId());
+        String refreshToken = refreshTokenService.generateToken(refreshTokenEntity.getUserId(), refreshTokenEntity.getId());
         refreshTokenDao.saveRefreshToken(refreshTokenEntity);
 
     
         String csrfToken = UUID.randomUUID().toString();
-        String token = accessJWTService.generateToken(userOpt.get().getId(), userOpt.get().getRole().name(), csrfToken);
+        String token = accessTokenService.generateToken(userOpt.get().getId(), csrfToken);
        
         // Em produção, inclua "; Secure" se estiver a usar HTTPS
         String jwtCookie = String.format(
-                "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
-                token,
-                60 * 60 * 6
+            "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
+            token,
+            60 * 60 * 6
         );
 
         String csrfCookie = String.format(
-                "csrf=%s; Path=/; Max-Age=%d; SameSite=Strict",
-                csrfToken,
-                60 * 60 * 6
+            "csrf=%s; Path=/; Max-Age=%d; SameSite=Strict",
+            csrfToken,
+            60 * 60 * 6
         );
 
         String refreshTokenCookie = String.format(
-                "refreshToken=%s; Path=/rest-auth; Max-Age=%d; HttpOnly; SameSite=Strict",
-                refreshToken,
-                60 * 60 * 6
+            "refreshToken=%s; Path=/rest-auth/token/refresh; Max-Age=%d; HttpOnly; SameSite=Strict",
+            refreshToken,
+            60 * 60 * 6
         );
 
         RoleDTO dto = new RoleDTO(userOpt.get().getRole());
@@ -183,13 +191,6 @@ public class AuthRest {
                 .header("Set-Cookie", refreshTokenCookie)
                 .build();
     }
-
-
-    // Criar um endpoint para gerar um novo token de refresh, lógica para verificar o token refresh fica aqui.
-    // Conferir se é necessario verificar o token csrf, pois o token csrf poderá ser usado como claims do refresh token, ou criar um novo token csrf para o refresh token, porém serão 4 tokens jwt.
-    // Verificar se é necessario criar um novo token csrf para o refresh token, pois o token csrf poderá ser usado como claims do refresh token, ou criar um novo token csrf para o refresh token, porém serão 4 tokens jwt.
-    // É melhor este endpoint ter sua prapria regra de segurança, conversar depois com a IA para ver ser e melhor deixar a autententificação em algum filtro de requisições, ou por ser apenas está API REST é desnecessário.
-
 
     @POST
     @Path("/register-secretary")
