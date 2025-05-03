@@ -1,0 +1,50 @@
+embed-server --server-config=standalone.xml --std-out=echo
+
+# Remove o datasource padrão do H2
+/subsystem=datasources/data-source=ExampleDS:remove()
+
+# Remove o driver H2
+/subsystem=datasources/jdbc-driver=h2:remove()
+
+# Adiciona o módulo do PostgreSQL
+module add --name=org.postgresql \
+           --resources=/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/main/postgresql-42.7.2.jar \
+           --dependencies=javax.api,javax.transaction.api
+
+# Configura o driver PostgreSQL
+/subsystem=datasources/jdbc-driver=postgresql:add(\
+    driver-name=postgresql,\
+    driver-module-name=org.postgresql,\
+    driver-class-name=org.postgresql.Driver)
+
+# Adiciona o datasource para o PostgreSQL
+/subsystem=datasources/data-source=PostgresDS:add(\
+    jndi-name=java:/jdbc/PostgresDS,\
+    driver-name=postgresql,\
+    connection-url=jdbc:postgresql://postgres_db_auth:5432/java_ee_auth,\
+    user-name=usuario,\
+    password=1234,\
+    use-ccm=false,\
+    max-pool-size=25,\
+    enabled=true)
+
+# Configura o filtro CORS no servidor Undertow
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=CORS:add(name="CORS")
+
+# Adiciona os headers de CORS para o gateway (localhost:3000)
+subsystem=undertow/filters/response-header=CORS:add(header-name="Access-Control-Allow-Origin", header-value="http://localhost:3000")
+
+# Adiciona o header de CORS para o RabbitMQ (ajuste conforme o nome e porta)
+subsystem=undertow/filters/response-header=CORS:add(header-name="Access-Control-Allow-Origin", header-value="http://rabbitmq_container_name:15672")
+
+# Permite os métodos HTTP
+/subsystem=undertow/filters/response-header=CORS:add(header-name="Access-Control-Allow-Methods", header-value="GET, POST, PUT, DELETE, OPTIONS")
+
+# Permite os cabeçalhos CORS
+/subsystem=undertow/filters/response-header=CORS:add(header-name="Access-Control-Allow-Headers", header-value="Content-Type, Authorization")
+
+# Permite credenciais CORS
+/subsystem=undertow/filters/response-header=CORS:add(header-name="Access-Control-Allow-Credentials", header-value="true")
+
+# Encerra o servidor embutido
+stop-embedded-server

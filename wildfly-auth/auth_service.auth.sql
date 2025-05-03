@@ -42,7 +42,7 @@ CREATE TABLE auth_service.refresh_tokens (
 CREATE TABLE auth_service.refresh_token_audit (
     id BIGSERIAL PRIMARY KEY,
     refresh_token_id UUID NOT NULL,
-    action_type VARCHAR(50) NOT NULL CHECK (action_type IN ('CREATED', 'REFRESH', 'REVOKED', 'EXPIRED')),
+    action_type VARCHAR(50) NOT NULL CHECK (action_type IN ('CREATED', 'REFRESH', 'REVOKED', 'EXPIRED', 'TOKEN_BINDING_MISMATCH', 'INACTIVE')),
     requester_ip_address VARCHAR(45) NOT NULL,
     requester_device_name VARCHAR(255) NOT NULL,
     event_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -153,8 +153,8 @@ DECLARE
     v_error_message TEXT;
 BEGIN
     -- Validação do status
-    IF p_status NOT IN ('CREATED', 'REFRESH', 'REVOKED', 'EXPIRED') THEN
-        RAISE EXCEPTION 'Status inválido. Valores permitidos: CREATED, REFRESH, REVOKED, EXPIRED';
+    IF p_status NOT IN ('CREATED', 'REFRESH', 'REVOKED', 'EXPIRED', 'TOKEN_BINDING_MISMATCH', 'INACTIVE') THEN
+        RAISE EXCEPTION 'Status inválido. Valores permitidos: CREATED, REFRESH, REVOKED, EXPIRED, TOKEN_BINDING_MISMATCH, INACTIVE';
     END IF;
 
     RAISE NOTICE 'Iniciando atualização do status do refresh token';
@@ -230,8 +230,8 @@ DECLARE
     v_error_message TEXT;
 BEGIN
     -- Validação do action_type
-    IF p_action_type NOT IN ('REFRESH', 'EXPIRED') THEN
-        RAISE EXCEPTION 'Tipo de ação inválido. Valores permitidos: REFRESH, EXPIRED';
+    IF p_action_type NOT IN ('REFRESH', 'EXPIRED', 'REVOKED', 'TOKEN_BINDING_MISMATCH', 'INACTIVE') THEN
+        RAISE EXCEPTION 'Tipo de ação inválido. Valores permitidos: REFRESH, EXPIRED, REVOKED, TOKEN_BINDING_MISMATCH, INACTIVE';
     END IF;
 
     RAISE NOTICE 'Iniciando atualização do refresh token e registro no audit';
