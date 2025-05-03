@@ -14,7 +14,9 @@ const PUBLIC_PATHS = [
   '/',
   '/index.html',
   '/blocked.html',
-  '/refresh.html'
+  '/refresh.html',
+  '/rest-workers/hello-world/users-by-role',
+  '/rest-workers/hello-world/user-data'
 ];
 
 const STATIC_FILE_EXTENSIONS = /\.(js|css|png|jpg|ico|woff2?)$/;
