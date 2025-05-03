@@ -161,11 +161,6 @@ public class RefreshTokenDaoImpl implements RefreshTokenDaoPort {
     @Transactional
     public void updateRefreshTokenAndAudit(UUID refreshTokenId, String actionType, String requesterIp, String requesterDevice) {
         try {
-            // Verificar se o action_type é válido
-            if (!actionType.equals("REFRESH") && !actionType.equals("EXPIRED")) {
-                throw new IllegalArgumentException("Tipo de ação inválido. Valores permitidos: REFRESH, EXPIRED");
-            }
-
             // Chamar a função PL/pgSQL que atualiza o refresh token e registra no audit
             Object result = entityManager.createNativeQuery(
                 "SELECT auth_service.update_refresh_token_for_api_refresh(?, ?, ?, ?)")

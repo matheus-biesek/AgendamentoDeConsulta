@@ -84,6 +84,7 @@ public class AuthRefreshTokenService implements AuthRefreshTokenServicePort {
             return new RefreshTokenResultDTO(true, accessToken, csrfToken, null);
 
         } catch (ExpiredJwtException e) {
+            refreshTokenId = e.getClaims().get("refreshTokenId").toString();
             handleExpiredToken(refreshTokenId, requesterIp, requesterDevice);
             return new RefreshTokenResultDTO(false, null, null, AuthError.TOKEN_EXPIRED.getMessage());
         } catch (Exception e) {
