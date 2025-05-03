@@ -32,11 +32,12 @@ public class AccessTokenService {
                 .getBody();
     }
 
-    public String generateToken(UUID userId, String csrfToken) {       
+    public String generateToken(UUID userId, String csrfToken, UserRole role) {       
         return Jwts.builder()
                 .setIssuer("auth-service")
                 .setSubject(userId.toString())
                 .claim("csrf", csrfToken)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((long) (System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))) 
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

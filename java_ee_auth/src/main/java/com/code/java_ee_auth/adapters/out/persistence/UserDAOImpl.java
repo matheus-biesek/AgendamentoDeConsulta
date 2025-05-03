@@ -156,7 +156,7 @@ public class UserDAOImpl implements UserDAOPort {
         }
     }
 
-
+    @Override
     public Optional<User> findById(UUID id) {
         try {
             // Execute a query e obtenha o resultado como um array de objetos
@@ -195,7 +195,7 @@ public class UserDAOImpl implements UserDAOPort {
         }
     }
 
-
+    @Override
     @Transactional
     public void updateStatus(User user) {
         try {
@@ -209,6 +209,7 @@ public class UserDAOImpl implements UserDAOPort {
         }
     }
 
+    @Override
     @Transactional
     public void updateBlocked(User user) {
         try {
@@ -224,6 +225,7 @@ public class UserDAOImpl implements UserDAOPort {
         }
     }
 
+    @Override
     @Transactional
     public void updateActive(User user) {
         try {

@@ -1,6 +1,5 @@
 package com.code.java_ee_auth.adapters.in.security;
 
-import com.code.java_ee_auth.adapters.in.services.RequestInfoService;
 import com.code.java_ee_auth.adapters.in.services.security.AccessTokenService;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
 import com.code.java_ee_auth.adapters.utils.CsrfTokenChecker;
@@ -30,6 +29,8 @@ public class JWTAuthFilter implements ContainerRequestFilter {
     @Inject
     private AccessTokenService accessTokenService;
     @Inject
+    private RouteManager routeManager;
+    @Inject
     private UserDAOImpl userDao;
 
     @Override
@@ -37,7 +38,7 @@ public class JWTAuthFilter implements ContainerRequestFilter {
         String path = ctx.getUriInfo().getPath();
 
 
-        if (RouteManager.isPublicEndpoint(path)) {
+        if (routeManager.isPublicEndpoint(path)) {
             return;
         }
 
@@ -60,7 +61,7 @@ public class JWTAuthFilter implements ContainerRequestFilter {
             User user = userDao.findById(userId).get();
 
 
-            if (!RouteManager.hasPermission(path, user.getRole())) {
+            if (!routeManager.hasPermission(path, user.getRole())) {
                 abort(ctx, AuthError.PERMISSION_DENIED.getMessage());
                 return;
             }

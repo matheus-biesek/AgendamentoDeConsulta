@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.in.services;
+package com.code.java_ee_auth.adapters.in.security;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.container.ContainerRequestContext;

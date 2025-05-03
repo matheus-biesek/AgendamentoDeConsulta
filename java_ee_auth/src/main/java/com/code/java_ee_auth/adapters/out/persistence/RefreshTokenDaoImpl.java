@@ -2,6 +2,7 @@ package com.code.java_ee_auth.adapters.out.persistence;
 
 import java.util.UUID;
 import com.code.java_ee_auth.domain.model.RefreshToken;
+import com.code.java_ee_auth.domain.port.out.RefreshTokenDaoPort;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -11,11 +12,12 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-public class RefreshTokenDaoImpl {
+public class RefreshTokenDaoImpl implements RefreshTokenDaoPort {
     
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     @Transactional
     public boolean saveRefreshToken(RefreshToken refreshToken) {
         try {
@@ -42,8 +44,7 @@ public class RefreshTokenDaoImpl {
         }
     }
 
-    // Função irá retornar uma lista refresh token, será necessario saber o userId e o status do token Refresh
-    // Será necessario saber o userId e o status do token Refresh
+    @Override
     @Transactional
     public List<RefreshToken> findRefreshTokensByUserId(UUID userId, boolean active) {
         try {
@@ -79,6 +80,7 @@ public class RefreshTokenDaoImpl {
         }
     }
 
+    @Override
     @Transactional
     public void updateRefreshTokenStatus(RefreshToken refreshToken, String status, String requesterIp, String requesterDevice) {
         try {
@@ -107,6 +109,7 @@ public class RefreshTokenDaoImpl {
         }
     }
 
+    @Override
     public RefreshToken findById(UUID refreshTokenId) {
         try {
             Object result = entityManager.createNativeQuery(
@@ -131,6 +134,7 @@ public class RefreshTokenDaoImpl {
         }
     }
 
+    @Override
     public boolean validateRefreshTokenOwnership(UUID refreshTokenId, UUID userId) {
         try {
             Object result = entityManager.createNativeQuery(
@@ -153,7 +157,7 @@ public class RefreshTokenDaoImpl {
         }
     }
     
-
+    @Override
     @Transactional
     public void updateRefreshTokenAndAudit(UUID refreshTokenId, String actionType, String requesterIp, String requesterDevice) {
         try {
