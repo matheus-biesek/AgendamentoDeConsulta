@@ -12,6 +12,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -236,6 +237,48 @@ public class UserDAOImpl implements UserDAOPort {
                     .executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Erro ao ativar/desativar usuário!", e);
+        }
+    }
+
+    @Override
+    public List<User> findByRole(UserRole role) {
+        try {
+            System.out.println("Buscando usuários com role: " + role.name());
+            
+            List<Object[]> results = entityManager.createNativeQuery(
+                "SELECT user_id, active, name, cpf, email, role, gender, blocked " +
+                "FROM auth_service.users " +
+                "WHERE role = :role AND active = true")
+                .setParameter("role", role.name())
+                .getResultList();
+            
+            List<User> users = new ArrayList<>();
+            
+            for (Object[] row : results) {
+                User user = new User();
+                user.setId((UUID) row[0]);  // user_id
+                user.setActive((Boolean) row[1]);  // active
+                user.setName((String) row[2]);  // name
+                user.setCpf((String) row[3]);  // cpf
+                user.setEmail((String) row[4]);  // email
+                user.setRole(UserRole.valueOf((String) row[5]));  // role
+                user.setGender(Gender.valueOf((String) row[6]));  // gender
+                user.setBlocked((Boolean) row[7]);  // blocked
+                
+                users.add(user);
+            }
+            
+            System.out.println("Encontrados " + users.size() + " usuários com role " + role.name());
+            
+            return users;
+        } catch (PersistenceException e) {
+            System.out.println("Erro de persistência ao buscar usuários por role: " + e);
+            throw new UserDAOException("Erro de persistência ao buscar usuários no banco de dados",
+                Response.Status.INTERNAL_SERVER_ERROR, e);
+        } catch (Exception e) {
+            System.out.println("Erro inesperado ao buscar usuários: " + e);
+            throw new UserDAOException("Erro inesperado ao buscar usuários no banco de dados",
+                Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
     
