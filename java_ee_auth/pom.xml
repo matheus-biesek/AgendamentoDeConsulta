@@ -180,7 +180,11 @@
             <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>rabbitmq-lib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
