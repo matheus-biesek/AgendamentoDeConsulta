@@ -5,9 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin</title>
         
-        <!-- Css -->
+        <!-- CSS -->
         <link rel="stylesheet" href="../styles/layout.css">
-
+        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/changeUserRoleComponent.css">
+        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/createUserComponent.css">
+        <link rel="icon" href="data:,">
     </head>
     <body>
 
@@ -16,7 +18,8 @@
         <!-- Conteúdo principal da página -->
         <main class="content">
             <div>
-                <h1>ADMIN - Página para atualizar dados de usuários/trabalhadores.</h1>
+                <div class="change-user-role-component"></div>
+                <div class="create-user-component"></div>
             </div>
         </main>
 
@@ -25,10 +28,11 @@
         <!-- Componentes -->
         <script src="../scripts/components/navbars/navbarAdmin.js"></script>
         <script src="../scripts/components/footer.js"></script>
-        
+        <script src="../scripts/components/grid-and-appointment/changeUserRoleComponent.js"></script>
+        <script src="../scripts/components/grid-and-appointment/createUserComponent.js"></script>
         <!-- Funções -->
         <script type="module" src="../scripts/dom/admin/admin-updateDOM.js"></script>
         <script type="module" src="../scripts/dom/sessionDOM.js"></script>
-    
+        
     </body>
 </html>
