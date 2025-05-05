@@ -93,4 +93,5 @@ footer p, footer span, footer a {
 /*Imagem Outras Páginas*/
 body{
     background: url('../images/90d0f266-21fd-4042-876e-9ebd23cd742b.png');
+    background-attachment: fixed;
 }
