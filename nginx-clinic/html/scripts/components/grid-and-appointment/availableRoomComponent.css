@@ -1,0 +1,137 @@
+/* Variáveis do tema */
+:root {
+    --primary: #4CAF50;
+    --primary-hover: #45a049;
+    --border: #ccc;
+    --bg: #f9f9f9;
+    --hover-bg: #e6e6e6;
+    --focus: rgb(17, 0, 255);
+    --shadow: rgb(0, 89, 255);
+    --text: #313131;
+    --radius: 12px;
+    --t: 0.3s;
+}
+
+/* Layout base */
+.available-room-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 600px;
+    max-width: 1200px;
+    margin-top: 30px;
+    padding: 30px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    color: var(--text);
+}
+
+/* Cabeçalho */
+.available-room-container h2 {
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Formulário */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Elementos de formulário */
+.form-group label {
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: all var(--t);
+}
+
+.form-group input:focus {
+    border-color: var(--focus);
+    box-shadow: 0 0 5px var(--shadow);
+    outline: none;
+}
+
+/* Botão */
+#search-availability {
+    width: 200px;
+    margin: 10px auto;
+    padding: 12px 30px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background var(--t);
+}
+
+#search-availability:hover {
+    background: var(--primary-hover);
+}
+
+/* Grid de horários */
+.schedule-grid {
+    padding: 20px;
+    border-radius: var(--radius);
+}
+
+.schedule-grid h3 {
+    margin-bottom: 20px;
+    color: var(--text);
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#available-times {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    min-height: 100px;
+    padding: 15px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+/* Slots de horário */
+.time-slot {
+    padding: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--t);
+}
+
+.time-slot:hover {
+    background: var(--hover-bg);
+}
+
+.time-slot.selected {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
