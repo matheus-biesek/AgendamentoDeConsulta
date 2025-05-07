@@ -5,6 +5,4 @@ import io.jsonwebtoken.Claims;
 public interface TokenPublicService {
     Claims parseToken(String token);
     String getSecretKey();
-    String getIssuer();
-    String getAudience();
 } 

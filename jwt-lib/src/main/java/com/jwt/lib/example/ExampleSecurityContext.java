@@ -2,7 +2,7 @@ package com.jwt.lib.example;
 
 import com.jwt.lib.filter.SecurityContext;
 import io.jsonwebtoken.Claims;
-import javax.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 public class ExampleSecurityContext implements SecurityContext {
     

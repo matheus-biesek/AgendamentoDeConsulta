@@ -3,23 +3,22 @@ package com.jwt.lib.filter;
 import com.jwt.lib.route.RouteManager;
 import com.jwt.lib.token.priv.TokenPrivateService;
 import com.jwt.lib.token.pub.TokenPublicService;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Provider
-@Priority(Priorities.AUTHENTICATION)
 public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractJWTAuthFilter.class);
+    private static final Jsonb jsonb = JsonbBuilder.create();
 
     /**
      * Obtém o serviço de token para validação.
@@ -46,9 +45,9 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
             return;
         }
 
-        String token = extractToken(ctx);
+        String token = extractCookieValue(ctx, "accessToken");
         if (token == null) {
-            abort(ctx, "Token não encontrado");
+            abort(ctx, "TOKEN_MISSING", "Token não encontrado", false, null);
             return;
         }
 
@@ -56,32 +55,29 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
             Claims claims = parseToken(token);
             
             if (!validateTokenClaims(claims)) {
-                abort(ctx, "Token inválido");
+                abort(ctx, "TOKEN_INVALID", "Token inválido", false, null);
                 return;
             }
 
             String role = claims.get("role", String.class);
             if (!getRouteManager().hasPermission(path, role)) {
-                abort(ctx, "Permissão negada");
+                abort(ctx, "PERMISSION_DENIED", "Permissão negada", false, null);
                 return;
             }
 
             setupSecurityContext(ctx, claims);
 
         } catch (ExpiredJwtException e) {
-            abort(ctx, "Token expirado");
+            abort(ctx, "TOKEN_EXPIRED", "Token expirado", true, "/rest-auth/token/refresh");
         } catch (Exception e) {
             logger.error("Erro inesperado no filtro de autenticação", e);
-            abort(ctx, "Token inválido");
+            abort(ctx, "TOKEN_INVALID", "Token inválido", false, null);
         }
     }
 
-    protected String extractToken(ContainerRequestContext ctx) {
-        String authHeader = ctx.getHeaderString("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7);
-        }
-        return null;
+    protected String extractCookieValue(ContainerRequestContext ctx, String cookieName) {
+        Cookie cookie = ctx.getCookies().get(cookieName);
+        return cookie != null ? cookie.getValue() : null;
     }
 
     protected Claims parseToken(String token) {
@@ -98,7 +94,7 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
     protected boolean validateTokenClaims(Claims claims) {
         SecurityContext securityContext = getSecurityContext();
         return claims.getIssuer().equals(securityContext.getIssuer()) &&
-               claims.getAudience().contains(securityContext.getAudience());
+            claims.getAudience().contains(securityContext.getAudience());
     }
 
     protected void setupSecurityContext(ContainerRequestContext ctx, Claims claims) {
@@ -106,9 +102,13 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
         securityContext.setupContext(ctx, claims);
     }
 
-    protected void abort(ContainerRequestContext ctx, String message) {
+    protected void abort(ContainerRequestContext ctx, String error, String message, boolean shouldRefresh, String refreshEndpoint) {
+        ErrorResponse errorResponse = new ErrorResponse(error, message, shouldRefresh, refreshEndpoint);
+        String jsonResponse = jsonb.toJson(errorResponse);
+        
         ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                .entity(message)
-                .build());
+            .entity(jsonResponse)
+            .type(MediaType.APPLICATION_JSON)
+            .build());
     }
-} 
+}

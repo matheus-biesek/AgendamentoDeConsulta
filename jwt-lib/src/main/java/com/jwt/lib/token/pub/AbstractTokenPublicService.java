@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
 public abstract class AbstractTokenPublicService implements TokenPublicService {
+    
     @Override
     public Claims parseToken(String token) {
         return Jwts.parserBuilder()

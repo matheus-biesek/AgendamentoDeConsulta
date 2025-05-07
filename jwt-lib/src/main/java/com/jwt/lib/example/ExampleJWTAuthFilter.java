@@ -32,6 +32,7 @@ public class ExampleJWTAuthFilter extends AbstractJWTAuthFilter {
     }
 
     @Override
+    
     protected SecurityContext getSecurityContext() {
         return securityContext;
     }

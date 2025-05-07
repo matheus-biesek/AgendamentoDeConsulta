@@ -1,14 +1,14 @@
 package com.jwt.lib.filter;
 
 import io.jsonwebtoken.Claims;
-import javax.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 /**
  * Interface que define o contexto de segurança específico do usuário.
  * Permite que o usuário defina seu próprio contexto de segurança,
  * incluindo issuer, audience e como configurar o contexto de segurança.
  */
-public interface SecurityContext {
+public interface SecurityContext{
     
     /**
      * Obtém o issuer (emissor) do token que é aceito no filtro
