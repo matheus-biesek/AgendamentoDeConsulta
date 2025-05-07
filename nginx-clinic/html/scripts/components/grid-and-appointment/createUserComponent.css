@@ -1,0 +1,119 @@
+/* Variáveis: Define cores e valores padrão para o tema */
+:root {
+    --primary: #4CAF50;          /* Cor principal do tema */
+    --primary-hover: #45a049;    /* Cor ao passar o mouse sobre elementos principais */
+    --border: #ccc;              /* Cor padrão das bordas */
+    --bg: #f9f9f9;              /* Cor de fundo padrão */
+    --hover-bg: #e6e6e6;        /* Cor de fundo ao passar o mouse */
+    --focus: rgb(17, 0, 255);   /* Cor de foco para inputs */
+    --shadow: rgb(0, 89, 255);  /* Cor da sombra em elementos focados */
+    --label-color: #313131;     /* Cor dos textos e labels */
+    --radius: 12px;             /* Arredondamento padrão das bordas */
+    --t: 0.3s;                  /* Duração das transições/animações */
+}
+
+/* Estilos base: Configurações comuns para componentes do formulário */
+.create-user-component, .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Container principal do formulário */
+.create-user-component {
+    max-width: 600px;
+    padding: 30px;
+    margin: 50px auto 0;
+    background: var(--bg);
+    border-radius: var(--radius);
+    color: var(--label-color);
+}
+
+/* Grupos de campos do formulário */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Elementos de texto: títulos e labels */
+h2, .form-group label {
+    color: var(--text);
+    font-weight: bold;
+}
+
+/* Título principal do formulário */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Campos de entrada de texto */
+.form-group input {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: white;
+    font-size: 14px;
+    transition: all var(--t);
+}
+
+/* Estado de foco dos campos de entrada */
+.form-group input:focus {
+    border-color: var(--focus);
+    box-shadow: 0 0 5px var(--shadow);
+    outline: none;
+}
+
+/* Container dos botões de rádio */
+.role-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Labels dos botões de rádio */
+.role-options label {
+    padding: 10px 15px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: all var(--t);
+}
+
+/* Efeito hover nos labels dos botões de rádio */
+.role-options label:hover {
+    background: var(--hover-bg);
+}
+
+/* Estilo do label quando o botão de rádio está selecionado */
+.role-options input[type="radio"]:checked + label {
+    background: var(--primary);
+    color: white;
+}
+
+/* Botão de criar usuário */
+#create-user-button {
+    width: 70%;
+    padding: 15px;
+    margin: 10px auto;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background var(--t);
+}
+
+/* Efeito hover no botão de criar */
+#create-user-button:hover {
+    background: var(--primary-hover);
+}
+
+/* Estilo para campos com erro */
+.input-error {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+}
