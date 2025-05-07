@@ -3,6 +3,7 @@
     --button-color: #4CAF50;
     --border-radius-date: 4px;
     --bg-color: white;
+    --label-color: #313131;
   }
   .appointment-component {
     display: flex;
@@ -11,6 +12,7 @@
     border: 1px solid var(--main-color);
     border-radius: 8px;
     background-color: var(--bg-color);
+    color:var(--label-color);
   }
    .appointment-component th, .appointment-component td {
     padding: 10px;
