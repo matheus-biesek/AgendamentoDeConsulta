@@ -1,0 +1,114 @@
+:root {
+    --select-color: #4CAF50;    /* Cor principal para seleção */
+    --hover: #45a049;           /* Cor ao passar o mouse */
+    --border: #ccc;             /* Cor da borda */
+    --bg: #f9f9f9;             /* Cor de fundo */
+    --hover-bg: #e6e6e6;       /* Cor de fundo ao passar o mouse */
+    --focus: rgb(17, 0, 255);  /* Cor de foco */
+    --shadow: rgb(0, 89, 255); /* Cor da sombra */
+    --label-color: #313131;    /* Cor do texto */
+    --radius: 12px;            /* Arredondamento das bordas */
+    --t: 0.3s;                 /* Duração da transição */
+}
+
+/* Layout: Estrutura base do componente */
+.change-user-role-component {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    display: flex;
+}
+
+/* Grupos de formulário e opções: Configuração de layout comum */
+.form-group, .role-options {
+    width: 100%;
+}
+
+/* Grupo de formulário: Organização vertical dos campos */
+.form-group {
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Container de opções: Organização das opções de cargo */
+.role-options {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Textos: Estilo para títulos e labels */
+h2, label {
+    color: var(--label-color);
+    font-weight: bold;
+}
+
+/* Título principal */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Campos de entrada: Estilo para inputs de texto e senha */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all var(--t);
+}
+
+/* Estado de foco dos campos */
+input:focus {
+    border-color: var(--focus);
+    box-shadow: 0 0 5px var(--shadow);
+    outline: none;
+}
+
+/* Botões de rádio: Oculta o input padrão */
+.role-options input[type="radio"] { 
+    display: none; 
+}
+
+/* Labels dos botões de rádio */
+.role-options label {
+    padding: 10px 15px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    cursor: pointer;
+    transition: background var(--t);
+}
+
+/* Efeito hover nos labels */
+.role-options label:hover { 
+    background: var(--hover-bg); 
+}
+
+/* Estado selecionado dos botões de rádio */
+.role-options input[type="radio"]:checked + label {
+    background: var(--select-color);
+    color: white;
+}
+
+/* Botão principal */
+button {
+    width: 70%;
+    padding: 15px;
+    margin: 10px auto;
+    display: block;
+    background: var(--select-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background var(--t);
+}
+
+/* Efeito hover no botão */
+button:hover { 
+    background: var(--hover); 
+}
