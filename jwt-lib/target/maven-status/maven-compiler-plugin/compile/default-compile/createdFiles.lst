@@ -1,0 +1,7 @@
+com/jwt/lib/example/ExampleTokenService.class
+com/jwt/lib/example/ExampleRouteManager.class
+com/jwt/lib/route/AbstractRouteManager.class
+com/jwt/lib/token/AbstractTokenService.class
+com/jwt/lib/token/TokenService.class
+com/jwt/lib/route/RouteManager.class
+com/jwt/lib/filter/JWTAuthFilter.class
