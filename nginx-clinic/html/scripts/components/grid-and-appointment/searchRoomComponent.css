@@ -1,0 +1,81 @@
+:root {
+    --primary: #4CAF50;      /* Cor principal para elementos primários */
+    --hover: #45a049;        /* Cor do estado hover */
+    --border: #ccc;          /* Cor da borda dos elementos */
+    --bg: #f9f9f9;          /* Cor de fundo */
+    --hover-bg: #e6e6e6;    /* Cor de fundo para estado hover */
+    --label-color: #313131; /* Cor do texto */
+    --radius: 12px;         /* Raio da borda para cantos arredondados */
+    --t: 0.3s;             /* Duração da transição */
+}
+
+/* Container principal: Contém todo o componente de busca de salas */
+.search-room-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    height: 100%;           
+    padding: 30px;
+    margin: 0 auto;
+    background: var(--bg);
+    border-radius: var(--radius);
+    color: var(--label-color);
+}
+
+/* Estilização do título */
+.search-room-container h2 {
+    margin: 0 0 20px;  
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Container do grid: Gerencia o layout da tabela */
+.search-room-grid {
+    flex: 1;       
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilização da tabela: Estrutura principal da tabela */
+.search-room-grid table {
+    flex: 1;              
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;     
+    margin: 0;
+}
+
+/* Células da tabela: Estilos comuns para cabeçalhos e células de dados */
+.search-room-grid th,
+.search-room-grid td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Células do cabeçalho: Estilização especial para cabeçalhos de coluna */
+.search-room-grid th {
+    background: var(--bg);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Linhas da tabela: Altura fixa para consistência */
+.search-room-grid tr {
+    height: 60px;
+}
+
+/* Efeito hover nas linhas: Fornece feedback visual */
+.search-room-grid tr:hover {
+    background: var(--hover-bg);
+    transition: background var(--t);
+}
+
+/* Remove a borda inferior para uma aparência mais limpa */
+.search-room-grid tr:last-child td {
+    border: 0;
+}
