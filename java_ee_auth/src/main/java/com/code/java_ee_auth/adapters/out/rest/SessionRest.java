@@ -1,9 +1,8 @@
 package com.code.java_ee_auth.adapters.out.rest;
 
+import com.code.java_ee_auth.adapters.in.services.session.SessionServiceImpl;
 import com.code.java_ee_auth.adapters.utils.IpUtils;
 import com.code.java_ee_auth.domain.dto.request.LoginDTO;
-import com.code.java_ee_auth.domain.port.in.SessionServicePort;
-
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
@@ -17,12 +16,12 @@ public class SessionRest {
     private HttpServletRequest request;
     
     @Inject
-    private SessionServicePort sessionService;
+    private SessionServiceImpl sessionService;
     
     @POST
     @Path("/logout")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response logout(@CookieParam("token") String tokenString) {
+    public Response logout(@CookieParam("accessToken") String tokenString) {
         String requesterIp = IpUtils.getClientIp(request);
         String requesterDevice = request.getHeader("User-Agent");
 

@@ -1,13 +1,13 @@
 package com.code.java_ee_auth.adapters.in.security;
 
 import com.code.java_ee_auth.adapters.in.services.security.AccessTokenService;
-import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
 import com.code.java_ee_auth.adapters.utils.CsrfTokenChecker;
 import com.code.java_ee_auth.domain.enuns.AuthError;
-import com.code.java_ee_auth.domain.model.User;
+import com.code.java_ee_auth.domain.enuns.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -20,30 +20,35 @@ import java.util.logging.Logger;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@ApplicationScoped
 public class JWTAuthFilter implements ContainerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(JWTAuthFilter.class.getName());
 
+    // na biblioteca será adicionado variaveis genericas, quando o usuario implementar a classe AccessTokenService, ele terá que passar as variaveis genericas.
+    private static final String ISSUER = "auth-service";
+    private static final String AUDIENCE = "auth-service";
+
     @Inject
     private RequestInfoService requestInfoService;
+
     @Inject
     private AccessTokenService accessTokenService;
+
     @Inject
     private RouteManager routeManager;
-    @Inject
-    private UserDAOImpl userDao;
 
     @Override
     public void filter(ContainerRequestContext ctx) {
         String path = ctx.getUriInfo().getPath();
 
-
+        // Verifica se é uma rota pública
         if (routeManager.isPublicEndpoint(path)) {
             return;
         }
 
-        String token = requestInfoService.extractCookieValue(ctx, "token");
-
+        // coleta o token JWT
+        String token = requestInfoService.extractCookieValue(ctx, "accessToken");
         if (token == null) {
             abort(ctx, AuthError.TOKEN_MISSING.getMessage());
             return;
@@ -51,31 +56,31 @@ public class JWTAuthFilter implements ContainerRequestFilter {
 
         try {
             Claims claims = accessTokenService.parseToken(token);
-            if (!claims.getIssuer().equals("auth-service")) {
+            
+            // Validação do issuer e audience
+            if (!claims.getIssuer().equals(ISSUER) || !claims.getAudience().contains(AUDIENCE)) {
                 abort(ctx, AuthError.TOKEN_INVALID.getMessage());
                 return;
             }
+
+            // Validação do CSRF token
             CsrfTokenChecker.validate(ctx, claims);
-
-            UUID userId = UUID.fromString(claims.getSubject());
-            User user = userDao.findById(userId).get();
-
-
-            if (!routeManager.hasPermission(path, user.getRole())) {
+            
+            UserRole role = UserRole.valueOf(claims.get("role", String.class));
+            if (!routeManager.hasPermission(path, role)) {
                 abort(ctx, AuthError.PERMISSION_DENIED.getMessage());
                 return;
             }
 
-            if (!validateUserState(user, ctx)) {
-                return;
-            }
-
-            SecurityContext securityContext = new CustomSecurityContext(userId, user.getRole(), ctx.getSecurityContext());
+            // Configuração do contexto de segurança
+            UUID userId = UUID.fromString(claims.getSubject());
+            SecurityContext securityContext = new CustomSecurityContext(userId, role, ctx.getSecurityContext());
             ctx.setSecurityContext(securityContext);
 
         } catch (ExpiredJwtException e) {
             abort(ctx, AuthError.TOKEN_EXPIRED.getMessage());
             return;
+
         } catch (Exception e) {
             logger.severe("Erro inesperado no filtro de autenticação: " + e.getMessage() + "\n" + e.getStackTrace());
             abort(ctx, AuthError.TOKEN_INVALID.getMessage());
@@ -83,22 +88,7 @@ public class JWTAuthFilter implements ContainerRequestFilter {
         }
     }
 
-    private boolean validateUserState(User user, ContainerRequestContext ctx) {
-        if (user.isBlocked()) {
-            abort(ctx, AuthError.USER_BLOCKED.getMessage());
-            return false;
-        }
-
-        if (!user.isActive()) {
-            abort(ctx, AuthError.USER_NOT_ACTIVE.getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
-    private void abort(ContainerRequestContext ctx, String message) {
+    protected void abort(ContainerRequestContext ctx, String message) {
         ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(message).build());
-        return;
-    }   
+    }
 }

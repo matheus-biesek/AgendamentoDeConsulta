@@ -108,13 +108,13 @@ public class SessionServiceImpl implements SessionServicePort {
         String token = accessTokenService.generateToken(userOpt.get().getId(), csrfToken, userOpt.get().getRole());
        
         String jwtCookie = String.format(
-            "token=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
+            "accessToken=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
             token,
             60 * 60 * 6
         );
 
         String csrfCookie = String.format(
-            "csrf=%s; Path=/; Max-Age=%d; SameSite=Strict",
+            "csrfToken=%s; Path=/; Max-Age=%d; SameSite=Strict",
             csrfToken,
             60 * 60 * 6
         );
@@ -135,8 +135,8 @@ public class SessionServiceImpl implements SessionServicePort {
 
     @Override
     public Response logout(String tokenString, String requesterDevice, String requesterIp) {
-        String expiredCookieToken = "token=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict";
-        String expiredCookieCsrfToken = "csrf=; Path=/; Max-Age=0; SameSite=Strict";
+        String expiredCookieToken = "accessToken=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict";
+        String expiredCookieCsrfToken = "csrfToken=; Path=/; Max-Age=0; SameSite=Strict";
         String expiredCookieRefreshToken = "refreshToken=; Path=/rest-auth; Max-Age=0; HttpOnly; SameSite=Strict";
         
         if (tokenString == null) {

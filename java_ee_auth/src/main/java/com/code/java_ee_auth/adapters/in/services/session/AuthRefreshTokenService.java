@@ -56,6 +56,9 @@ public class AuthRefreshTokenService implements AuthRefreshTokenServicePort {
             Optional<User> user = userDao.findById(UUID.fromString(userId));
             
             if (!UserValidator.validateUser(user)) {
+                // retornar no audit que o usuario não tem permissão para acessar o sistema!
+                // retornar no audit que o usuario não tem permissão para acessar o sistema!
+                // retornar no audit que o usuario não tem permissão para acessar o sistema!
                 return new RefreshTokenResultDTO(false, null, null, AuthError.USER_NOT_FOUND.getMessage());
             }
             

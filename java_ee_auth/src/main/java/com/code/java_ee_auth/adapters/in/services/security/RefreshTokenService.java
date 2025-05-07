@@ -16,6 +16,8 @@ public class RefreshTokenService {
     // Adicione a chave secreta aqui
     private static final String SECRET_KEY = "ewoCu39mGULU1oFgkIoy6Z2OEjvXd4Y1jzL/p60Xu1I=";
     private static final long REFRESH_TOKEN_EXPIRATION_MS = 1000 * 60 * 60 * 7; // 7 horas
+    private static final String ISSUER = "auth-service";
+    private static final String AUDIENCE = "auth-service";
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
@@ -32,14 +34,14 @@ public class RefreshTokenService {
     
     public String generateToken(UUID userId, UUID refreshTokenId) {
         return Jwts.builder()
-                .setSubject(userId.toString())
-                .setIssuer("auth-service")
-                .setAudience("workers-service,schedules-service,consumer-status-appointment,consumer-change-password")
-                .claim("tokenType", "refresh")
-                .claim("refreshTokenId", refreshTokenId)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
+            .setSubject(userId.toString())
+            .setIssuer(ISSUER)
+            .setAudience(AUDIENCE)
+            .claim("tokenType", "refresh")
+            .claim("refreshTokenId", refreshTokenId)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))
+            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+            .compact();
     }
 }

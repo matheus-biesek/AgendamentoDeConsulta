@@ -23,8 +23,8 @@ public class RefreshTokenRest {
     private static final Logger logger = LoggerFactory.getLogger(RefreshTokenRest.class);
     
     private static final String REFRESH_TOKEN_COOKIE = "refreshToken";
-    private static final String ACCESS_TOKEN_COOKIE = "token";
-    private static final String CSRF_TOKEN_COOKIE = "csrf";
+    private static final String ACCESS_TOKEN_COOKIE = "accessToken";
+    private static final String CSRF_TOKEN_COOKIE = "csrfToken";
     private static final String COOKIE_PATH = "/";
     private static final int TOKEN_MAX_AGE = 60 * 60 * 6; // 6 horas
     private static final String USER_AGENT_HEADER = "User-Agent";
