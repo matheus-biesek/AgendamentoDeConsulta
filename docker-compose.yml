@@ -55,11 +55,6 @@ services:
       - rabbitmq
     environment:
       - TZ=America/Sao_Paulo
-      - DB_HOST=postgres_db_auth
-      - DB_PORT=5432
-      - DB_NAME=java_ee_auth
-      - DB_USER=usuario
-      - DB_PASSWORD=1234
     volumes:
       - ./wildfly-auth/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
       - ~/Documentos/projetos/clinic/java_ee_auth/target/java_ee_auth-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_auth-1.0-SNAPSHOT.war # LOCAL
@@ -74,11 +69,6 @@ services:
       - rabbitmq
     environment:
       - TZ=America/Sao_Paulo
-      - DB_HOST=postgres_db_auth
-      - DB_PORT=5432
-      - DB_NAME=java_ee_auth
-      - DB_USER=usuario
-      - DB_PASSWORD=1234
     volumes:
       - ./wildfly-schedule/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
       - ~/Documentos/projetos/clinic/java_ee_schedule/target/java_ee_schedule-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_schedule-1.0-SNAPSHOT.war # LOCAL
@@ -93,11 +83,6 @@ services:
       - rabbitmq
     environment:
       - TZ=America/Sao_Paulo
-      - DB_HOST=postgres_db_auth
-      - DB_PORT=5432
-      - DB_NAME=java_ee_auth
-      - DB_USER=usuario
-      - DB_PASSWORD=1234
     volumes:
       - ./wildfly-workers/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
       - ~/Documentos/projetos/clinic/java_ee_workers/target/java_ee_workers-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_workers-1.0-SNAPSHOT.war # LOCAL

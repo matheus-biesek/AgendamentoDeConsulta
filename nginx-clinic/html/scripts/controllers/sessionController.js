@@ -3,16 +3,16 @@
 import { loginSession, logoutSession } from "../services/sessionService.js";
 
 export async function handleLogin() {
-    const username = document.getElementById("username").value.trim();
+    const cpf = document.getElementById("cpf").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    if (!username || !password) {
+    if (!cpf || !password) {
         alert("Preencha todos os campos");
         return;
     }
 
     try {
-        const nextPage = await loginSession(username, password);
+        const nextPage = await loginSession(cpf, password);
         window.location.href = nextPage;
     } catch (error) {
         alert("Erro ao tentar fazer login.");

@@ -10,14 +10,9 @@ const routes = {
     "PATIENT": "patient/patient-info.html"
 };
 
-export async function loginSession(username, password) {
+export async function loginSession(cpf, password) {
 
-    const response = await makeRequest("/rest-auth/auth-session/login", "POST", { username, password });
-
-    const csrfToken = getCookie("csrf");
-    if (csrfToken) {
-        localStorage.setItem("csrf-token", csrfToken);
-    }
+    const response = await makeRequest("/rest-auth/auth-session/login", "POST", { cpf, password });
 
     const role = response.role;
     return routes[role] || "blocked.html";
@@ -26,10 +21,4 @@ export async function loginSession(username, password) {
 export async function logoutSession() {
     await makeRequest("/rest-auth/auth-session/logout", "POST");
     localStorage.removeItem("csrf-token");
-}
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
 }
