@@ -7,6 +7,8 @@
 
         <!-- Css -->
         <link rel="stylesheet" href="../styles/layout.css">
+        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/searchRoomComponent.css">
+        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/availableRoomComponent.css">
 
     </head>
     <body>
@@ -16,7 +18,11 @@
         <!-- Conteúdo principal da página -->
         <main class="content">
             <div>
-                <h1>ADMIN - Página para criar grade horaria dos trabalhadores</h1>
+                <div class="search-all-room-component"></div>
+                <div class="available-romm-component"></div>
+                <div class="search-workers-component"></div>
+                <div class="search-schedule-worker-component"></div>
+                <div class="calcell-schedule-component"></div>
             </div>
         </main>
 
@@ -25,6 +31,8 @@
         <!-- Componentes -->
         <script src="../scripts/components/navbars/navbarAdmin.js"></script>
         <script src="../scripts/components/footer.js"></script>
+        <script src="../scripts/components/grid-and-appointment/searchRoomComponent.js"></script>
+        <script src="../scripts/components/grid-and-appointment/availableRoomComponent.js"></script>
 
         <!-- Funções -->
         <script type="module" src="../scripts/dom/admin/admin-schedule-gridDOM.js"></script>
