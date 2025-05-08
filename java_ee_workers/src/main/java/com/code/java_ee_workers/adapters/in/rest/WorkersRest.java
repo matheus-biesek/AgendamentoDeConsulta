@@ -1,11 +1,15 @@
-package com.code.java_ee_workers;
+package com.code.java_ee_workers.adapters.in.rest;
+
+import com.code.java_ee_workers.adapters.out.producer.SearchUserByRoleProducer;
+import com.code.java_ee_workers.adapters.out.producer.SearchUserProducer;
+import com.code.java_ee_workers.domain.dto.dto;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/hello-world")
-public class HelloResource {
+@Path("/workers")
+public class WorkersRest {
 
     @Inject
     private SearchUserProducer searchUserProducer;
@@ -13,9 +17,10 @@ public class HelloResource {
     private SearchUserByRoleProducer searchUserByRoleProducer;
 
     @GET
-    @Produces("text/plain")
-    public String hello() {
-        return "Hello, World!";
+    @Path("/public")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String publicEndpoint() {
+        return "Endpoint público!";
     }
 
     @GET

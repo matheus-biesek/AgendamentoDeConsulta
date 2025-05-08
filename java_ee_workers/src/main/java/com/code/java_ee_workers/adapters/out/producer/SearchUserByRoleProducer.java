@@ -1,14 +1,15 @@
-package com.code.java_ee_workers;
+package com.code.java_ee_workers.adapters.out.producer;
 
-import com.rabbitmq.lib.AbstractRabbitMQProducer;
+import com.rabbitmq.lib.producer.AbstractRabbitMQProducer;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class SearchUserProducer extends AbstractRabbitMQProducer{
+public class SearchUserByRoleProducer extends AbstractRabbitMQProducer{
 
     @Override
     protected String getQueueName() {
-        return "search-user-data";
+        return "search-users-by-role";
     }
 
     @Override
@@ -25,7 +26,5 @@ public class SearchUserProducer extends AbstractRabbitMQProducer{
     protected String getPassword() {
         return "guest";
     }
-    
+
 }
-
-
