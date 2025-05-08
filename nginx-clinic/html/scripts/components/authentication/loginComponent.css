@@ -10,10 +10,6 @@
     --container-width: 350px;
 }
 
-body{
-    background: var(--background-image);
-}
-
 .login-component {
     background: var(--background-color);
     padding: 40px;
