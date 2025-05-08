@@ -99,7 +99,7 @@ export async function makeRequest(url, method = 'GET', body = null, headers = {}
   const timer = setTimeout(() => controller.abort(), timeout);
   
   try {
-    const csrfToken = getCookie("csrf");
+    const csrfToken = getCookie("csrfToken");
     const options = createRequestOptions(method, body, headers, csrfToken);
     
     let response = await fetch(url, { ...options, signal: controller.signal });
@@ -113,7 +113,7 @@ export async function makeRequest(url, method = 'GET', body = null, headers = {}
       await refreshToken();
       
       // Atualiza o CSRF token
-      const newCsrfToken = getCookie("csrf");
+      const newCsrfToken = getCookie("csrfToken");
       if (!newCsrfToken) {
         logRequest("Novo CSRF token não encontrado nos cookies", 'warn');
         throw new Error("Falha ao obter novo CSRF token");

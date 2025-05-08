@@ -54,18 +54,18 @@ const handleTokenError = (err, res) => {
 function authMiddleware(req, res, next) {
   // Extração de dados da requisição
   const cookies = req.headers.cookie ? cookie.parse(req.headers.cookie) : {};
-  const { token, csrf: csrfCookie } = cookies;
+  const { accessToken, csrfToken: csrfCookie } = cookies;
   const csrfHeader = req.headers['x-csrf-token'];
   const { method } = req;
 
   // Logging inicial
   logAuth(`Método HTTP: ${method}`);
-  logAuth(`Token: ${token ? 'presente' : 'ausente'}`);
+  logAuth(`Token: ${accessToken ? 'presente' : 'ausente'}`);
   logAuth(`CSRF Cookie: ${csrfCookie ? 'presente' : 'ausente'}`);
   logAuth(`CSRF Header: ${csrfHeader ? 'presente' : 'ausente'}`);
 
   // Verificação do token
-  if (!token) {
+  if (!accessToken) {
     logAuth('Token não encontrado. Redirecionando para /blocked.html', 'warn');
     return res.redirect(BLOCKED_PAGE);
   }
@@ -77,7 +77,7 @@ function authMiddleware(req, res, next) {
 
   // Verificação do JWT
   try {
-    const decoded = jwt.verify(token, Buffer.from(SECRET_KEY, 'base64'));
+    const decoded = jwt.verify(accessToken, Buffer.from(SECRET_KEY, 'base64'));
     req.user = decoded;
     
     logAuth(`JWT decodificado: ${JSON.stringify(decoded)}`);

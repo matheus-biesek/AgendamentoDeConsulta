@@ -18,7 +18,9 @@ public class AccessTokenService {
     // Adicione a chave secreta aqui via env
     private static final String SECRET_KEY = "ewoCu39mGULU1oFgkIoy6Z2OEjvXd4Y1jzL/p60Xu1I=";
     private static final long REFRESH_TOKEN_EXPIRATION_MS = 1 * 60 * 1000; // 1 minutos em milissegundos
-
+    private static final String ISSUER = "auth-service";
+    private static final String AUDIENCE = "auth-service,workers-service,schedules-service,consumer-status-appointment,consumer-change-password";
+    
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -34,31 +36,14 @@ public class AccessTokenService {
 
     public String generateToken(UUID userId, String csrfToken, UserRole role) {       
         return Jwts.builder()
-                .setIssuer("auth-service")
-                .setSubject(userId.toString())
-                .claim("csrf", csrfToken)
-                .claim("role", role)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((long) (System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))) 
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    // Futuramente apaguar este método pois está aplicação não precissará de validar o token
-    public boolean validateTokenRole(String token, UserRole expectedRole) {
-        try {
-            Claims claims = parseToken(token);
-            String roleString = claims.get("role", String.class);  // Obtém a role como String
-
-            if (roleString == null) {
-                return false;
-            }
-
-            UserRole role = UserRole.valueOf(roleString.toUpperCase());
-            return role == expectedRole;
-
-        } catch (Exception e) {
-            return false;
-        }
+            .setSubject(userId.toString())
+            .setIssuer(ISSUER)
+            .setAudience(AUDIENCE)
+            .claim("csrf", csrfToken)
+            .claim("role", role)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date((long) (System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))) 
+            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+            .compact();
     }
 }
