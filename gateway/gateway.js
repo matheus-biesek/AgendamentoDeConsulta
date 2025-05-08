@@ -9,16 +9,16 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC_PATHS = [
   '/rest-auth/auth-session/login',
   '/rest-auth/auth-session/logout',
-  '/rest-auth/auth-session/register',
   '/rest-auth/token/refresh',
   '/',
   '/index.html',
   '/blocked.html',
   '/refresh.html',
-  '/rest-workers/hello-world/users-by-role',
-  '/rest-workers/hello-world/user-data',
-  '/rest-schedule/admin/public',
-  '/rest-schedule/admin/private'
+  '/rest-workers/workers/users-by-role', // TESTE
+  '/rest-workers/workers/user-data', // TESTE
+  '/rest-workers/workers/public', // TESTE
+  '/rest-schedule/admin/public', // TESTE
+  '/rest-schedule/admin/private' // TESTE
 ];
 
 const STATIC_FILE_EXTENSIONS = /\.(js|css|png|jpg|ico|woff2?)$/;
