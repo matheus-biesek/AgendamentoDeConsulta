@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.out.rest.exeception;
+package com.code.java_ee_auth.adapters.in.rest.exeception;
 
 import jakarta.ws.rs.core.Response;
 

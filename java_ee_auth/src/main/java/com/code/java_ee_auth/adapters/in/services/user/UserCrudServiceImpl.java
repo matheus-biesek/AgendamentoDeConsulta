@@ -1,8 +1,8 @@
 package com.code.java_ee_auth.adapters.in.services.user;
 
+import com.code.java_ee_auth.adapters.in.rest.exeception.UserDAOException;
+import com.code.java_ee_auth.adapters.in.rest.exeception.UserNotFoundException;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
-import com.code.java_ee_auth.adapters.out.rest.exeception.UserDAOException;
-import com.code.java_ee_auth.adapters.out.rest.exeception.UserNotFoundException;
 import com.code.java_ee_auth.domain.dto.request.ChangeDataUserDTO;
 import com.code.java_ee_auth.domain.dto.request.UpdateRoleDTO;
 import com.code.java_ee_auth.domain.dto.response.MessageDTO;

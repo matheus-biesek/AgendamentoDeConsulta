@@ -1,5 +1,7 @@
 package com.code.java_ee_auth.adapters.in.services.session;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -74,7 +76,11 @@ public class AuthRefreshTokenService implements AuthRefreshTokenServicePort {
             logger.info("Token de refresh validado com sucesso");
 
             String csrfToken = UUID.randomUUID().toString();
-            String accessToken = accessTokenService.generateToken(user.get().getId(), csrfToken, user.get().getRole());
+            Map<String, Object> claimsNewAccessToken = new HashMap<>();
+            claimsNewAccessToken.put("role", user.get().getRole());
+            claimsNewAccessToken.put("csrf", csrfToken);
+            
+            String accessToken = accessTokenService.generateToken(user.get().getId().toString(), claimsNewAccessToken);
             
             refreshTokenDao.updateRefreshTokenAndAudit(
                 UUID.fromString(refreshTokenId), 

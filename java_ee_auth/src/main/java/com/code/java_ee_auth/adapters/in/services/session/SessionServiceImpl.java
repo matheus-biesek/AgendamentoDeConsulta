@@ -12,13 +12,14 @@ import com.code.java_ee_auth.domain.dto.response.RoleDTO;
 import com.code.java_ee_auth.domain.model.RefreshToken;
 import com.code.java_ee_auth.domain.model.User;
 import com.code.java_ee_auth.domain.port.in.SessionServicePort;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -100,12 +101,19 @@ public class SessionServiceImpl implements SessionServicePort {
             requesterIp,  
             requesterDevice, 
             LocalDateTime.now().plusHours(7));
-            
-        String refreshToken = refreshTokenService.generateToken(refreshTokenEntity.getUserId(), refreshTokenEntity.getId());
+        
+        Map<String, Object> claimsRefresh = new HashMap<>();
+        claimsRefresh.put("refreshTokenId", refreshTokenEntity.getId());
+
+        String refreshToken = refreshTokenService.generateToken(refreshTokenEntity.getUserId().toString(), claimsRefresh);
         refreshTokenDao.saveRefreshToken(refreshTokenEntity);
 
         String csrfToken = UUID.randomUUID().toString();
-        String token = accessTokenService.generateToken(userOpt.get().getId(), csrfToken, userOpt.get().getRole());
+        Map<String, Object> claimsCsrf = new HashMap<>();
+        claimsCsrf.put("role", userOpt.get().getRole());
+        claimsCsrf.put("csrf", csrfToken);
+
+        String token = accessTokenService.generateToken(userOpt.get().getId().toString(), claimsCsrf);
        
         String jwtCookie = String.format(
             "accessToken=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",

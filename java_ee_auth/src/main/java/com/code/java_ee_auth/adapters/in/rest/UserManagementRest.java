@@ -1,9 +1,7 @@
-package com.code.java_ee_auth.adapters.out.rest;
+package com.code.java_ee_auth.adapters.in.rest;
 
 import com.code.java_ee_auth.adapters.in.services.user.UserCrudServiceImpl;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
-import com.code.java_ee_auth.adapters.out.rest.exeception.UserAlreadyExistsException;
-import com.code.java_ee_auth.adapters.out.rest.exeception.UserNotFoundException;
 import com.code.java_ee_auth.domain.dto.request.UpdateRoleDTO;
 import com.code.java_ee_auth.domain.dto.request.UserInfoDTO;
 import com.code.java_ee_auth.domain.dto.request.ChangeDataUserDTO;
@@ -11,6 +9,8 @@ import com.code.java_ee_auth.domain.dto.request.CpfDTO;
 import com.code.java_ee_auth.domain.dto.response.UserDataDTO;
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import com.code.java_ee_auth.domain.model.User;
+import com.code.java_ee_auth.adapters.in.rest.exeception.UserAlreadyExistsException;
+import com.code.java_ee_auth.adapters.in.rest.exeception.UserNotFoundException;
 import com.code.java_ee_auth.adapters.in.services.security.PasswordService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;

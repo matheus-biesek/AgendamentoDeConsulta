@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.out.rest;
+package com.code.java_ee_auth.adapters.in.rest;
 
 import jakarta.ws.rs.CookieParam;
 import jakarta.ws.rs.POST;

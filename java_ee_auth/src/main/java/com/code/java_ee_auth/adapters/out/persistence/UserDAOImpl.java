@@ -1,7 +1,7 @@
 package com.code.java_ee_auth.adapters.out.persistence;
 
-import com.code.java_ee_auth.adapters.out.rest.exeception.UserDAOException;
-import com.code.java_ee_auth.adapters.out.rest.exeception.UserNotFoundException;
+import com.code.java_ee_auth.adapters.in.rest.exeception.UserDAOException;
+import com.code.java_ee_auth.adapters.in.rest.exeception.UserNotFoundException;
 import com.code.java_ee_auth.domain.enuns.Gender;
 import com.code.java_ee_auth.domain.enuns.UserRole;
 import com.code.java_ee_auth.domain.model.User;
