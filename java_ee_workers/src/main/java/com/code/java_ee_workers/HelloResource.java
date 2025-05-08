@@ -3,8 +3,6 @@ package com.code.java_ee_workers;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 @Path("/hello-world")
 public class HelloResource {
