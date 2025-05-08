@@ -6,6 +6,7 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
+import com.rabbitmq.lib.consumer.AbstractRabbitMQConsumer;
 
 @WebListener
 public class RabbitMQContextListener implements ServletContextListener {

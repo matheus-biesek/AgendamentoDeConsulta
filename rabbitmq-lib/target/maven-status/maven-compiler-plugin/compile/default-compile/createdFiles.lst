@@ -1,8 +1,8 @@
-com/rabbitmq/lib/MessageHandler.class
+com/rabbitmq/lib/consumer/MessageProcessor.class
+com/rabbitmq/lib/consumer/AbstractRabbitMQConsumer.class
 com/rabbitmq/lib/example/UserConsumer.class
-com/rabbitmq/lib/AbstractRabbitMQProducer.class
 com/rabbitmq/lib/RabbitMQConnectionService.class
-com/rabbitmq/lib/MessageProcessor.class
-com/rabbitmq/lib/AbstractRabbitMQConsumer.class
+com/rabbitmq/lib/consumer/MessageHandler.class
 com/rabbitmq/lib/example/SimpleProducer.class
+com/rabbitmq/lib/producer/AbstractRabbitMQProducer.class
 com/rabbitmq/lib/RabbitMQContextListener.class

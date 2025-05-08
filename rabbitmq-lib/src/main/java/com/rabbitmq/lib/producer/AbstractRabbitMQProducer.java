@@ -1,4 +1,4 @@
-package com.rabbitmq.lib;
+package com.rabbitmq.lib.producer;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

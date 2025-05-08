@@ -1,6 +1,6 @@
 package com.rabbitmq.lib.example;
 
-import com.rabbitmq.lib.AbstractRabbitMQProducer;
+import com.rabbitmq.lib.producer.AbstractRabbitMQProducer;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped

@@ -1,9 +1,9 @@
-package com.rabbitmq.lib;
+package com.rabbitmq.lib.consumer;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
+import com.rabbitmq.lib.RabbitMQConnectionService;
 import jakarta.inject.Inject;
-
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 

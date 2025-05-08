@@ -1,4 +1,4 @@
-package com.rabbitmq.lib;
+package com.rabbitmq.lib.consumer;
 
 @FunctionalInterface
 public interface MessageProcessor {

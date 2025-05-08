@@ -1,7 +1,7 @@
 package com.rabbitmq.lib.example;
 
-import com.rabbitmq.lib.AbstractRabbitMQConsumer;
-import com.rabbitmq.lib.MessageProcessor;
+import com.rabbitmq.lib.consumer.AbstractRabbitMQConsumer;
+import com.rabbitmq.lib.consumer.MessageProcessor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 
