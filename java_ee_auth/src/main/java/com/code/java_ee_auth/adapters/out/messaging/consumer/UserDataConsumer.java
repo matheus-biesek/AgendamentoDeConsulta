@@ -3,8 +3,8 @@ package com.code.java_ee_auth.adapters.out.messaging.consumer;
 import com.code.java_ee_auth.adapters.out.messaging.processor.UserMessageProcessor;
 import com.code.java_ee_auth.domain.model.User;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
-import com.rabbitmq.lib.AbstractRabbitMQConsumer;
-import com.rabbitmq.lib.MessageProcessor;
+import com.rabbitmq.lib.consumer.AbstractRabbitMQConsumer;
+import com.rabbitmq.lib.consumer.MessageProcessor;
 import jakarta.inject.Inject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
@@ -15,11 +15,6 @@ import java.util.Optional;
 @Named("userDataConsumer")
 public class UserDataConsumer extends AbstractRabbitMQConsumer {
 
-    private static final String QUEUE_NAME = "search-user-data";
-    private static final String HOST = "rabbitmq";
-    private static final String USERNAME = "guest";
-    private static final String PASSWORD = "guest";
-
     @Inject
     private UserDAOImpl userDao;
 
@@ -28,22 +23,22 @@ public class UserDataConsumer extends AbstractRabbitMQConsumer {
 
     @Override
     protected String getQueueName() {
-        return QUEUE_NAME;
+        return "search-user-data";
     }
 
     @Override
     protected String getHost() {
-        return HOST;
+        return "rabbitmq";
     }
 
     @Override
     protected String getUsername() {
-        return USERNAME;
+        return "guest";
     }
 
     @Override
     protected String getPassword() {
-        return PASSWORD;
+        return "guest";
     }
 
     @Override
@@ -51,7 +46,7 @@ public class UserDataConsumer extends AbstractRabbitMQConsumer {
         return (message) -> {
             Optional<User> userOpt = userDao.findById(UUID.fromString(message.trim()));
             return userOpt.map(user -> messageProcessor.processMessageOfUserData(user))
-                         .orElse("Usuário não encontrado");
+                .orElse("Usuário não encontrado");
         };
     }
 }

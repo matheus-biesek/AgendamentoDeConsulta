@@ -4,8 +4,8 @@ import com.code.java_ee_auth.adapters.out.messaging.processor.UserMessageProcess
 import com.code.java_ee_auth.domain.model.User;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
 import com.code.java_ee_auth.domain.enuns.UserRole;
-import com.rabbitmq.lib.AbstractRabbitMQConsumer;
-import com.rabbitmq.lib.MessageProcessor;
+import com.rabbitmq.lib.consumer.AbstractRabbitMQConsumer;
+import com.rabbitmq.lib.consumer.MessageProcessor;
 import jakarta.inject.Inject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
@@ -15,10 +15,6 @@ import java.util.List;
 @Named("searchUsersByRoleConsumer")
 public class SearchUsersByRoleConsumer extends AbstractRabbitMQConsumer {
 
-    private static final String QUEUE_NAME = "search-users-by-role";
-    private static final String HOST = "rabbitmq";
-    private static final String USERNAME = "guest";
-    private static final String PASSWORD = "guest";
 
     @Inject
     private UserDAOImpl userDao;
@@ -28,22 +24,22 @@ public class SearchUsersByRoleConsumer extends AbstractRabbitMQConsumer {
 
     @Override
     protected String getQueueName() {
-        return QUEUE_NAME;
+        return "search-users-by-role";
     }
 
     @Override
     protected String getHost() {
-        return HOST;
+        return "rabbitmq";
     }
 
     @Override
     protected String getUsername() {
-        return USERNAME;
+        return "guest";
     }
 
     @Override
     protected String getPassword() {
-        return PASSWORD;
+        return "guest";
     }
 
     @Override
