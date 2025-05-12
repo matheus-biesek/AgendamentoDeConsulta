@@ -7,6 +7,7 @@ document.querySelector(".navbar").innerHTML = `
     <ul class="nav-links">
         <li><a href="/patient/patient-appointment.html">Consultas</a></li>
         <li><a href="/patient/patient-info.html">Dados pessoais</a></li>
+        <li><a href="/role-selection.html">Trocar Perfil</a></li>
         <li><a id="logout">Logout</a></li>
     </ul>
 `;

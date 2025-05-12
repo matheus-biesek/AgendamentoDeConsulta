@@ -1,7 +1,7 @@
 document.querySelector(".user-info-component").innerHTML = `
     <div class="line">
         <div class="user-info">
-            <p>ROLE: ADMIN</p>
+            <p>ROLE: ADMIN-BOSS</p>
             <p>CPF: 12345678900</p>
             <p>SENHA: 1234</p>
         </div>

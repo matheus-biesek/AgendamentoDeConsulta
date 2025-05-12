@@ -11,14 +11,15 @@ const routes = {
 };
 
 export async function loginSession(cpf, password) {
-
     const response = await makeRequest("/rest-auth/auth-session/login", "POST", { cpf, password });
-
-    const role = response;
-    return routes[role] || "blocked.html";
+    return response; // Agora retorna o array de roles
 }
 
 export async function logoutSession() {
     await makeRequest("/rest-auth/auth-session/logout", "POST");
     localStorage.removeItem("csrf-token");
+}
+
+export function getRouteForRole(role) {
+    return routes[role] || "blocked.html";
 }
