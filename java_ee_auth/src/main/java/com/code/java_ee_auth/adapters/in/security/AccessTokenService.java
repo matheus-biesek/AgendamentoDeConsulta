@@ -13,7 +13,7 @@ public class AccessTokenService extends AbstractTokenPrivateService {
 
     @Override
     public long getTokenExpirationMs() {
-        return 1 * 60 * 1000;
+        return 15 * 60 * 1000;
     }
 
     @Override

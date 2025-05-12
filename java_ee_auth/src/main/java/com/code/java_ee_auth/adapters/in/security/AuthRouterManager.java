@@ -14,9 +14,7 @@ public class AuthRouterManager extends AbstractRouteManager {
         return Set.of(
             "/auth-session/login",
             "/auth-session/logout",
-            "/token/refresh",
-            "/user-management/register-user-by-secretary",
-            "/user-management/register-user-by-admin"
+            "/token/refresh"
         );
     }
 

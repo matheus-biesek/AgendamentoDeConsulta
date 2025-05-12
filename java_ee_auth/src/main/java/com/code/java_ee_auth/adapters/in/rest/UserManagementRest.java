@@ -105,7 +105,7 @@ public class UserManagementRest {
             userCrudService.updateByCpf(dto);
 
             return Response.status(Response.Status.OK)
-            .entity("Usuário " + (dto.getActive() ? "deletado" : "ativado") + " com sucesso")
+            .entity("Usuário " + (dto.getActive() ? "ativado" : "deletado") + " com sucesso")
             .build();
         
         } catch (RuntimeException e) {
@@ -115,7 +115,7 @@ public class UserManagementRest {
         
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-            .entity("Erro inesperado ao " + (dto.getActive() ? "deletar" : "ativrar") + " usuário!")
+            .entity("Erro inesperado ao " + (dto.getActive() ? "ativrar" : "deletar") + " usuário!")
             .build();
         }
     }

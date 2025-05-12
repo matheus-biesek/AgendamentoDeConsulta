@@ -37,4 +37,14 @@ public class AuthFilter extends AbstractJWTAuthFilter {
     protected SecurityContext getSecurityContext() {
         return securityContext;
     }
+    
+    @Override
+    protected String getCsrfHeaderName() {
+        return "X-CSRF-TOKEN";
+    }
+
+    @Override
+    protected String getCsrfClaimName() {
+        return "csrf";
+    }
 }

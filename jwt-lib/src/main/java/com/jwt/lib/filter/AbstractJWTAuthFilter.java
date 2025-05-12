@@ -38,7 +38,16 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
      */
     protected abstract SecurityContext getSecurityContext();
 
-    // Biblioteca atual não suporta o uso de CSRF, por isso não é possível usar o método filter
+    /**
+     * Obtém o nome do header que contém o token CSRF
+     */
+    protected abstract String getCsrfHeaderName();
+
+    /**
+     * Obtém o nome da claim que contém o token CSRF no JWT
+     */
+    protected abstract String getCsrfClaimName();
+
     @Override
     public void filter(ContainerRequestContext ctx) {
         String path = ctx.getUriInfo().getPath();
@@ -59,6 +68,17 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
             if (!validateTokenClaims(claims)) {
                 abort(ctx, "TOKEN_INVALID", "Token inválido", false, null);
                 return;
+            }
+
+            // Verifica o token CSRF para métodos não-GET
+            if (!ctx.getMethod().equals("GET")) {
+                String csrfToken = ctx.getHeaderString(getCsrfHeaderName());
+                String csrfClaim = claims.get(getCsrfClaimName(), String.class);
+
+                if (csrfToken == null || csrfClaim == null || !csrfToken.equals(csrfClaim)) {
+                    abort(ctx, "CSRF_INVALID", "Token CSRF inválido ou ausente", false, null);
+                    return;
+                }
             }
 
             @SuppressWarnings("unchecked")
