@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public class UpdateRoleDTO {
 
-    @NotBlank(message = "O nome de usuário não pode ser nulo, vazio ou em branco!")
-    String cpf;
+    @NotBlank(message = "O id do usuário não pode ser nulo, vazio ou em branco!")
+    String id;
 
     @Pattern(regexp = "ADMIN|SECRETARY|PATIENT|NURSE|TECHNICIAN|DOCTOR", message = "O papel de usuário invalido!")
     String role;

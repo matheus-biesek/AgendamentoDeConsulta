@@ -1,11 +1,14 @@
 package com.code.java_ee_auth.adapters.in.rest;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import com.code.java_ee_auth.adapters.in.services.user.UserCrudServiceImpl;
+import com.code.java_ee_auth.adapters.in.services.user.UserRoleService;
 import com.code.java_ee_auth.adapters.out.persistence.UserRoleDAO;
 import com.code.java_ee_auth.domain.dto.request.UserUpdateDTO;
 import com.code.java_ee_auth.domain.dto.request.CpfDTO;
+import com.code.java_ee_auth.domain.dto.request.UpdateRoleDTO;
 import com.code.java_ee_auth.domain.dto.request.UserInfoDTO;
 import com.code.java_ee_auth.domain.dto.response.UserDataDTO;
 
@@ -23,7 +26,7 @@ public class UserManagementRest {
     private UserCrudServiceImpl userCrudService;
 
     @Inject
-    private UserRoleDAO userRoleDAO;
+    private UserRoleService userRoleService;
 
     // COLETAR O ID DO USER QUE ESTÁ NO SECURITY CONTEXT
     // ADICIONAR DTO PARA CADA ENDPOINT E CONVERTER PARA O DTO PARA UPDATE DE USER.
@@ -147,14 +150,14 @@ public class UserManagementRest {
     @Path("/add-role-to-user")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addRoleToUser(@Valid UserUpdateDTO dto) {
+    public Response addRoleToUser(@Valid UpdateRoleDTO dto) {
         if (dto.getRole() == null) {
             return Response.status(Response.Status.CONFLICT)
             .entity("O campo role não pode ser nulo!")
             .build();
         }
         try {
-            userRoleDAO.addRoleToUser(dto.getUserId(), dto.getRole().name());
+            userRoleService.addRoleToUser(UUID.fromString(dto.getId()), dto.getRole().toString().toLowerCase());
             return Response.status(Response.Status.OK)
             .entity("Função adicionada ao usuário com sucesso")
             .build();
@@ -175,14 +178,14 @@ public class UserManagementRest {
     @Path("/remove-role-from-user")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeRoleFromUser(@Valid UserUpdateDTO dto) {
+    public Response removeRoleFromUser(@Valid UpdateRoleDTO dto) {
         if (dto.getRole() == null) {
             return Response.status(Response.Status.CONFLICT)
             .entity("O campo role não pode ser nulo!")
             .build();
         }
         try {
-            userRoleDAO.removeRoleFromUser(dto.getUserId(), dto.getRole().name());
+            userRoleService.removeRoleFromUser(UUID.fromString(dto.getId()), dto.getRole().toString().toLowerCase());
             return Response.status(Response.Status.OK)
             .entity("Função removida do usuário com sucesso")
             .build();
