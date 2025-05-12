@@ -1,6 +1,15 @@
 -- ========================
 -- 🔐 Auth Service (Schema)
 -- ========================
+
+-- criar trigle que aceiona função no momento em que uma role e adicionada ao usuario, este triggle basicamente so confere se a role ja nao existe para o usuario, caso exista, nao adiciona
+CREATE OR REPLACE FUNCTION auth_service.check_role_exists()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM auth_service.user_roles WHERE user_id = NEW.user_id AND role_name = NEW.role_name) THEN
+        RAISE EXCEPTION 'A função já existe para este usuário!';
+
+
 CREATE SCHEMA auth_service;
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- Necessário para usar gen_random_uuid()
