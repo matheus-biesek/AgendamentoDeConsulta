@@ -21,7 +21,7 @@ public class AuthFilter extends AbstractJWTAuthFilter {
     private AccessTokenService tokenService;
 
     @Inject
-    private WorkersRouterManager routeManager;
+    private AuthRouterManager routeManager;
 
     @Override
     protected Object getTokenService() {

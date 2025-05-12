@@ -67,13 +67,24 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
                 abort(ctx, "TOKEN_INVALID", "Token não possui roles", false, null);
                 return;
             }
-            logger.info("Roles: {}", roles);
+            logger.info("Roles do usuário: {}", roles);
 
+            // Obtém as roles permitidas para este endpoint
+            List<String> endpointRoles = getRouteManager().getEndpointRoles(path);
+            if (endpointRoles == null || endpointRoles.isEmpty()) {
+                abort(ctx, "PERMISSION_DENIED", "Endpoint não possui roles definidas", false, null);
+                return;
+            }
+            logger.info("Roles permitidas para o endpoint: {}", endpointRoles);
+
+            // Verifica se o usuário tem pelo menos uma das roles permitidas
             boolean hasPermission = roles.stream()
-                .anyMatch(role -> getRouteManager().hasPermission(path, role));
+                .anyMatch(role -> endpointRoles.contains(role));
 
             if (!hasPermission) {
-                abort(ctx, "PERMISSION_DENIED", "Permissão negada", false, null);
+                abort(ctx, "PERMISSION_DENIED", 
+                    String.format("Permissão negada: usuário precisa ter uma das roles: %s", endpointRoles), 
+                    false, null);
                 return;
             }
 

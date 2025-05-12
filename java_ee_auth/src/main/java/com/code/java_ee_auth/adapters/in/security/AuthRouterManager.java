@@ -7,7 +7,7 @@ import com.jwt.lib.route.AbstractRouteManager;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class WorkersRouterManager extends AbstractRouteManager {
+public class AuthRouterManager extends AbstractRouteManager {
     
     @Override
     protected Set<String> getPublicEndpoints() {
@@ -33,8 +33,8 @@ public class WorkersRouterManager extends AbstractRouteManager {
             Map.entry("/user-management/register-user-by-secretary", "secretary"),
             Map.entry("/user-management/register-user-by-admin", "admin"),
             Map.entry("/user-management/search-user-data", "admin"),
-            Map.entry("/user-management/delete-or-activate-user", "admin"), // secretary também pode
-            Map.entry("/user-management/update-user-data", "secretary"),// admin também pode
+            Map.entry("/user-management/delete-or-activate-user", "admin,secretary"),
+            Map.entry("/user-management/update-user-data", "secretary,admin"),
             Map.entry("/user-management/add-role-to-user", "admin"),
             Map.entry("/user-management/remove-role-from-user", "admin"),
             Map.entry("/user-management/block-or-unblock-user", "admin"),
