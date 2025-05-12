@@ -10,12 +10,11 @@ public class UserMessageProcessor {
     public String processMessageOfUserData(User user) {
         try {
             return String.format(
-                "ID: %s, Nome: %s, CPF: %s, Email: %s, Role: %s, Ativo: %s, Bloqueado: %s",
+                "ID: %s, Nome: %s, CPF: %s, Email: %s, Ativo: %s, Bloqueado: %s",
                 user.getId(),
                 user.getName(),
                 user.getCpf(),
                 user.getEmail(),
-                user.getRole(),
                 user.isActive(),
                 user.isBlocked()
             );
@@ -28,12 +27,11 @@ public class UserMessageProcessor {
         StringBuilder sb = new StringBuilder();
             for (User user : users) {
                 sb.append(String.format(
-                    "ID: %s, Nome: %s, CPF: %s, Email: %s, Role: %s, Ativo: %s, Bloqueado: %s\n",
+                    "ID: %s, Nome: %s, CPF: %s, Email: %s, Ativo: %s, Bloqueado: %s\n",
                     user.getId(),
                     user.getName(),
                     user.getCpf(),
                     user.getEmail(),
-                    user.getRole(),
                     user.isActive(),
                     user.isBlocked()
                 ));

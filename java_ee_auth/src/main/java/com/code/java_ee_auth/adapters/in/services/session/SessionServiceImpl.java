@@ -1,41 +1,41 @@
 package com.code.java_ee_auth.adapters.in.services.session;
 
-import com.code.java_ee_auth.adapters.in.services.security.AccessTokenService;
-import com.code.java_ee_auth.adapters.in.services.security.AuthUserService;
-import com.code.java_ee_auth.adapters.in.services.security.PasswordService;
-import com.code.java_ee_auth.adapters.in.services.security.RefreshTokenService;
+import com.code.java_ee_auth.adapters.in.security.RefreshTokenService;
+import com.code.java_ee_auth.adapters.in.services.token.AuthAccessTokenService;
+import com.code.java_ee_auth.adapters.in.services.token.AuthRefreshTokenService;
 import com.code.java_ee_auth.adapters.in.services.user.UserValidator;
 import com.code.java_ee_auth.adapters.out.persistence.RefreshTokenDaoImpl;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
+import com.code.java_ee_auth.adapters.out.persistence.UserRoleDAO;
+import com.code.java_ee_auth.adapters.utils.CookieUtil;
 import com.code.java_ee_auth.domain.dto.request.LoginDTO;
-import com.code.java_ee_auth.domain.dto.response.RoleDTO;
+import com.code.java_ee_auth.domain.dto.response.LoginResponseDTO;
+import com.code.java_ee_auth.domain.enuns.ActionType;
 import com.code.java_ee_auth.domain.model.RefreshToken;
 import com.code.java_ee_auth.domain.model.User;
 import com.code.java_ee_auth.domain.port.in.SessionServicePort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class SessionServiceImpl implements SessionServicePort {
 
+    Logger logger = Logger.getLogger(SessionServiceImpl.class.getName());
+
     @Inject
     private UserDAOImpl userRepository;
     
     @Inject
-    private AccessTokenService accessTokenService;
-    
-    @Inject
     private RefreshTokenService refreshTokenService;
-    
     @Inject
     private PasswordService passwordService;
     
@@ -43,57 +43,32 @@ public class SessionServiceImpl implements SessionServicePort {
     private RefreshTokenDaoImpl refreshTokenDao;
 
     @Inject
-    private AuthUserService authUserService;
+    private UserRoleDAO userRoleDAO;
+
+    @Inject
+    private AuthRefreshTokenService authRefreshTokenService;
+
+    @Inject
+    private AuthAccessTokenService authAccessTokenService;
 
     @Override
-    public Response login(LoginDTO credentials, String requesterDevice, String requesterIp) {
+    public LoginResponseDTO login(LoginDTO credentials, String requesterDevice, String requesterIp) {
         if (requesterDevice == null || requesterIp == null) {
-            System.out.println("Usuário está tentando acessar o sistema sem informar o User-Agent ou o IP do sistema!");
-            System.out.println("User-Agent: " + requesterDevice);
-            System.out.println("X-Forwarded-For: " + requesterIp);
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Credenciais inválidas")
-                    .build();
+            logger.warning("Usuário está tentando acessar o sistema sem informar o User-Agent ou o IP do sistema!");
+            throw new RuntimeException("Credenciais inválidas!");
         }
 
         Optional<User> userOpt = userRepository.findByCpf(credentials.getCpf());
-
-        if (!UserValidator.validateUser(userOpt)) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Usuario nao validado")
-                    .build();
-        }
+        
+        UserValidator.validateUser(userOpt);
 
         if (!passwordService.verify(credentials.getPassword(), userOpt.get().getPassword())) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Credenciais inválidas")
-                    .build();
+            throw new RuntimeException("Credenciais inválidas!");
         }
 
-        List<RefreshToken> refreshTokens = refreshTokenDao.findRefreshTokensByUserId(userOpt.get().getId(), true);
-        
-        if (refreshTokens.isEmpty()) {
-            System.out.println("Nenhum refresh token ativo encontrado para o usuário");
-        }
+        List<RefreshToken> refreshTokens = refreshTokenDao.findAllByUserId(userOpt.get().getId(), true);
 
-        if (refreshTokens.size() >= 2) {
-            if (refreshTokens.size() > 2) {
-                return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Contate o administrador do sistema, pois o usuário possui mais de 2 tokens de atualização ativos no sistema!")
-                    .build();
-            }
-
-            if (refreshTokens.size() == 2) {
-                System.out.println("2 tokens ativos");
-            }
-
-            RefreshToken oldestToken = refreshTokens.stream()
-                .min((t1, t2) -> t1.getCreatedAt().compareTo(t2.getCreatedAt()))
-                .get();
-            
-            oldestToken.setActive(false);
-            refreshTokenDao.updateRefreshTokenStatus(oldestToken, "REVOKED", requesterIp, requesterDevice);
-        }
+        authRefreshTokenService.enforceTokenLimitPolicy(refreshTokens, requesterIp, requesterDevice);
 
         RefreshToken refreshTokenEntity = new RefreshToken(
             UUID.randomUUID(),
@@ -101,70 +76,46 @@ public class SessionServiceImpl implements SessionServicePort {
             requesterIp,  
             requesterDevice, 
             LocalDateTime.now().plusHours(7));
+
+        String refreshToken = authRefreshTokenService.createRefreshToken(refreshTokenEntity, userOpt.get().getId(), requesterIp, requesterDevice);
+
+        List<String> roles = userRoleDAO.getRolesByUserId(userOpt.get().getId());
+        if (roles.isEmpty()) {
+            throw new RuntimeException("Usuário não possui funções atribuídas!");
+        }
+
+        Map<String, String> accessToken = authAccessTokenService.createWithCsrf(userOpt.get().getId().toString(), roles);
+        int maxAge = 60 * 60 * 6;
+
+        String accessTokenCookie = CookieUtil.createCookie("accessToken", accessToken.get("accessToken"), "/", maxAge, true, true);
+        String csrfTokenCookie = CookieUtil.createCookie("csrfToken", accessToken.get("csrfToken"), "/", maxAge, false, true);
+        String refreshTokenCookie = CookieUtil.createCookie("refreshToken", refreshToken, "/rest-auth/token/refresh", maxAge, true, true);
         
-        Map<String, Object> claimsRefresh = new HashMap<>();
-        claimsRefresh.put("refreshTokenId", refreshTokenEntity.getId());
-
-        String refreshToken = refreshTokenService.generateToken(refreshTokenEntity.getUserId().toString(), claimsRefresh);
-        refreshTokenDao.saveRefreshToken(refreshTokenEntity);
-
-        String csrfToken = UUID.randomUUID().toString();
-        Map<String, Object> claimsCsrf = new HashMap<>();
-        claimsCsrf.put("role", userOpt.get().getRole());
-        claimsCsrf.put("csrf", csrfToken);
-
-        String token = accessTokenService.generateToken(userOpt.get().getId().toString(), claimsCsrf);
-       
-        String jwtCookie = String.format(
-            "accessToken=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Strict",
-            token,
-            60 * 60 * 6
-        );
-
-        String csrfCookie = String.format(
-            "csrfToken=%s; Path=/; Max-Age=%d; SameSite=Strict",
-            csrfToken,
-            60 * 60 * 6
-        );
-
-        String refreshTokenCookie = String.format(
-            "refreshToken=%s; Path=/rest-auth/token/refresh; Max-Age=%d; HttpOnly; SameSite=Strict",
-            refreshToken,
-            60 * 60 * 6
-        );
-
-        RoleDTO dto = new RoleDTO(userOpt.get().getRole());
-        return Response.ok(dto)
-                .header("Set-Cookie", jwtCookie)
-                .header("Set-Cookie", csrfCookie)
-                .header("Set-Cookie", refreshTokenCookie)
-                .build();
+        LoginResponseDTO response = new LoginResponseDTO(accessTokenCookie, csrfTokenCookie, refreshTokenCookie, roles);
+        return response;
     }
 
     @Override
-    public Response logout(String tokenString, String requesterDevice, String requesterIp) {
-        String expiredCookieToken = "accessToken=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict";
-        String expiredCookieCsrfToken = "csrfToken=; Path=/; Max-Age=0; SameSite=Strict";
-        String expiredCookieRefreshToken = "refreshToken=; Path=/rest-auth; Max-Age=0; HttpOnly; SameSite=Strict";
+    public LoginResponseDTO logout(String tokenString, String requesterDevice, String requesterIp) {
+
+        String accessToken = CookieUtil.createCookie("accessToken", null, "/", 0, true, true);
+        String csrfToken = CookieUtil.createCookie("csrfToken", null, "/", 0, false, true);
+        String refreshToken = CookieUtil.createCookie("refreshToken", null, "/rest-auth/token/refresh", 0, true, true);
         
         if (tokenString == null) {
-            return Response.status(Response.Status.OK).build();
+            return new LoginResponseDTO(accessToken, csrfToken, refreshToken, null);
         }
         
         try {
-            Claims claims = accessTokenService.parseToken(tokenString);
-            UUID userId = UUID.fromString(claims.getSubject());
-            
-            authUserService.revokeAllUserTokens(userId, requesterIp, requesterDevice);
-
+            Claims claims = refreshTokenService.parseToken(tokenString);
+            UUID refreshTokenId = UUID.fromString(claims.getSubject());
+            authRefreshTokenService.handleRefreshTokenAction(ActionType.REVOKED, refreshTokenId, requesterIp, requesterDevice);
+            return new LoginResponseDTO(accessToken, csrfToken, refreshToken, null);
         } catch (ExpiredJwtException e) {
-            System.out.println("Token expirado");
+            Claims claims = refreshTokenService.parseToken(tokenString);
+            UUID refreshTokenId = UUID.fromString(claims.getSubject());
+            authRefreshTokenService.handleRefreshTokenAction(ActionType.REVOKED, refreshTokenId, requesterIp, requesterDevice);
+            return new LoginResponseDTO(accessToken, csrfToken, refreshToken, null);
         }
-
-        return Response.ok()
-            .header("Set-Cookie", expiredCookieToken)
-            .header("Set-Cookie", expiredCookieCsrfToken)
-            .header("Set-Cookie", expiredCookieRefreshToken)
-            .build();
     }
 } 

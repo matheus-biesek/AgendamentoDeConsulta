@@ -14,30 +14,32 @@ public class WorkersRouterManager extends AbstractRouteManager {
         return Set.of(
             "/auth-session/login",
             "/auth-session/logout",
-            "/token/refresh"
+            "/token/refresh",
+            "/user-management/register-user-by-secretary",
+            "/user-management/register-user-by-admin"
         );
     }
 
     @Override
     protected Map<String, String> getProtectedEndpoints() {
         return Map.ofEntries(
-            Map.entry("/auth-front/validate-admin", "ADMIN"),
-            Map.entry("/auth-front/validate-secretary", "SECRETARY"),
-            Map.entry("/auth-front/validate-technician", "TECHNICIAN"),
-            Map.entry("/auth-front/validate-patient", "PATIENT"),
-            Map.entry("/auth-front/validate-doctor", "DOCTOR"),
-            Map.entry("/auth-front/validate-nurse", "NURSE"),
-            Map.entry("/user-management/register-secretary", "SECRETARY"),
-            Map.entry("/user-management/register-admin", "ADMIN"),
-            Map.entry("/user-management/search-user-data", "ADMIN"),
-            Map.entry("/user-management/delete-user", "ADMIN"),
-            Map.entry("/user-management/activate-user", "SECRETARY"),
-            Map.entry("/user-management/update-user-secretary", "SECRETARY"),
-            Map.entry("/user-management/update-user-admin", "ADMIN"),
-            Map.entry("/user-management/block-user", "ADMIN"),
-            Map.entry("/user-management/unblock-user", "ADMIN"),
-            Map.entry("/secure/admin", "ADMIN"),
-            Map.entry("/secure/patient", "PATIENT")
+            Map.entry("/auth-front/validate-admin", "admin"),
+            Map.entry("/auth-front/validate-secretary", "secretary"),
+            Map.entry("/auth-front/validate-technician", "technician"),
+            Map.entry("/auth-front/validate-patient", "patient"),
+            Map.entry("/auth-front/validate-doctor", "doctor"),
+            Map.entry("/auth-front/validate-nurse", "nurse"),
+            // --------------------------------------------------------------------
+            Map.entry("/user-management/register-user-by-secretary", "secretary"),
+            Map.entry("/user-management/register-user-by-admin", "admin"),
+            Map.entry("/user-management/search-user-data", "admin"),
+            Map.entry("/user-management/delete-or-activate-user", "admin"), // secretary também pode
+            Map.entry("/user-management/update-user-data", "secretary"),// admin também pode
+            Map.entry("/user-management/add-role-to-user", "admin"),
+            Map.entry("/user-management/remove-role-from-user", "admin"),
+            Map.entry("/user-management/block-or-unblock-user", "admin"),
+            Map.entry("/secure/admin", "admin"),
+            Map.entry("/secure/patient", "patient")
         );
     }
 }

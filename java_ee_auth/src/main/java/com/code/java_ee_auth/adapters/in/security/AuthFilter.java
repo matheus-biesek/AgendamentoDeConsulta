@@ -1,6 +1,5 @@
 package com.code.java_ee_auth.adapters.in.security;
 
-import com.code.java_ee_auth.adapters.in.services.security.AccessTokenService;
 import com.jwt.lib.filter.AbstractJWTAuthFilter;
 import com.jwt.lib.filter.SecurityContext;
 import com.jwt.lib.route.RouteManager;

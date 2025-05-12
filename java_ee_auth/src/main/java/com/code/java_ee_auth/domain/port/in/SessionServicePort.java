@@ -1,9 +1,9 @@
 package com.code.java_ee_auth.domain.port.in;
 
 import com.code.java_ee_auth.domain.dto.request.LoginDTO;
-import jakarta.ws.rs.core.Response;
+import com.code.java_ee_auth.domain.dto.response.LoginResponseDTO;
 
 public interface SessionServicePort {
-    Response login(LoginDTO credentials, String requesterDevice, String requesterIp);
-    Response logout(String tokenString, String requesterDevice, String requesterIp);
+    LoginResponseDTO login(LoginDTO credentials, String requesterDevice, String requesterIp);
+    LoginResponseDTO logout(String tokenString, String requesterDevice, String requesterIp);
 } 

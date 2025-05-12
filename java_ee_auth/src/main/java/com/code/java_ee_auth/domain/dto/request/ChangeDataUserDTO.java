@@ -1,7 +1,5 @@
 package com.code.java_ee_auth.domain.dto.request;
 
-import java.util.UUID;
-
 import com.code.java_ee_auth.domain.enuns.Gender;
 
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +23,4 @@ public class ChangeDataUserDTO {
 
     @NotBlank(message = "O email não pode ser nulo, vazio ou em branco!")
     private String email;
-
-    @NotNull(message = "O ID do usuário não pode ser nulo!")
-    private UUID id;
 }

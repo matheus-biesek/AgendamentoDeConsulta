@@ -12,7 +12,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception exception) {
-        logger.severe("Erro capturado no GlobalExceptionHandler: " + exception.getMessage() + " - " + exception);
+        logger.severe("Erro capturado no GlobalExceptionHandler\n" + exception.getMessage() + "\n" + exception);
         exception.printStackTrace();
 
         if (exception instanceof UserDAOException e) {

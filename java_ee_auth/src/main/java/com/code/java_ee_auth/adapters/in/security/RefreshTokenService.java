@@ -1,4 +1,4 @@
-package com.code.java_ee_auth.adapters.in.services.security;
+package com.code.java_ee_auth.adapters.in.security;
 
 import com.jwt.lib.token.priv.AbstractTokenPrivateService;
 

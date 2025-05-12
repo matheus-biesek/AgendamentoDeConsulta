@@ -3,7 +3,6 @@ package com.code.java_ee_auth.adapters.out.messaging.consumer;
 import com.code.java_ee_auth.adapters.out.messaging.processor.UserMessageProcessor;
 import com.code.java_ee_auth.domain.model.User;
 import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
-import com.code.java_ee_auth.domain.enuns.UserRole;
 import com.rabbitmq.lib.consumer.AbstractRabbitMQConsumer;
 import com.rabbitmq.lib.consumer.MessageProcessor;
 import jakarta.inject.Inject;
@@ -46,8 +45,8 @@ public class SearchUsersByRoleConsumer extends AbstractRabbitMQConsumer {
     protected MessageProcessor getMessageProcessor() {
         return (message) -> {
             try {
-                UserRole role = UserRole.valueOf(message.trim().toUpperCase());
-                List<User> users = userDao.findByRole(role);
+                String role = message.trim().toUpperCase();
+                List<User> users = null; // FUTURAMENTE IMPLEMENTAR O SERVIÇO QUE BUSCA OS USUÁRIOS POR ROLE
                 
                 if (!users.isEmpty()) {
                     return messageProcessor.processMessageOfUsersByRole(users);

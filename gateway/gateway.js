@@ -18,7 +18,9 @@ const PUBLIC_PATHS = [
   '/rest-workers/workers/user-data', // TESTE
   '/rest-workers/workers/public', // TESTE
   '/rest-schedule/admin/public', // TESTE
-  '/rest-schedule/admin/private' // TESTE
+  '/rest-schedule/admin/private', // TESTE
+  '/rest-auth/user-management/register-user-by-secretary', // TESTE
+  '/rest-auth/user-management/register-user-by-admin' // TESTE
 ];
 
 const STATIC_FILE_EXTENSIONS = /\.(js|css|png|jpg|ico|woff2?)$/;

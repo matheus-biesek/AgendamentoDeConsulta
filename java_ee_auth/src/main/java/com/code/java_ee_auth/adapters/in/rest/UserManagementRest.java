@@ -1,159 +1,229 @@
 package com.code.java_ee_auth.adapters.in.rest;
 
+import java.util.logging.Logger;
+
 import com.code.java_ee_auth.adapters.in.services.user.UserCrudServiceImpl;
-import com.code.java_ee_auth.adapters.out.persistence.UserDAOImpl;
-import com.code.java_ee_auth.domain.dto.request.UpdateRoleDTO;
-import com.code.java_ee_auth.domain.dto.request.UserInfoDTO;
-import com.code.java_ee_auth.domain.dto.request.ChangeDataUserDTO;
+import com.code.java_ee_auth.adapters.out.persistence.UserRoleDAO;
+import com.code.java_ee_auth.domain.dto.request.UserUpdateDTO;
 import com.code.java_ee_auth.domain.dto.request.CpfDTO;
+import com.code.java_ee_auth.domain.dto.request.UserInfoDTO;
 import com.code.java_ee_auth.domain.dto.response.UserDataDTO;
-import com.code.java_ee_auth.domain.enuns.UserRole;
-import com.code.java_ee_auth.domain.model.User;
-import com.code.java_ee_auth.adapters.in.rest.exeception.UserAlreadyExistsException;
-import com.code.java_ee_auth.adapters.in.rest.exeception.UserNotFoundException;
-import com.code.java_ee_auth.adapters.in.services.security.PasswordService;
+
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.util.Optional;
 
 @Path("/user-management")
 public class UserManagementRest {
 
-    @Inject
-    private UserDAOImpl userRepository;
-    
+    private static final Logger logger = Logger.getLogger(UserManagementRest.class.getName());
     @Inject
     private UserCrudServiceImpl userCrudService;
-    
-    @Inject
-    private PasswordService passwordService;
 
+    @Inject
+    private UserRoleDAO userRoleDAO;
+
+    // COLETAR O ID DO USER QUE ESTÁ NO SECURITY CONTEXT
+    // ADICIONAR DTO PARA CADA ENDPOINT E CONVERTER PARA O DTO PARA UPDATE DE USER.
     @POST
-    @Path("/register-secretary")
+    @Path("/register-user-by-secretary")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerSecretary(UserInfoDTO newUser) {
-        Optional<User> userExist = userRepository.findByCpf(newUser.getCpf());
-        if (userExist.isPresent()) {
-            throw new UserAlreadyExistsException("Usuário já existe");
+        try {
+            userCrudService.create(newUser, null);
+            return Response.status(Response.Status.CREATED).entity("Usuário registrado com sucesso").build();
+        
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+
+        } catch (Exception e) {
+            logger.severe("Erro inesperado ao registrar usuário: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao registrar usuário!")
+            .build();
         }
-
-        String hashedPassword = passwordService.hash(newUser.getPassword());
-
-        User user = new User(newUser.getName(), newUser.getCpf(), newUser.getEmail(), hashedPassword, UserRole.PATIENT, newUser.getGender());
-        userRepository.create(user);
-
-        return Response.status(Response.Status.CREATED).entity("Usuário registrado com sucesso").build();
     }
-
     @POST
-    @Path("/register-admin")
+    @Path("/register-user-by-admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerAdmin(UserInfoDTO newUser) {
-        Optional<User> userExist = userRepository.findByCpf(newUser.getCpf());
-        if (userExist.isPresent()) {
-            throw new UserAlreadyExistsException("Usuário já existe");
+        try {
+            userCrudService.create(newUser, newUser.getRole().toString().toLowerCase());
+            return Response.status(Response.Status.CREATED).entity("Usuário registrado com sucesso").build();
+        
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao registrar usuário!")
+            .build();
         }
-
-        String hashedPassword = passwordService.hash(newUser.getPassword());
-
-        User user = new User(newUser.getName(), newUser.getCpf(), newUser.getEmail(), hashedPassword, newUser.getRole(), newUser.getGender());
-        userRepository.create(user);
-
-        return Response.status(Response.Status.CREATED).entity("Usuário registrado com sucesso").build();
     }
 
     @POST
     @Path("/search-user-data")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public UserDataDTO searchData(@Valid CpfDTO cpfDTO) {
-        return userCrudService.getUserData(cpfDTO.getCpf());
-    }
+    public Response searchData(@Valid CpfDTO cpfDTO) {
+        try {
+            UserDataDTO userData = userCrudService.getUserData(cpfDTO.getCpf());
+            return Response.status(Response.Status.OK)
+            .entity(userData)
+            .build();
 
-    @POST
-    @Path("/delete-user")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteUser(@Valid CpfDTO cpfDTO) {
-        Optional<User> userExist = userRepository.findByCpf(cpfDTO.getCpf());
-        if (userExist.isPresent()) {
-            if (!userExist.get().isActive()) {
-                return Response.status(Response.Status.CONFLICT).entity("Usuário não está ativo").build();
-            }
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao buscar dados do usuário!")
+            .build();
         }
-        return Response.status(Response.Status.OK).entity(userCrudService.deleteUser(cpfDTO.getCpf())).build();
     }
 
     @POST
-    @Path("/activate-user")
+    @Path("/delete-or-activate-user")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response activateUser(@Valid CpfDTO cpfDTO) {
-        Optional<User> userExist = userRepository.findByCpf(cpfDTO.getCpf());
-        if (userExist.isPresent()) {
-            if (userExist.get().isActive()) {
-                return Response.status(Response.Status.CONFLICT).entity("Usuário já está ativo").build();
-            }
-            userExist.get().setActive(true);
-            userRepository.updateActive(userExist.get());
-            return Response.status(Response.Status.OK).entity("Usuário ativado com sucesso").build();
+    public Response deleteUser(@Valid UserUpdateDTO dto) {
+        if (dto.getActive() == null) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity("O campo active não pode ser nulo!")
+            .build();
         }
-        throw new UserNotFoundException("Usuário não encontrado");
-    }
+        try {
+            userCrudService.updateByCpf(dto);
 
-    @POST
-    @Path("/update-user-secretary")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserSecretary(@Valid ChangeDataUserDTO changeDataUserDTO) {
-        return Response.status(Response.Status.OK).entity(userCrudService.updateUserSecretary(changeDataUserDTO)).build();
-    }
-
-    @POST
-    @Path("/update-user-admin")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserAdmin(@Valid UpdateRoleDTO updateRoleDTO) {
-        return Response.status(Response.Status.OK).entity(userCrudService.updateUserAdmin(updateRoleDTO)).build();
-    }
-
-    @POST
-    @Path("/block-user")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response blockUser(@Valid CpfDTO cpfDTO) {
-        Optional<User> userExist = userRepository.findByCpf(cpfDTO.getCpf());
-        if (userExist.isPresent()) {
-            if (userExist.get().isBlocked()) {
-                return Response.status(Response.Status.CONFLICT).entity("Usuário já está bloqueado").build();
-            }
-            userExist.get().setBlocked(true);
-            userExist.get().setActive(false);
-            userRepository.updateBlocked(userExist.get());
-            return Response.status(Response.Status.OK).entity("Usuário bloqueado com sucesso").build();
+            return Response.status(Response.Status.OK)
+            .entity("Usuário " + (dto.getActive() ? "deletado" : "ativado") + " com sucesso")
+            .build();
+        
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+        
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao " + (dto.getActive() ? "deletar" : "ativrar") + " usuário!")
+            .build();
         }
-        throw new UserNotFoundException("Usuário não encontrado");
     }
 
     @POST
-    @Path("/unblock-user")
+    @Path("/update-user-data")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response unblockUser(@Valid CpfDTO cpfDTO) { 
-        Optional<User> userExist = userRepository.findByCpf(cpfDTO.getCpf());
-        if (userExist.isPresent()) {
-            if (!userExist.get().isBlocked()) {
-                return Response.status(Response.Status.CONFLICT).entity("Usuário não está bloqueado").build();
-            }
-            userExist.get().setBlocked(false);
-            userRepository.updateBlocked(userExist.get());
-            return Response.status(Response.Status.OK).entity("Usuário desbloqueado com sucesso").build();
+    public Response updateUserSecretary(@Valid UserUpdateDTO dto) {
+        try {
+            userCrudService.updateByCpf(dto);
+            return Response.status(Response.Status.OK)
+            .entity("Usuário atualizado com sucesso")
+            .build();
+
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao atualizar usuário!")
+            .build();
         }
-        throw new UserNotFoundException("Usuário não encontrado");
     }
-} 
+
+    @POST
+    @Path("/add-role-to-user")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addRoleToUser(@Valid UserUpdateDTO dto) {
+        if (dto.getRole() == null) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity("O campo role não pode ser nulo!")
+            .build();
+        }
+        try {
+            userRoleDAO.addRoleToUser(dto.getUserId(), dto.getRole().name());
+            return Response.status(Response.Status.OK)
+            .entity("Função adicionada ao usuário com sucesso")
+            .build();
+
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao adicionar função ao usuário!")
+            .build();
+        }
+    }
+
+    @DELETE
+    @Path("/remove-role-from-user")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response removeRoleFromUser(@Valid UserUpdateDTO dto) {
+        if (dto.getRole() == null) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity("O campo role não pode ser nulo!")
+            .build();
+        }
+        try {
+            userRoleDAO.removeRoleFromUser(dto.getUserId(), dto.getRole().name());
+            return Response.status(Response.Status.OK)
+            .entity("Função removida do usuário com sucesso")
+            .build();
+
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao remover função do usuário!")
+            .build();
+        }
+    }
+
+    @POST
+    @Path("/block-or-unblock-user")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response blockUser(@Valid UserUpdateDTO dto) {
+        if (dto.getBlocked() == null) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity("O campo blocked não pode ser nulo!")
+            .build();
+        }
+        try {
+            userCrudService.updateByCpf(dto);
+            return Response.status(Response.Status.OK)
+            .entity("Usuário " + (dto.getBlocked() ? "bloqueado" : "desbloqueado") + " com sucesso")
+            .build();
+
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.CONFLICT)
+            .entity(e.getMessage())
+            .build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro inesperado ao " + (dto.getBlocked() ? "bloquear" : "desbloquear") + " usuário!")
+            .build();
+        }
+    }
+}

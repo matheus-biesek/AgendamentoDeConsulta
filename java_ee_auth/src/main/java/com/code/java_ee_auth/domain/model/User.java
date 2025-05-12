@@ -1,7 +1,6 @@
 package com.code.java_ee_auth.domain.model;
 
 import com.code.java_ee_auth.domain.enuns.Gender;
-import com.code.java_ee_auth.domain.enuns.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,18 +25,24 @@ public class User {
 
     private String password;
 
-    private UserRole role;
-
     private Gender gender;
 
     private boolean blocked;
 
-    public User(String name, String cpf, String email, String password, UserRole role, Gender gender) {
+    public User(String name, String cpf, String email, String password, Gender gender) {
         this.password = password;
         this.name = name;
         this.cpf = cpf;
         this.email = email;
-        this.role = role;
+        this.gender = gender;
+    }
+
+    public User(UUID id, String name, String cpf, String email, String password, Gender gender) {
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
         this.gender = gender;
     }
 }

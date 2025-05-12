@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.List;
 
 public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
 
@@ -37,6 +38,7 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
      */
     protected abstract SecurityContext getSecurityContext();
 
+    // Biblioteca atual não suporta o uso de CSRF, por isso não é possível usar o método filter
     @Override
     public void filter(ContainerRequestContext ctx) {
         String path = ctx.getUriInfo().getPath();
@@ -59,8 +61,18 @@ public abstract class AbstractJWTAuthFilter implements ContainerRequestFilter {
                 return;
             }
 
-            String role = claims.get("role", String.class);
-            if (!getRouteManager().hasPermission(path, role)) {
+            @SuppressWarnings("unchecked")
+            List<String> roles = claims.get("roles", List.class);
+            if (roles == null || roles.isEmpty()) {
+                abort(ctx, "TOKEN_INVALID", "Token não possui roles", false, null);
+                return;
+            }
+            logger.info("Roles: {}", roles);
+
+            boolean hasPermission = roles.stream()
+                .anyMatch(role -> getRouteManager().hasPermission(path, role));
+
+            if (!hasPermission) {
                 abort(ctx, "PERMISSION_DENIED", "Permissão negada", false, null);
                 return;
             }
