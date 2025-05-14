@@ -12,6 +12,7 @@
     <modules>
         <module>jwt-lib</module>
         <module>rabbitmq-lib</module>
+        <module>lightquery-lib</module>
         <module>java_ee_workers</module>
         <module>java_ee_auth</module>
         <module>java_ee_schedule</module>
