@@ -18,7 +18,7 @@ public class ScheduleRouteManager extends AbstractRouteManager {
     @Override
     protected Map<String, String> getProtectedEndpoints() {
         return Map.of(
-            "/admin/private", "ADMIN"
+            "/admin/private", "admin"
         );
     }
 
