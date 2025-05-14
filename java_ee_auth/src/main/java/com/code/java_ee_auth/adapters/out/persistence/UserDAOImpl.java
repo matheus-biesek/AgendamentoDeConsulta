@@ -163,4 +163,29 @@ public class UserDAOImpl implements UserDAOPort {
         }
     }
 
+    public List<User> findAll() {
+        try {
+            List<Object[]> results = entityManager.createNativeQuery(
+                "SELECT user_id, active, name, cpf, email, password, gender, blocked FROM auth_service.users")
+                .getResultList();
+            
+            return results.stream()
+                .map(row -> {
+                    User user = new User();
+                    user.setId((UUID) row[0]);
+                    user.setActive((Boolean) row[1]);
+                    user.setName((String) row[2]);
+                    user.setCpf((String) row[3]);
+                    user.setEmail((String) row[4]);
+                    user.setPassword((String) row[5]);
+                    user.setGender(Gender.valueOf((String) row[6]));
+                    user.setBlocked((Boolean) row[7]);
+                    return user;
+                })
+                .toList();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao buscar todos os usuários!", e);
+        }
+    }
+
 }

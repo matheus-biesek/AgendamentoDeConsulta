@@ -45,6 +45,7 @@ public class UserDataConsumer extends AbstractRabbitMQConsumer {
     protected MessageProcessor getMessageProcessor() {
         return (message) -> {
             Optional<User> userOpt = userDao.findById(UUID.fromString(message.trim()));
+            
             return userOpt.map(user -> messageProcessor.processMessageOfUserData(user))
                 .orElse("Usuário não encontrado");
         };
