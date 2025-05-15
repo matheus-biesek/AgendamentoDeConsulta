@@ -1,29 +1,70 @@
+:root {
+    --select-color: #4e83bc;    /* Cor principal para seleção e botões */
+    --hover: #3a6a9c;           /* Cor do hover em elementos interativos */
+    --border: #ddd;             /* Cor padrão para bordas */
+    --bg: #fff;                 /* Cor de fundo */
+    --label-color: #313131;     /* Cor do texto */
+    --radius: 12px;             /* Arredondamento padrão */
+    --t: 0.3s;                  /* Tempo de transição */
+}
+
+/* Container do filtro */
 .date-filter-component {
+    max-width: 450px;
+    width: 100%;
+    padding: 25px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--select-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Container do formulário */
+.date-filter {
     display: flex;
-    background-color: var(--bg-color);
-    flex-direction: row; 
-    padding: 15px;
-    border: 1px solid var(--main-color); 
-    border-radius: var(--border-radius-date); 
-    margin-bottom: 40px;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Label */
+.date-filter label {
     color: var(--label-color);
+    font-weight: 500;
 }
+
+/* Input de data */
 .reference-date-input {
-    padding: 8px;
-    border: 1px solid var(--main-color);
-    border-radius: var(--border-radius-date); 
-    outline: none; 
-    transition: border-color 0.3s;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: all var(--t);
 }
+
+.reference-date-input:focus {
+    border-color: var(--select-color);
+    box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
+}
+
+/* Botão de busca */
 .search-button {
-    padding: 8px 12px;
-    background-color:var(--button-color) ; 
-    color: white; 
-    border: none; 
-    border-radius: var(--border-radius-date); 
-    cursor: pointer; 
+    padding: 10px 20px;
+    background: var(--select-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all var(--t);
 }
+
 .search-button:hover {
-    background-color: #085c0fe2; 
-    transition: background-color 0.3s ease; 
+    background: var(--hover);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.search-button:active {
+    transform: translateY(1px);
 }
