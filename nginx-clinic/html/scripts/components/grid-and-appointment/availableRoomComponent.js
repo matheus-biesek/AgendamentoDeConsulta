@@ -8,11 +8,11 @@ document.querySelector(".available-romm-component").innerHTML = `
             </div>
             <div class="form-group">
                 <label>Data de referência:</label>
-                <input type="date" id="reference-date">
+                <input type="date" id="reference-date" value="${new Date().toISOString().split('T')[0]}">
             </div>
             <button type="button" id="search-availability">Buscar</button>
         </div>
-        <div class="schedule-grid">
+        <div class="schedule-grid" style="display: none;">
             <h3>Horário</h3>
             <div id="available-times"></div>
         </div>

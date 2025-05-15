@@ -77,6 +77,44 @@ main.content {
     padding: 40px 20px;
 }
 
+/* Responsividade */
+@media (max-width: 768px) {
+    .content > div {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .form-group,
+    .role-options {
+        flex-direction: column;
+    }
+
+    button,
+    input,
+    select,
+    .role-options label {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .content > div {
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.2rem; }
+    
+    .form-group { 
+        margin-bottom: 15px; 
+    }
+
+    .nav-links {
+        font-size: 14px;
+    }
+}
+
 footer {
     background: var(--secondary-color);
     flex-shrink: 0;
