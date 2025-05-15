@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import com.code.java_ee_auth.adapters.in.services.user.UserCrudServiceImpl;
 import com.code.java_ee_auth.adapters.in.services.user.UserRoleService;
-import com.code.java_ee_auth.adapters.out.persistence.UserRoleDAO;
 import com.code.java_ee_auth.domain.dto.request.UserUpdateDTO;
 import com.code.java_ee_auth.domain.dto.request.CpfDTO;
 import com.code.java_ee_auth.domain.dto.request.UpdateRoleDTO;

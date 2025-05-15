@@ -93,6 +93,7 @@ public class AuthRefreshTokenService {
     public void enforceTokenLimitPolicy(List<RefreshToken> activeTokens, String requesterIp, String requesterDevice) {
         if (activeTokens.size() >= 2) {
             if (activeTokens.size() > 2) {
+                revokeAllRefreshTokens(activeTokens, requesterIp, requesterDevice);
                 throw new RuntimeException("Contate o administrador do sistema, pois o usuário possui mais de 2 tokens de atualização ativos no sistema!");
             }
     
@@ -150,6 +151,15 @@ public class AuthRefreshTokenService {
             logger.warning("Token de refresh não está ativo");
             handleRefreshTokenAction(ActionType.INACTIVE, refreshToken.getId(), requesterIp, requesterDevice);
             throw new RuntimeException("Token expirado!");
+        }
+    }
+
+    public void revokeAllRefreshTokens(List<RefreshToken> activeTokens, String requesterIp, String requesterDevice) {
+        for (RefreshToken token : activeTokens) {
+            RefreshTokenUpdateDTO refreshTokenUpdateDTO = new RefreshTokenUpdateDTO(token.getId());
+            refreshTokenUpdateDTO.setActive(false);
+            refreshTokenDao.update(refreshTokenUpdateDTO);
+            refreshTokenAuditDAO.create(token.getId(), requesterIp, requesterDevice, ActionType.REVOKED);
         }
     }
 }
