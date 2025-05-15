@@ -53,4 +53,24 @@ public class UserCrudServiceImpl {
     public void updateByCpf(UserUpdateDTO userUpdateDTO) {
         userDAO.updateUserByCpf(userUpdateDTO);
     }
+
+    public List<UserDataDTO> getUsersByRole(String role) {
+        List<User> users = userDAO.findAll();
+        return users.stream()
+            .filter(user -> {
+                List<String> userRoles = userRoleService.getRolesByUserId(user.getId());
+                return userRoles.contains(role);
+            })
+            .map(user -> new UserDataDTO(
+                user.getId(),
+                user.isBlocked(),
+                user.isActive(),
+                user.getName(),
+                user.getCpf(),
+                user.getEmail(),
+                user.getGender(),
+                userRoleService.getRolesByUserId(user.getId())
+            ))
+            .toList();
+    }
 }

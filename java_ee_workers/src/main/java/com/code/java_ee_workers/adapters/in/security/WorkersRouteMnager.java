@@ -18,8 +18,8 @@ public class WorkersRouteMnager extends AbstractRouteManager {
     @Override
     protected Map<String, String> getProtectedEndpoints() {
         return Map.of(
-            "/workers/users-by-role", "ADMIN",
-            "/workers/user-data", "ADMIN"
+            "/workers/users-by-role", "admin",
+            "/workers/user-data", "admin"
         );
     }
 }
