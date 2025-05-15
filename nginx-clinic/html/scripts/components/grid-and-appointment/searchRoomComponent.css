@@ -1,81 +1,55 @@
 :root {
-    --primary: #4CAF50;      /* Cor principal para elementos primários */
-    --hover: #45a049;        /* Cor do estado hover */
-    --border: #ccc;          /* Cor da borda dos elementos */
-    --bg: #f9f9f9;          /* Cor de fundo */
-    --hover-bg: #e6e6e6;    /* Cor de fundo para estado hover */
-    --label-color: #313131; /* Cor do texto */
-    --radius: 12px;         /* Raio da borda para cantos arredondados */
-    --t: 0.3s;             /* Duração da transição */
+    --select-color: #4e83bc;    /* Cor principal azul */
+    --border: #ddd;        /* Cor das bordas */
+    --bg: #fff;           /* Cor de fundo */
+    --bghover: #f5f5f5;  /* Cor de fundo ao passar o mouse */
 }
 
-/* Container principal: Contém todo o componente de busca de salas */
+/* Container principal da busca */
 .search-room-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
     max-width: 400px;
-    height: 100%;           
-    padding: 30px;
-    margin: 0 auto;
+    margin: 20px auto;
+    padding: 20px;
     background: var(--bg);
-    border-radius: var(--radius);
-    color: var(--label-color);
+    border-radius: 8px;
+    border: 1px solid var(--select-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* Estilização do título */
-.search-room-container h2 {
-    margin: 0 0 20px;  
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
+/* Título da seção */
+h2 { 
+    text-align: center; 
+    margin: 0 0 20px; 
 }
 
-/* Container do grid: Gerencia o layout da tabela */
-.search-room-grid {
-    flex: 1;       
-    display: flex;
-    flex-direction: column;
-}
-
-/* Estilização da tabela: Estrutura principal da tabela */
-.search-room-grid table {
-    flex: 1;              
+/* Tabela de salas */
+table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: var(--radius);
-    overflow: hidden;     
-    margin: 0;
+    margin: 0 auto;  /* Centraliza a tabela */
 }
 
-/* Células da tabela: Estilos comuns para cabeçalhos e células de dados */
-.search-room-grid th,
-.search-room-grid td {
-    padding: 15px;
-    text-align: left;
+/* Células da tabela */
+th, td {
+    padding: 12px;
+    text-align: center;
     border-bottom: 1px solid var(--border);
+    background-color: var(--bg);
+}
+ 
+/* Cabeçalho da tabela */
+th {
+    border: 1px solid var(--select-color);
+    text-align: center; 
 }
 
-/* Células do cabeçalho: Estilização especial para cabeçalhos de coluna */
-.search-room-grid th {
-    background: var(--bg);
-    font-weight: bold;
-    font-size: 1.1rem;
+/* Células da tabela */
+td {
+    border: 1px solid var(--border);
 }
 
-/* Linhas da tabela: Altura fixa para consistência */
-.search-room-grid tr {
-    height: 60px;
-}
-
-/* Efeito hover nas linhas: Fornece feedback visual */
-.search-room-grid tr:hover {
-    background: var(--hover-bg);
-    transition: background var(--t);
-}
-
-/* Remove a borda inferior para uma aparência mais limpa */
-.search-room-grid tr:last-child td {
-    border: 0;
+/* Efeito hover nas linhas */
+tr:hover td { 
+    background: var(--bghover); 
+    cursor: pointer;
 }
