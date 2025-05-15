@@ -1,18 +1,17 @@
 document.querySelector(".search-all-room-component").innerHTML = `
     <div class="search-room-container">
-        <h2>Salas</h2>
+        <h2>Salas Disponíveis</h2>
         <div class="search-room-grid">
             <table>
                 <thead>
                     <tr>
-                        <th>Número</th>
-                        <th>Função</th>
+                        <th>Número da Sala</th>
+                        <th>Tipo de Sala</th>
                     </tr>
                 </thead>
                 <tbody id="room-list">
                     <tr>
-                        <td>101</td>
-                        <td>Exame</td>
+                        <td colspan="2" class="loading">Carregando salas...</td>
                     </tr>
                 </tbody>
             </table>
