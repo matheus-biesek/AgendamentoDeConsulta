@@ -76,3 +76,80 @@ ON auth_service.refresh_tokens (user_id, active);
 -- indice para consulta sql para validação se o user_id condiz com o refresh_token_id
 CREATE INDEX idx_refresh_tokens_refresh_token_id_user_id
 ON auth_service.refresh_tokens (refresh_token_id, user_id);
+
+-- 1. Função PL/pgSQL para validar o CPF
+CREATE OR REPLACE FUNCTION auth_service.validar_cpf(cpf_input TEXT)
+RETURNS BOOLEAN AS $$
+DECLARE
+    clean_cpf TEXT;
+    i INTEGER;
+    soma INTEGER;
+    resto INTEGER;
+    digito1 INTEGER;
+    digito2 INTEGER;
+BEGIN
+    -- Remove pontuação (pode ser ajustado conforme sua entrada)
+    clean_cpf := regexp_replace(cpf_input, '[^0-9]', '', 'g');
+
+    -- Verifica se tem 11 dígitos
+    IF length(clean_cpf) != 11 THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Verifica CPFs inválidos conhecidos (todos iguais)
+    IF clean_cpf ~ '^(.)\1{10}$' THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Calcula o primeiro dígito verificador
+    soma := 0;
+    FOR i IN 1..9 LOOP
+        soma := soma + (CAST(substr(clean_cpf, i, 1) AS INTEGER) * (11 - i));
+    END LOOP;
+    resto := (soma * 10) % 11;
+    IF resto = 10 OR resto = 11 THEN
+        resto := 0;
+    END IF;
+    digito1 := resto;
+
+    -- Verifica primeiro dígito
+    IF digito1 != CAST(substr(clean_cpf, 10, 1) AS INTEGER) THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Calcula o segundo dígito verificador
+    soma := 0;
+    FOR i IN 1..10 LOOP
+        soma := soma + (CAST(substr(clean_cpf, i, 1) AS INTEGER) * (12 - i));
+    END LOOP;
+    resto := (soma * 10) % 11;
+    IF resto = 10 OR resto = 11 THEN
+        resto := 0;
+    END IF;
+    digito2 := resto;
+
+    -- Verifica segundo dígito
+    IF digito2 != CAST(substr(clean_cpf, 11, 1) AS INTEGER) THEN
+        RETURN FALSE;
+    END IF;
+
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 2. Criar a função de trigger
+CREATE OR REPLACE FUNCTION auth_service.trigger_validar_cpf()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT auth_service.validar_cpf(NEW.cpf) THEN
+        RAISE EXCEPTION 'CPF inválido: %', NEW.cpf;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Criar o trigger na tabela users
+CREATE TRIGGER before_insert_validar_cpf
+BEFORE INSERT ON auth_service.users
+FOR EACH ROW
+EXECUTE FUNCTION auth_service.trigger_validar_cpf();
