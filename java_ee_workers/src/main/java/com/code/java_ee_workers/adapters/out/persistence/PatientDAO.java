@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.code.java_ee_workers.domain.dto.request.UpdatePatientDTO;
 import com.code.java_ee_workers.domain.model.Patient;
@@ -25,7 +26,7 @@ public class PatientDAO extends LightQuery<Patient> {
     public Optional<Patient> findByUserId(UUID userId) {
         try {
             List<Object[]> results = entityManager.createNativeQuery(
-                "SELECT patient_id, user_id, allergies, blood_type, weight, height, active FROM profile_service.patient WHERE user_id = ?")
+                "SELECT patient_id, user_id, allergies, blood_type, height, active FROM profile_service.patient WHERE user_id = ?")
                     .setParameter(1, userId)
                     .getResultList();
 
@@ -40,9 +41,8 @@ public class PatientDAO extends LightQuery<Patient> {
                 (UUID) result[1],
                 (String) result[2],
                 (String) result[3],
-                (Double) result[4],
-                (Double) result[5],
-                (Boolean) result[6]
+                result[4] instanceof java.math.BigDecimal ? ((java.math.BigDecimal) result[4]).doubleValue() : (Double) result[4],
+                (Boolean) result[5]
             ));
         } catch (Exception e) { 
             throw new RuntimeException("Erro inesperado ao buscar paciente por userId!", e);
@@ -78,11 +78,6 @@ public class PatientDAO extends LightQuery<Patient> {
             params.put("bloodType", updatePatientDTO.getBloodType());
         }
 
-        if (updatePatientDTO.getWeight() != null) {
-            queryBuilder.append("weight = :weight, ");
-            params.put("weight", updatePatientDTO.getWeight());
-        }
-
         if (updatePatientDTO.getHeight() != null) {
             queryBuilder.append("height = :height, ");
             params.put("height", updatePatientDTO.getHeight());
@@ -106,6 +101,32 @@ public class PatientDAO extends LightQuery<Patient> {
             }
         } catch (Exception e) {
             throw new RuntimeException("Erro inesperado ao atualizar paciente!", e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Patient> findPatientByActive(boolean active) {
+        try {
+            List<Object[]> results = entityManager.createNativeQuery("SELECT * FROM profile_service.patient WHERE active = :active")
+                .setParameter("active", active)
+                .getResultList();
+
+            if (results.isEmpty()) {
+                return null;
+            }
+
+            return results.stream()
+                .map(result -> new Patient(
+                    (UUID) result[0],
+                    (UUID) result[1],
+                    (String) result[2],
+                    (String) result[3],
+                    result[4] instanceof java.math.BigDecimal ? ((java.math.BigDecimal) result[4]).doubleValue() : (Double) result[4],
+                    (Boolean) result[5]
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao buscar pacientes ativos!", e);
         }
     }
 }

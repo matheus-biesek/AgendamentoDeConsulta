@@ -17,6 +17,14 @@ public class UpdatePatientDTO {
     private Boolean active;
     private String allergies;
     private String bloodType;
-    private Double weight;
     private Double height;
+
+    public UpdatePatientDTO(UUID id, UUID userId, String allergies, String bloodType, Double height, Boolean active) {
+        this.id = id;
+        this.userId = userId;
+        this.allergies = allergies;
+        this.bloodType = bloodType;
+        this.height = height;
+        this.active = active;
+    }
 }
