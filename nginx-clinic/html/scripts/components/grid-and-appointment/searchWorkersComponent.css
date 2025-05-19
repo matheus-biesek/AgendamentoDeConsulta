@@ -1,0 +1,93 @@
+:root {
+    --select-color: #4e83bc;    /* Cor principal para seleção e botões */
+    --hover: #3a6a9c;           /* Cor do hover em elementos interativos */
+    --border: #ddd;             /* Cor padrão para bordas */
+    --bg: #fff;                 /* Cor de fundo */
+    --label-color: #313131;     /* Cor do texto */
+    --radius: 12px;              /* Arredondamento padrão */
+    --t:0.3s;               /* Tempo de transição */
+}
+
+.search-workers-component {
+    max-width: 700px;
+    margin: 30px auto 0;
+    padding: 20px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    border: 1px solid var(--select-color);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Opções de tipo de trabalhador */
+.worker-type-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.worker-type-options input[type="radio"] {
+    display: none;
+}
+
+.worker-type-options label {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.worker-type-options input[type="radio"]:checked + label {
+    background: var(--select-color);
+    color: white;
+}
+
+/* Tabela de resultados */
+.workers-table {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    border: 1px solid var(--select-color);
+}
+
+tr:hover {
+    background: var(--hover);
+}
+
+/* Botão */
+.search-worker-button {
+    width: 40%;
+    padding: 15px;
+    margin: 10px auto;
+    background: var(--select-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: block;
+    transition: all var(--t);
+    font-size: 16px;
+}
+.search-worker-button:hover {
+    background: var(--hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
