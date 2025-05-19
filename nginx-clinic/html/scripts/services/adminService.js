@@ -1,118 +1,158 @@
 const BASE_URL = '/scheduling-service/admin';
-
-const getHeaders = () => ({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-});
+const VALID_WORKER_ROLES = ['DOCTOR', 'NURSE', 'TECHNICIAN'];
 
 async function fetchApi(endpoint, options = {}) {
-    try {
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
-            ...options,
-            headers: getHeaders()
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || `Erro na requisição: ${response.status}`);
-        }
-
-        return data;
-    } catch (error) {
-        console.error(`Erro em ${endpoint}:`, error);
-        throw new Error(`Falha na requisição para ${endpoint}: ${error.message}`);
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+        ...options,
+        headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    
+    if (!response.ok) {
+        throw new Error(data.message || 'Erro ao processar a requisição');
     }
+    
+    return data;
 }
 
-//Serviços da API
 export const adminService = {
-    /**
-     * Updates user role
-     * @param {string} cpf - User CPF
-     * @param {string} role - New role
-     */
-    // Atualiza papel do usuário
-    updateUserRole: async (cpf, role) => {
-        return fetchApi('/change-user-role', {
-            method: 'POST',
-            body: JSON.stringify({ cpf, role })
-        });
-    },
-    /**
-     * Creates new user
-     * @param {string} username
-     * @param {string} password
-     * @param {string} cpf
-     * @param {string} role
-     */
-
-    // Cria novo usuário
-    createUser: async (username, password, cpf, role) => {
-        return fetchApi('/create-user', {
-            method: 'POST',
-            body: JSON.stringify({ username, password, cpf, role })
-        });
-    },
-
-    /**
-     * @returns {Promise<Array>} List of rooms
-     */
-    // Busca todas as salas
-    getAllRooms: async () => {
-        return fetchApi('/search-all-room', {
-            method: 'GET'
-        });
-    },
-
-    /**
-     * @param {number} room
-     * @param {string} date 
-     * @returns {Promise<Array>} 
-     */
-    // Busca horários disponíveis
-    getAvailableRoom: async (room, date) => {
-        return fetchApi('/available-room', {
-            method: 'POST',
-            body: JSON.stringify({ room, date })
-        });
-    },
-
-    // ...existing code...
-
-/**
- * Busca trabalhadores por role
- * @param {string} userRole - Role do usuário (DOCTOR, NURSE, TECHNICIAN)
- * @returns {Promise<Array>} Lista de trabalhadores
- */
-    searchWorkers: async (userRole) => {
-        const validRoles = ['DOCTOR', 'NURSE', 'TECHNICIAN'];
-        if (!validRoles.includes(userRole)) {
-            throw new Error(`Role inválida. Use: ${validRoles.join(', ')}`);
+    // Função para pesquisar todos os trabalhadores
+    async searchWorkers(userRole) {
+        if (!VALID_WORKER_ROLES.includes(userRole)) {
+            throw new Error(`Role inválida. Use: ${VALID_WORKER_ROLES.join(', ')}`);
         }
 
         try {
-            const workers = await fetchApi('/search-workers', {
+            const data = await fetchApi('/search-workers', {
                 method: 'POST',
                 body: JSON.stringify({ userRole })
             });
 
-            // Validate response format
-            if (!Array.isArray(workers)) {
+            if (!Array.isArray(data)) {
                 throw new Error('Formato de resposta inválido');
             }
 
-            // Validate each worker object
-            workers.forEach(worker => {
+            // Validate worker data
+            data.forEach(worker => {
                 if (!worker.id || !worker.name) {
                     throw new Error('Dados do funcionário incompletos');
                 }
+                if (userRole === 'DOCTOR' && !worker.specialty) {
+                    throw new Error('Especialidade do médico não informada');
+                }
             });
 
-            return workers;
+            return data;
         } catch (error) {
             console.error('Erro ao buscar funcionários:', error);
             throw error;
         }
+    },
+
+    // Função para pesquisar salas disponíveis
+    async searchAvailableRoom(room, date) {
+        if (!room || !date) {
+            throw new Error('Data e sala são obrigatórios');
+        }
+
+        try {
+            const data = await fetchApi(`/available-room/${room}/${date}`, { 
+                method: 'GET' 
+            });
+
+            if (!data.hours || !Array.isArray(data.hours)) {
+                throw new Error('Formato de resposta inválido');
+            }
+
+            return data.hours;
+        } catch (error) {
+            console.error('Erro ao buscar horários:', error);
+            throw error;
+        }
+    },
+
+    // Função para buscar todas as salas
+    async searchAllRooms() {
+        try {
+            const data = await fetchApi('/rooms', { method: 'GET' });
+            
+            if (!data.rooms || !Array.isArray(data.rooms)) {
+                throw new Error('Formato de resposta inválido');
+            }
+
+            return data.rooms;
+        } catch (error) {
+            console.error('Erro ao buscar salas:', error);
+            throw error;
+        }
+    },
+
+    // Função para adicionar grade
+    async createSchedule(workerId, room, date, hour) {
+        if (!workerId || !room || !date || !hour) {
+            throw new Error('Todos os campos são obrigatórios');
+        }
+
+        try {
+            const data = await fetchApi('/create-schedules', {
+                method: 'POST',
+                body: JSON.stringify({ 
+                    workerID: workerId,
+                    room: room,
+                    date: date,
+                    hour: hour
+                })
+            });
+
+            if (data.erro) {
+                throw new Error(data.erro);
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Erro ao criar grade:', error);
+            throw error;
+        }
+    },
+
+    // Função para buscar grade por trabalhador
+    async searchScheduleByWorker(workerId) {
+        try {
+            const data = await fetchApi('/search-schedule-worker', {
+                method: 'POST',
+                body: JSON.stringify({ workerID: workerId })
+            });
+
+            if (!Array.isArray(data)) {
+                throw new Error('Formato de resposta inválido');
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Erro ao buscar grades:', error);
+            throw error;
+        }
+    },
+
+    // Função para cancelar grade
+    async cancellSchedule(scheduleId, reason) {
+    try {
+        const data = await fetchApi('/cancell-schedule', {
+            method: 'POST',
+            body: JSON.stringify({
+                scheduleID: scheduleId,
+                reason: reason
+            })
+        });
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Erro ao cancelar grade:', error);
+        throw error;
     }
+}
 };
