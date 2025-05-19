@@ -1,5 +1,5 @@
 :root {
-    --primary: #4e83bc;     /* Azul */
+    --select-color: #4e83bc;     /* Azul */
     --hover: #2f77c4;       /* Hover */
     --border: #ccc;         /* Bordas */
     --bg: #f9f9f9;         /* Fundo */
@@ -15,7 +15,7 @@
     max-width: 650px;
     width: 100%;
     margin: 50px auto 0;
-    padding: 30px;
+    padding: 20px;
     background: var(--bg);
     border-radius: var(--radius);
     border: 1px solid var(--select-color);
@@ -47,28 +47,29 @@ h2 {
 }
 
 .form-group input:focus {
-    border-color:var(--primary);
+    border-color:var(--select-color);
     box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
 }
 
 /* Botão */
 button {
-    width: 70%;
+    width: 40%;
+    padding: 12px;
     margin: 10px auto;
-    padding: 15px;
-    background: var(--primary);
+    background: var(--select-color);
     color: white;
-    border-radius: var(--radius);
     border: none;
+    border-radius: var(--radius);
     cursor: pointer;
     display: block;
     transition: all var(--t);
+    font-size: 16px;
 }
 
 button:hover {
     background: var(--hover);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 /* Estados de erro */
