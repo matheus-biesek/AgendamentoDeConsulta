@@ -1,41 +1,63 @@
 import { fetchAppointmentsByDate } from "../../controllers/patientController.js";
 import { renderAppointmentTable } from "../../components/grid-and-appointment/appointmentComponent.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const searchButton = document.querySelector(".search-button");
-    const dateInput = document.querySelector("#reference-date");
-
-    if (!searchButton || !dateInput) {
-        console.error("Botão ou campo de data não encontrado no DOM.");
-        return;
+class AppointmentHandler {
+    constructor() {
+        this.searchButton = document.querySelector(".search-button");
+        this.dateInput = document.querySelector("#reference-date");
     }
 
-    try {
-        // Carrega as próximas consultas ao carregar a página
-        const today = new Date().toISOString().split("T")[0]; // Data atual no formato YYYY-MM-DD
-        const upcomingAppointments = await fetchAppointmentsByDate(today);
-        renderAppointmentTable(upcomingAppointments);
-    } catch (error) {
-        console.error("Erro ao carregar as próximas consultas:", error);
-        alert("Erro ao carregar as próximas consultas. Por favor, tente novamente.");
+    init() {
+        if (!this.searchButton || !this.dateInput) {
+            console.error("Elementos necessários não encontrados no DOM.");
+            return;
+        }
+
+        this.initDateFilter();
+        this.loadInitialAppointments();
+        this.setupEventListeners();
     }
 
-    // Configura o evento de clique no botão "Buscar"
-    searchButton.addEventListener("click", async () => {
-        const selectedDate = dateInput.value;
+    initDateFilter() {
+        const today = new Date().toISOString().split("T")[0];
+        this.dateInput.value = today;
+    }
 
-        if (!selectedDate) {
+    async loadInitialAppointments() {
+        try {
+            const appointments = await fetchAppointmentsByDate(this.dateInput.value);
+            renderAppointmentTable(appointments);
+        } catch (error) {
+            this.handleError("carregar", error);
+        }
+    }
+
+    setupEventListeners() {
+        this.searchButton.addEventListener("click", () => this.handleSearch());
+    }
+
+    async handleSearch() {
+        if (!this.dateInput.value) {
             alert("Por favor, selecione uma data.");
             return;
         }
 
         try {
-            // Busca as consultas filtradas pela data selecionada
-            const filteredAppointments = await fetchAppointmentsByDate(selectedDate);
-            renderAppointmentTable(filteredAppointments);
+            const appointments = await fetchAppointmentsByDate(this.dateInput.value);
+            renderAppointmentTable(appointments);
         } catch (error) {
-            console.error("Erro ao buscar as consultas:", error);
-            alert("Erro ao buscar as consultas. Por favor, tente novamente.");
+            this.handleError("buscar", error);
         }
-    });
+    }
+
+    handleError(action, error) {
+        console.error(`Erro ao ${action} as consultas:`, error);
+        alert(`Erro ao ${action} as consultas. Por favor, tente novamente.`);
+    }
+}
+
+// Inicialização
+document.addEventListener("DOMContentLoaded", () => {
+    const handler = new AppointmentHandler();
+    handler.init();
 });
