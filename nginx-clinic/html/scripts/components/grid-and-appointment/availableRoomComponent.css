@@ -6,17 +6,18 @@
     --label-color: #313131;     /* Cor do texto */
     --radius: 12px;              /* Arredondamento padrão */
     --t:0.3s;               /* Tempo de transição */
+    --shadow: 0 5px 15px rgba(0,0,0,0.1); /* Sombra padrão */
 }
 
 /* Container principal */
 .available-room-container {
     max-width: 700px;
     margin: 30px auto 0;
-    padding: 30px;
+    padding: 20px;
     background: var(--bg);
     border-radius: var(--radius);
     border: 1px solid var(--select-color);
-    box-shadow: 0 5px 15px rgba(0,0,0,.1);
+    box-shadow: var(--shadow);
     color: var(--label-color);
 }
 
@@ -54,12 +55,11 @@ h2, h3 {
     outline: none;
     box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
 }
-
-/* Estilo do botão */
+/* Botão */
 button {
-    width: 70%;
-    margin: 10px auto;
+    width: 40%;
     padding: 15px;
+    margin: 10px auto;
     background: var(--select-color);
     color: white;
     border: none;
@@ -67,16 +67,10 @@ button {
     cursor: pointer;
     display: block;
     transition: all var(--t);
+    font-size: 16px;
 }
-
-/* Efeito hover do botão */
 button:hover {
     background: var(--hover);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* Efeito de clique do botão */
-button:active { 
-    transform: translateY(1px); 
+    transform: translateY(-2px);
+    box-shadow:var(--shadow);
 }
