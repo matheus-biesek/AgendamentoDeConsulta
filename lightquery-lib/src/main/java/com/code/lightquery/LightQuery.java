@@ -156,11 +156,43 @@ public abstract class LightQuery<T> {
 
     @SuppressWarnings("unchecked")
     public T findById(UUID id) {
-        String query = "SELECT * FROM " + schemaName + "." + tableName + 
-                      " WHERE " + tableName + "_id = :id";
-        return (T) entityManager.createNativeQuery(query, entityClass)
-                              .setParameter("id", id)
-                              .getSingleResult();
+        try {
+            String query = "SELECT * FROM " + schemaName + "." + tableName + 
+                      " WHERE " + tableName + "_id = ?";
+            
+            List<Object[]> results = entityManager.createNativeQuery(query)
+                              .setParameter(1, id)
+                              .getResultList();
+
+            if (results.isEmpty()) {
+                return null;
+            }
+
+            Object[] result = results.get(0);
+            T entity = entityClass.getDeclaredConstructor().newInstance();
+            
+            int i = 0;
+            for (Field field : entityClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                Object value = result[i];
+                
+                // Tratamento especial para tipos de dados
+                if (value instanceof String && field.getType() == UUID.class) {
+                    value = UUID.fromString((String) value);
+                } else if (value instanceof java.math.BigDecimal && field.getType() == Double.class) {
+                    value = ((java.math.BigDecimal) value).doubleValue();
+                }
+                
+                field.set(entity, value);
+                i++;
+            }
+            
+            return entity;
+        } catch (Exception e) {
+            String errorMessage = String.format("Erro ao buscar entidade com ID %s. Detalhes: %s", 
+                id, e.getMessage());
+            throw new RuntimeException(errorMessage, e);
+        }
     }
 
     private String convertToSnakeCase(String camelCase) {
