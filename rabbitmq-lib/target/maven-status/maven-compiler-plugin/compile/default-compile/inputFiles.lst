@@ -5,4 +5,5 @@
 /home/biesek/Documentos/projetos/clinic/rabbitmq-lib/src/main/java/com/rabbitmq/lib/consumer/AbstractRabbitMQConsumer.java
 /home/biesek/Documentos/projetos/clinic/rabbitmq-lib/src/main/java/com/rabbitmq/lib/example/UserConsumer.java
 /home/biesek/Documentos/projetos/clinic/rabbitmq-lib/src/main/java/com/rabbitmq/lib/consumer/MessageProcessor.java
+/home/biesek/Documentos/projetos/clinic/rabbitmq-lib/src/main/java/com/rabbitmq/lib/utils/HandleMessage.java
 /home/biesek/Documentos/projetos/clinic/rabbitmq-lib/src/main/java/com/rabbitmq/lib/consumer/MessageHandler.java
