@@ -17,10 +17,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TimeSlot {
     private UUID time_slot_id;
+    private UUID schedule_template_id;
     private Boolean active;
-    private UUID professional_id;
+    private UUID user_id;
     private UUID room_id;
     private Time start_time;
     private Time end_time;
     private LocalDateTime date;
+
+    public TimeSlot(UUID timeSlotId, boolean active) {
+        this.time_slot_id = timeSlotId;
+        this.active = active;
+    }
 }

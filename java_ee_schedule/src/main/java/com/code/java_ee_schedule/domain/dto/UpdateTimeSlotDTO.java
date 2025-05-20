@@ -1,5 +1,6 @@
 package com.code.java_ee_schedule.domain.dto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -11,8 +12,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppointmentDTO {
-    private UUID appointmentId;
+public class UpdateTimeSlotDTO {
     private UUID timeSlotId;
-    private UUID patientId;
+    private Boolean active;
+    private UUID userId;
+    private UUID roomId;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private LocalDateTime date;
 }

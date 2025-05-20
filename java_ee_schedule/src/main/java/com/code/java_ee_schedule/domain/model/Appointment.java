@@ -17,4 +17,16 @@ public class Appointment {
     private UUID appointment_id;
     private UUID time_slot_id;
     private UUID patient_id;
+    private boolean active;
+
+    public Appointment(UUID appointment_id, boolean active) {
+        this.appointment_id = appointment_id;
+        this.active = active;
+    }
+
+    public Appointment(UUID appointment_id, UUID time_slot_id, UUID patient_id) {
+        this.appointment_id = appointment_id;
+        this.time_slot_id = time_slot_id;
+        this.patient_id = patient_id;
+    }
 }
