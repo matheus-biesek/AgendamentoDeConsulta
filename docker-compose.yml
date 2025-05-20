@@ -76,20 +76,6 @@ services:
     networks:
       - app-network
 
-  wildfly-workers:
-    image: wildfly-workers
-    depends_on:
-      - postgres_db_auth
-      - rabbitmq
-    environment:
-      - TZ=America/Sao_Paulo
-    volumes:
-      - ./wildfly-workers/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
-      - ~/Documentos/projetos/clinic/java_ee_workers/target/java_ee_workers-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_workers-1.0-SNAPSHOT.war # LOCAL
-      # ./wildfly-workers/java_ee_workers-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/java_ee_workers-1.0-SNAPSHOT.war #PRODUÇÃO
-    networks:
-      - app-network
-
   consumer-status-appointment:
     image: consumer-status-appointment
     depends_on:
