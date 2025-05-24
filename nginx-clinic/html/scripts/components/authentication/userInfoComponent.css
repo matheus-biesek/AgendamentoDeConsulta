@@ -10,6 +10,7 @@
     padding: 10px;
     margin: 10px;
     width: 200px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .line{
@@ -17,5 +18,34 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    margin: 5px 0;
+}
 
+/* Responsividade */
+@media (max-width: 768px) {
+    .user-info {
+        width: 90%;
+        max-width: 300px;
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    .line {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-info {
+        width: 95%;
+        padding: 10px;
+        margin: 5px auto;
+    }
+
+    .line {
+        font-size: 14px;
+    }
 }

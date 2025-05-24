@@ -1,4 +1,4 @@
-// scripts/components/navbarPatient.js
+// scripts/components/navbarProfessional.js
 import { makeRequest } from "../../utils/request.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,21 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
             <img src="../images/logo.png" alt="Logo" />
         </a>
         <ul class="nav-links">
-            <li><a href="/patient/patient-appointment.html">Consultas</a></li>
-            <li><a href="/patient/patient-info.html">Dados pessoais</a></li>
+            <li><a href="/professional/professional-grid.html">Grade e consultas</a></li>
+            <li><a href="/professional/professional-appointment-start.html">Iniciar consulta</a></li>
             <li><a href="/role-selection.html">Trocar Perfil</a></li>
-            <li><a id="navbar-patient-logout">Logout</a></li>
+            <li><a id="navbar-professional-logout">Logout</a></li>
         </ul>
     `;
 
-    const logoutButton = document.getElementById('navbar-patient-logout');
+    const logoutButton = document.getElementById('navbar-professional-logout');
 
     async function handleLogout() {
         try {
             // Faz a requisição para o backend
             await makeRequest('/rest-auth/auth-session/logout', 'POST');
 
-            // Remove os dados do localStorage
             localStorage.removeItem('redirectAfterRefresh');
             localStorage.removeItem('userRoles');
             
@@ -38,3 +37,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', handleLogout);
 });
+
