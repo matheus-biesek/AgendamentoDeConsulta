@@ -13,14 +13,7 @@ const PUBLIC_PATHS = [
   '/',
   '/index.html',
   '/blocked.html',
-  '/refresh.html',
-  '/rest-workers/workers/users-by-role', // TESTE
-  '/rest-workers/workers/user-data', // TESTE
-  '/rest-workers/workers/public', // TESTE
-  '/rest-schedule/admin/public', // TESTE
-  '/rest-schedule/admin/private', // TESTE
-  '/rest-auth/user-management/register-user-by-secretary', // TESTE
-  '/rest-auth/user-management/register-user-by-admin' // TESTE
+  '/refresh.html'
 ];
 
 const STATIC_FILE_EXTENSIONS = /\.(js|css|png|jpg|ico|woff2?)$/;
@@ -36,11 +29,6 @@ const SERVICES = {
     path: '/rest-schedule',
     target: 'http://wildfly-schedule:8080/java_ee_schedule-1.0-SNAPSHOT',
     pathRewrite: (path) => `/rest-schedule${path}`
-  },
-  WORKERS: {
-    path: '/rest-workers',
-    target: 'http://wildfly-workers:8080/java_ee_workers-1.0-SNAPSHOT',
-    pathRewrite: (path) => `/rest-workers${path}`
   },
   FRONTEND: {
     path: '/',

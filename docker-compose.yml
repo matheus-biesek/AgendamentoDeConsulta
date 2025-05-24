@@ -32,7 +32,6 @@ services:
     depends_on:
       - wildfly-auth
       - wildfly-schedule
-      - wildfly-workers
     networks:
       - app-network
 
@@ -44,7 +43,6 @@ services:
       - nginx-clinic
       - wildfly-auth
       - wildfly-schedule
-      - wildfly-workers
     networks:
       - app-network
 

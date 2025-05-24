@@ -188,4 +188,41 @@ public class UserDAOImpl implements UserDAOPort {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public List<User> findAllByRole(String role, boolean active) {
+        try {
+            String roleLowerCase = role.toLowerCase();
+            
+            String query = "SELECT DISTINCT u.user_id, u.active, u.name, u.cpf, u.email, u.password, u.gender, u.blocked " +
+                "FROM auth_service.users u " +
+                "INNER JOIN auth_service.user_roles ur ON u.user_id = ur.user_id " +
+                "INNER JOIN auth_service.roles r ON ur.role_name = r.role_name " +
+                "WHERE r.role_name = :role " +
+                "AND u.active = :active " +
+                "ORDER BY u.name";
+            
+            List<Object[]> results = entityManager.createNativeQuery(query)
+                .setParameter("role", roleLowerCase)
+                .setParameter("active", active)
+                .getResultList();
+            
+            return results.stream()
+                .map(row -> {
+                    User user = new User();
+                    user.setId((UUID) row[0]);
+                    user.setActive((Boolean) row[1]);
+                    user.setName((String) row[2]);
+                    user.setCpf((String) row[3]);
+                    user.setEmail((String) row[4]);
+                    user.setPassword((String) row[5]);
+                    user.setGender(Gender.valueOf((String) row[6]));
+                    user.setBlocked((Boolean) row[7]);
+                    return user;
+                })
+                .toList();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao buscar usuários por role!", e);
+        }
+    }
+
 }

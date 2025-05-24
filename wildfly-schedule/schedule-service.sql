@@ -35,8 +35,6 @@ CREATE TABLE profile_service.room (
     user_id UUID -- NULL indica que a sala está disponível
 );
 
-
-
 -- SELECT * FROM auth_service.users;
 -- SELECT * FROM schedule_service.room;
 /*DELETE FROM schedule_service.room
@@ -90,6 +88,6 @@ CREATE TABLE schedule_service.appointment (
 
 
 -- SELECT * FROM schedule_service.time_slot;
-SELECT * FROM schedule_service.appointment;
+-- SELECT * FROM schedule_service.appointment;
 -- DELETE FROM schedule_service.appointment;
 -- DELETE FROM schedule_service.time_slot;
