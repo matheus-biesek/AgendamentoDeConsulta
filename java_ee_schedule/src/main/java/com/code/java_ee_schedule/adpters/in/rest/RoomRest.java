@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.code.java_ee_schedule.adpters.in.service.RoomService;
+import com.code.java_ee_schedule.domain.dto.MessageDTO;
 import com.code.java_ee_schedule.domain.dto.UpdateRoomDTO;
 import com.code.java_ee_schedule.domain.model.Room;
 
@@ -34,7 +35,8 @@ public class RoomRest {
     public Response createRoom(UpdateRoomDTO dto) {
         try {
             UUID roomId = roomService.create(dto.getNumber(), dto.getFunction().toString(), dto.getUserId());
-            return Response.status(Response.Status.CREATED).entity("Sala criada com sucesso: " + roomId).build();
+            MessageDTO message = new MessageDTO("Sala criada com sucesso: " + roomId);
+            return Response.status(Response.Status.CREATED).entity(message).build();
         } catch (RuntimeException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
@@ -50,12 +52,13 @@ public class RoomRest {
         try {
             Room room = null;
             if (dto.getUserId() == null) {
-                room = new Room(dto.getId(), dto.getNumber(), dto.getFunction().toString());
+                room = new Room(dto.getId(), dto.getNumber(), dto.getFunction().toString(), null);
             } else {
                 room = new Room(dto.getId(), dto.getNumber(), dto.getFunction().toString(), dto.getUserId());
             }
             roomService.updateRoom(room);
-            return Response.status(Response.Status.OK).build();
+            MessageDTO message = new MessageDTO("Sala atualizada com sucesso");
+            return Response.status(Response.Status.OK).entity(message).build();
         } catch (RuntimeException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
@@ -70,6 +73,21 @@ public class RoomRest {
         try {
             List<Room> rooms = roomService.getAllRooms();
             return Response.status(Response.Status.OK).entity(rooms).build();
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro interno ao buscar sala").build();
+        }
+    }
+
+    @POST
+    @Path("/search")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(UpdateRoomDTO dto) {
+        try {
+            Room room = roomService.search(dto.getId());
+            return Response.status(Response.Status.OK).entity(room).build();
         } catch (RuntimeException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
