@@ -15,4 +15,11 @@ public class UpdateAppointmentDTO {
     private UUID appointmentId;
     private UUID timeSlotId;
     private UUID patientId;
+    private boolean active;
+    
+    public UpdateAppointmentDTO(UUID appointment_id, UUID time_slot_id, UUID patient_id) {
+        this.appointmentId = appointment_id;
+        this.timeSlotId = time_slot_id;
+        this.patientId = patient_id;
+    }
 }

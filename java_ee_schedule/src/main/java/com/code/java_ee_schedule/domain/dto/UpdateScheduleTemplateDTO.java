@@ -40,5 +40,17 @@ public class UpdateScheduleTemplateDTO {
         this.endTime = template.getEnd_time();
         this.slotDurationMinutes = template.getSlot_duration_minutes();
     }
+
+    public UpdateScheduleTemplateDTO(UUID schedule_template_id, UUID room_id, UUID user_id, String day_of_week,
+        Time start_time, Time end_time, int slot_duration_minutes) {
+        this.scheduleTemplateId = schedule_template_id;
+        this.roomId = room_id;
+        this.userId = user_id;
+        this.dayOfWeek = DayOfWeek.valueOf(day_of_week.toUpperCase());
+        this.startTime = start_time;
+        this.endTime = end_time;
+        this.slotDurationMinutes = slot_duration_minutes;
+    }
+    
 }
 
