@@ -27,9 +27,6 @@ public class UserCrudServiceImpl {
     private UserRoleService userRoleService;
 
     public void create(UserInfoDTO dto, String role) {
-        if (role == null) {
-            role = "patient";
-        }
         Optional<User> userExist = userDAO.findByCpf(dto.getCpf());
         if (userExist.isPresent()) {
             throw new RuntimeException("Usuário já existe");
@@ -38,7 +35,11 @@ public class UserCrudServiceImpl {
         UUID id = UUID.randomUUID();
         User user = new User(id, dto.getName(), dto.getCpf(), dto.getEmail(), hashedPassword, dto.getGender());
         userDAO.create(user);
-        userRoleService.addRoleToUser(id, role);
+        if (role != null) {
+            if (role.equals("patient")) {
+                userRoleService.addRoleToUser(id, role);
+            }
+        }
     }
 
     public UserDataDTO getUserData(String cpf) {
@@ -72,5 +73,31 @@ public class UserCrudServiceImpl {
                 userRoleService.getRolesByUserId(user.getId())
             ))
             .toList();
+    }
+
+    public List<UserDataDTO> getUsersByRoleAndActive(String role, boolean active) {
+        try {
+            List<User> users = userDAO.findAllByRole(role, active);
+
+            List<UserDataDTO> userDTOs = users.stream()
+                .map(user -> {
+                    List<String> roles = userRoleService.getRolesByUserId(user.getId());
+                    return new UserDataDTO( 
+                        user.getId(),
+                        user.isBlocked(),
+                        user.isActive(),
+                        user.getName(),
+                        user.getCpf(),
+                        user.getEmail(),
+                        user.getGender(),
+                        roles
+                    );
+                })
+                .toList();
+            
+            return userDTOs;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao buscar usuários por função e status!", e);
+        }
     }
 }
