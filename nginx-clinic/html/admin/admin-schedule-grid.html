@@ -7,14 +7,23 @@
 
         <!-- Css -->
         <link rel="stylesheet" href="../styles/layout.css">
-        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/searchRoomComponent.css">
-        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/availableRoomComponent.css">
-        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/searchWorkersComponent.css">
+        <link rel="stylesheet" href="../scripts/components/room/searchRoomComponent.css">
         <link rel="stylesheet" href="../scripts/components/grid-and-appointment/createScheduleComponent.css">
         <link rel="stylesheet" href="../scripts/components/grid-and-appointment/searchScheduleComponent.css">
         <link rel="stylesheet" href="../scripts/components/grid-and-appointment/cancellScheduleComponent.css">
-
+        <link rel="stylesheet" href="../scripts/components/users/SearchUserDataByCpfComponent.css">
+        <link rel="stylesheet" href="../scripts/components/room/createRoomComponent.css">
+        <link rel="stylesheet" href="../scripts/components/room/UpdateRoomComponent.css">
+        <link rel="stylesheet" href="../scripts/components/schedule-template/createScheduleTemplate.css">
+        <link rel="stylesheet" href="../scripts/components/users/searchUserDataByRoleComponent.css">
+        <link rel="stylesheet" href="../scripts/components/schedule-template/findTemplateByUserIdComponent.css">
+        <link rel="stylesheet" href="../scripts/components/schedule-template/updateScheduleTemplate.css">
+        <link rel="stylesheet" href="../scripts/components/time-slot/createTimeSlotComponent.css">
+        <link rel="stylesheet" href="../scripts/components/time-slot/cancelTimeSlotComponent.css">
+        <link rel="stylesheet" href="../scripts/components/time-slot/findAllTimeSlotByUser.css">
+        
     </head>
+
     <body>
 
         <header class="navbar"></header>
@@ -22,30 +31,54 @@
         <!-- Conteúdo principal da página -->
         <main class="content">
             <div>
+
                 <div class="search-all-room-component"></div>
-                <div class="available-romm-component"></div>
-                <div class="search-workers-component"></div>
-                <div class="create-schedule-component"></div>
-                <div class="search-schedule-component"></div>
-                <div class="cancell-schedule-component"></div>
+
+                <div class="search-user-data-by-cpf-component"></div>
+
+                <div class="create-room-component"></div>
+                
+                <div class="update-room-component"></div>
+
+                <div class="search-user-data-by-role-component"></div>
+
+                <div class="create-schedule-template-component"></div>
+
+                <div class="find-template-by-user-id-component"></div>
+                
+                <div class="update-schedule-template-by-user-id-component"></div>
+
+                <div class="create-time-slot-component"></div>
+
+                <div class="cancel-time-slot-component"></div>
+
+                <div class="find-all-time-slot-by-user-component"></div>
+
             </div>
+
         </main>
 
         <footer class="footer"></footer>
 
-        <!-- Componentes -->
-        <script src="../scripts/components/navbars/navbarAdmin.js"></script>
-        <script src="../scripts/components/footer.js"></script>
-        <script src="../scripts/components/grid-and-appointment/searchRoomComponent.js"></script>
-        <script src="../scripts/components/grid-and-appointment/availableRoomComponent.js"></script>
-        <script src="../scripts/components/grid-and-appointment/searchWorkersComponent.js"></script>
-        <script src="../scripts/components/grid-and-appointment/createScheduleComponent.js"></script>
-        <script src="../scripts/components/grid-and-appointment/searchScheduleComponent.js"></script>
-        <script src="../scripts/components/grid-and-appointment/cancellScheduleComponent.js"></script>
+        <!-- Componentes header e footer -->
+        <script type="module" src="../scripts/components/navbars/navbarAdmin.js"></script>
+        <script type="module" src="../scripts/components/footer.js"></script>
 
-        <!-- Funções -->
-        <script type="module" src="../scripts/dom/admin/admin-schedule-gridDOM.js"></script>
-        <script type="module" src="../scripts/dom/sessionDOM.js"></script>
-        
+        <!-- Componentes body -->
+        <script type="module" src="../scripts/components/room/searchRoomComponent.js"></script>
+        <script type="module" src="../scripts/components/users/SearchUserDataByCpfComponent.js"></script>
+        <script type="module" src="../scripts/components/grid-and-appointment/createScheduleComponent.js"></script>
+        <script type="module" src="../scripts/components/grid-and-appointment/searchScheduleComponent.js"></script>
+        <script type="module" src="../scripts/components/grid-and-appointment/cancellScheduleComponent.js"></script>
+        <script type="module" src="../scripts/components/room/createRoomComponent.js"></script>
+        <script type="module" src="../scripts/components/room/UpdateRoomComponent.js"></script>
+        <script type="module" src="../scripts/components/schedule-template/createScheduleTemplate.js"></script>
+        <script type="module" src="../scripts/components/users/searchUserDataByRoleComponent.js"></script>
+        <script type="module" src="../scripts/components/schedule-template/findTemplateByUserIdComponent.js"></script>
+        <script type="module" src="../scripts/components/schedule-template/updateScheduleTemplate.js"></script>
+        <script type="module" src="../scripts/components/time-slot/createTimeSlotComponent.js"></script>
+        <script type="module" src="../scripts/components/time-slot/cancelTimeSlotComponent.js"></script>
+        <script type="module" src="../scripts/components/time-slot/findAllTimeSlotByUser.js"></script>
+   
     </body>
 </html>

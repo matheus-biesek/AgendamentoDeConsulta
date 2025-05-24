@@ -10,13 +10,25 @@
             min-height: 120px;
             margin: 10px;
             transition: transform 0.2s;
+            border: 2px solid #e2e8f0;
+            background-color: #fff;
         }
         .role-button:hover {
             transform: scale(1.05);
+            border-color: #3498db;
         }
         .role-icon {
             font-size: 2rem;
             margin-bottom: 10px;
+        }
+        .role-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .role-description {
+            font-size: 0.9rem;
+            color: #718096;
         }
     </style>
 </head>
@@ -38,44 +50,53 @@
     </div>
 
     <script type="module">
-        import { getRouteForRole } from './scripts/services/sessionService.js';
+        import { navigateToRoute, getAvailableRoutes } from './scripts/services/sessionService.js';
 
         const roleLabels = {
             "admin": "Administrador",
             "secretary": "Secretária",
-            "doctor": "Médico",
-            "technician": "Técnico",
-            "nurse": "Enfermeiro",
+            "professional": "Profissional",
             "patient": "Paciente"
         };
 
         const roleIcons = {
             "admin": "👨‍💼",
             "secretary": "👩‍💼",
-            "doctor": "👨‍⚕️",
-            "technician": "👨‍🔧",
-            "nurse": "👩‍⚕️",
+            "professional": "👨‍⚕️",
             "patient": "👤"
+        };
+
+        const roleDescriptions = {
+            "admin": "Gerenciar usuários e configurações do sistema",
+            "secretary": "Gerenciar agendamentos e atendimentos",
+            "professional": "Visualizar e gerenciar suas consultas",
+            "patient": "Acessar suas informações e agendamentos"
         };
 
         function createRoleButton(role) {
             const button = document.createElement('button');
-            button.className = 'btn btn-outline-primary role-button col-md-4';
+            button.className = 'btn role-button col-md-5';
             button.innerHTML = `
                 <div class="role-icon">${roleIcons[role]}</div>
-                <div>${roleLabels[role]}</div>
+                <div class="role-title">${roleLabels[role]}</div>
+                <div class="role-description">${roleDescriptions[role]}</div>
             `;
-            button.onclick = () => {
-                window.location.href = getRouteForRole(role);
-            };
+            button.onclick = () => navigateToRoute(role);
             return button;
         }
 
-        // Recupera as roles do localStorage (assumindo que foram salvas lá após o login)
+        // Recupera as roles do localStorage
         const roles = JSON.parse(localStorage.getItem('userRoles') || '[]');
+        const availableRoutes = getAvailableRoutes(roles);
         const roleButtonsContainer = document.getElementById('roleButtons');
 
-        roles.forEach(role => {
+        // Se não houver rotas disponíveis, redireciona para página bloqueada
+        if (availableRoutes.length === 0) {
+            window.location.href = 'blocked.html';
+        }
+
+        // Cria os botões apenas para as rotas disponíveis
+        availableRoutes.forEach(role => {
             const button = createRoleButton(role);
             roleButtonsContainer.appendChild(button);
         });

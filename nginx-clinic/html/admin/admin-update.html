@@ -7,9 +7,14 @@
         
         <!-- CSS -->
         <link rel="stylesheet" href="../styles/layout.css">
-        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/changeUserRoleComponent.css">
-        <link rel="stylesheet" href="../scripts/components/grid-and-appointment/createUserComponent.css">
+        <link rel="stylesheet" href="../scripts/components/users/changeUserRoleComponent.css">
+        <link rel="stylesheet" href="../scripts/components/users/createUserComponent.css">
+        <link rel="stylesheet" href="../scripts/components/users/SearchUserDataByCpfComponent.css">
+        <link rel="stylesheet" href="../scripts/components/users/DeleteOrActivateUserComponent.css">
+        <link rel="stylesheet" href="../scripts/components/users/BlockedOrUnblockedUserComponent.css">
+        <link rel="stylesheet" href="../scripts/components/users/UpdateUserDataComponent.css">
         <link rel="icon" href="data:,">
+
     </head>
     <body>
 
@@ -18,21 +23,33 @@
         <!-- Conteúdo principal da página -->
         <main class="content">
             <div>
+            
+                <div class="search-user-data-by-cpf-component"></div>
+
                 <div class="change-user-role-component"></div>
+                
                 <div class="create-user-component"></div>
+            
+                <div class="delete-or-activate-user-component"></div>
+
+                <div class="blocked-or-unblocked-user-component"></div>
+
+                <div class="update-user-data-component"></div>
+
             </div>
         </main>
 
         <footer class="footer"></footer>
         
         <!-- Componentes -->
-        <script src="../scripts/components/navbars/navbarAdmin.js"></script>
-        <script src="../scripts/components/footer.js"></script>
-        <script src="../scripts/components/grid-and-appointment/changeUserRoleComponent.js"></script>
-        <script src="../scripts/components/grid-and-appointment/createUserComponent.js"></script>
-        <!-- Funções -->
-        <script type="module" src="../scripts/dom/admin/admin-updateDOM.js"></script>
-        <script type="module" src="../scripts/dom/sessionDOM.js"></script>
+        <script type="module" src="../scripts/components/navbars/navbarAdmin.js"></script>
+        <script type="module" src="../scripts/components/footer.js"></script>
+        <script type="module" src="../scripts/components/users/changeUserRoleComponent.js"></script>
+        <script type="module" src="../scripts/components/users/createUserComponent.js"></script>
+        <script type="module" src="../scripts/components/users/SearchUserDataByCpfComponent.js"></script>
+        <script type="module" src="../scripts/components/users/DeleteOrActivateUserComponent.js"></script>
+        <script type="module" src="../scripts/components/users/BlockedOrUnblockedUserComponent.js"></script>
+        <script type="module" src="../scripts/components/users/UpdateUserDataComponent.js"></script>
         
     </body>
 </html>
