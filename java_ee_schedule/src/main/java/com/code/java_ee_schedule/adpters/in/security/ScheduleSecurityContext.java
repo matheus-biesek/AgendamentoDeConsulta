@@ -4,6 +4,7 @@ import com.jwt.lib.filter.SecurityContext;
 import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.container.ContainerRequestContext;
+import java.util.List;
 
 @ApplicationScoped
 public class ScheduleSecurityContext implements SecurityContext {
@@ -20,11 +21,13 @@ public class ScheduleSecurityContext implements SecurityContext {
 
     @Override
     public void setupContext(ContainerRequestContext ctx, Claims claims) {
+        System.out.println("Passou aqui - ScheduleSecurityContext");
         String userId = claims.getSubject();
-        String role = claims.get("role", String.class);
+        @SuppressWarnings("unchecked")
+        List<String> roles = claims.get("roles", List.class);
         
-        // Configura o contexto de segurança
-        ctx.setProperty("userId", userId);
-        ctx.setProperty("role", role);
+        // Configura o SecurityContext do JAX-RS
+        jakarta.ws.rs.core.SecurityContext securityContext = new JaxRsSecurityContextImpl(userId, roles);
+        ctx.setSecurityContext(securityContext);
     }
 } 
