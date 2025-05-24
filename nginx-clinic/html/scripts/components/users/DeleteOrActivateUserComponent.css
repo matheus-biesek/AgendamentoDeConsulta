@@ -1,0 +1,91 @@
+.delete-or-activate-user-component {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.delete-or-activate-user-component h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.delete-or-activate-user-component form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.delete-or-activate-user-component label {
+    font-weight: 600;
+    color: #555;
+}
+
+.delete-or-activate-user-component input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.delete-or-activate-user-component input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.delete-or-activate-user-component .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.delete-or-activate-user-component button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.delete-or-activate-user-component .activate-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-or-activate-user-component .activate-btn:hover {
+    background-color: #45a049;
+}
+
+.delete-or-activate-user-component .delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-or-activate-user-component .delete-btn:hover {
+    background-color: #da190b;
+}
+
+.delete-or-activate-user-component .message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+.delete-or-activate-user-component .message.success {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    display: block;
+}
+
+.delete-or-activate-user-component .message.error {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+    display: block;
+}

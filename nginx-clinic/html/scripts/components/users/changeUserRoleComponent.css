@@ -1,0 +1,96 @@
+:root {
+    --select-color: #4e83bc;    /* Cor principal */
+    --hover: #2f77c4;      /* Cor hover */
+    --border: #ccc;        /* Bordas */
+    --bg: #f9f9f9;        /* Fundo */
+    --text: #313131;      /* Texto */
+    --radius: 10px;       /* Arredondamento */
+    --t: 0.3s;            /* Transição */
+}
+
+/* Layout base */
+.change-user-role-component {
+    margin: 0 auto;
+    padding: 20px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--select-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Formulário */
+.form-group, .role-options {
+    width: 100%;
+    display: flex;
+}
+
+.form-group { 
+    flex-direction: column; 
+    margin-bottom: 20px; 
+}
+
+.role-options { 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    justify-content: center; 
+}
+
+/* Textos */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Campos */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all var(--t);
+}
+
+input:focus {
+    border-color: var(--select-color);
+    box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
+}
+
+/* Radio buttons */
+.role-options input[type="radio"] { display: none; }
+
+.role-options label {
+    padding: 10px 15px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all var(--t);
+}
+
+.role-options input[type="radio"]:checked + label {
+    background: var(--select-color);
+    color: white;
+}
+
+/* Botão */
+button {
+    width: 40%;
+    padding: 12px;
+    margin: 10px auto;
+    background: var(--select-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: block;
+    transition: all var(--t);
+    font-size: 16px;
+}
+
+button:hover {
+    background: var(--hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
