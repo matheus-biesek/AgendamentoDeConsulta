@@ -28,26 +28,10 @@ public class PageAuthRest {
     }
 
     @GET
-    @Path("/validate-nurse")
+    @Path("/validate-professional")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response validateNurse() {
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path("/validate-doctor")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response validateDoctor() {
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path("/validate-technician")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response validateTechnician() {
+    public Response validateProfessional() {
         return Response.ok().build();
     }
 

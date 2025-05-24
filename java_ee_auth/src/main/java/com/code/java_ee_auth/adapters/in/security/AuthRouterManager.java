@@ -23,19 +23,17 @@ public class AuthRouterManager extends AbstractRouteManager {
         return Map.ofEntries(
             Map.entry("/auth-front/validate-admin", "admin"),
             Map.entry("/auth-front/validate-secretary", "secretary"),
-            Map.entry("/auth-front/validate-technician", "technician"),
             Map.entry("/auth-front/validate-patient", "patient"),
-            Map.entry("/auth-front/validate-doctor", "doctor"),
-            Map.entry("/auth-front/validate-nurse", "nurse"),
+            Map.entry("/auth-front/validate-professional", "doctor,nurse,secretary,technician,admin"),
             // --------------------------------------------------------------------
-            Map.entry("/user-management/register-user-by-secretary", "secretary"),
-            Map.entry("/user-management/register-user-by-admin", "admin"),
+            Map.entry("/user-management/register-user", "secretary,admin"),
             Map.entry("/user-management/search-user-data", "admin"),
             Map.entry("/user-management/delete-or-activate-user", "admin,secretary"),
             Map.entry("/user-management/update-user-data", "secretary,admin"),
             Map.entry("/user-management/add-role-to-user", "admin"),
             Map.entry("/user-management/remove-role-from-user", "admin"),
             Map.entry("/user-management/block-or-unblock-user", "admin"),
+            Map.entry("/user-management/get-users-by-role-and-active", "admin"),
             Map.entry("/secure/admin", "admin"),
             Map.entry("/secure/patient", "patient")
         );
