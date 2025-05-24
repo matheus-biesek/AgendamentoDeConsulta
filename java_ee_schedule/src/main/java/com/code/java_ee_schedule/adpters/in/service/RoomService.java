@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.code.java_ee_schedule.adpters.out.messaging.producer.SearchUserProducer;
 import com.code.java_ee_schedule.adpters.out.persistence.RoomDAO;
+import com.code.java_ee_schedule.domain.dto.UpdateRoomDTO;
 import com.code.java_ee_schedule.domain.model.Room;
 import com.rabbitmq.lib.utils.HandleMessage;
 
@@ -44,6 +45,9 @@ public class RoomService {
     }
 
     public void updateRoom(Room room) {
+        if (room.getUser_id() == null) {
+            room.setUser_id(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+        }
         roomDAO.update(room);
     }
 
@@ -66,6 +70,14 @@ public class RoomService {
 
     // OFFLINE
     public Room getRoomById(UUID id) {
+        Room room = roomDAO.findById(id);
+        if (room == null) {
+            throw new RuntimeException("Sala não encontrada");
+        }
+        return room;
+    }
+
+    public Room search(UUID id) {
         Room room = roomDAO.findById(id);
         if (room == null) {
             throw new RuntimeException("Sala não encontrada");

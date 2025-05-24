@@ -2,6 +2,7 @@ package com.code.java_ee_schedule.adpters.in.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.code.java_ee_schedule.adpters.out.persistence.AppointmentDAO;
 import com.code.java_ee_schedule.domain.dto.UpdateAppointmentDTO;
@@ -35,7 +36,23 @@ public class AppointmentService {
         return appointmentDAO.findAll();
     }
 
-    public Appointment findById(UUID id) {
-        return appointmentDAO.findById(id);
+    public List<UpdateAppointmentDTO> findByUserId(UUID userId) {
+        List<Appointment> appointments = appointmentDAO.findByUserId(userId);
+        return appointments.stream()
+            .map(appointment -> new UpdateAppointmentDTO(appointment.getAppointment_id(), appointment.getTime_slot_id(), appointment.getPatient_id(), appointment.isActive()))
+            .collect(Collectors.toList());
     }
+
+    public UpdateAppointmentDTO findById(UUID id) {
+        Appointment appointment = appointmentDAO.findById(id);
+        return new UpdateAppointmentDTO(appointment.getAppointment_id(), appointment.getTime_slot_id(), appointment.getPatient_id(), appointment.isActive());
+    }
+
+    public List<UpdateAppointmentDTO> findAppointmentsByProfessionalId(UUID professionalId) {
+        List<Appointment> appointments = appointmentDAO.findAppointmentsByProfessionalId(professionalId);
+        return appointments.stream()
+            .map(appointment -> new UpdateAppointmentDTO(appointment.getAppointment_id(), appointment.getTime_slot_id(), appointment.getPatient_id(), appointment.isActive()))
+            .collect(Collectors.toList());
+    }
+
 }
