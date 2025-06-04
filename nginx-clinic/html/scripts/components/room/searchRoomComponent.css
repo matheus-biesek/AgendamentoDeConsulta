@@ -2,15 +2,17 @@
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    margin-top: 20px;
+    border: 1px solid #4e83bc;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 20px auto;
+    max-width: 550px;
 }
 
 .search-room-container h2 {
     color: #333;
     margin-bottom: 20px;
     font-size: 1.5rem;
+    text-align: center;
 }
 
 .search-room-grid {

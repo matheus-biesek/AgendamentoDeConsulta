@@ -1,15 +1,25 @@
+:root {
+    --select-color: #4e83bc;    /* Cor principal */
+    --hover: #2f77c4;      /* Cor hover */
+    --radius: 10px;       /* Arredondamento */
+    --t: 0.3s;            /* Transição */
+}
+
 .search-user-data-by-cpf-component {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #4e83bc;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     margin-bottom: 20px;
+    min-width: 700px;
 }
 
 .search-user-data-by-cpf-component h2 {
     color: #333;
     margin-bottom: 20px;
     font-size: 1.5rem;
+    text-align: center;
 }
 
 .search-user-data-by-cpf-component form {
@@ -105,4 +115,25 @@
     border-radius: 4px;
     font-size: 0.9rem;
     color: #495057;
+}
+
+/* Botão */
+.search-user-data-by-cpf-component button {
+    min-width: 43%;
+    padding: 12px;
+    margin: 10px auto;
+    background-color: var(--select-color); /* Use a variável CSS */
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: block;
+    transition: all var(--t);
+    font-size: 16px;
+}
+
+.search-user-data-by-cpf-component button:hover {
+    background-color: var(--hover); /* Use a variável CSS */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }

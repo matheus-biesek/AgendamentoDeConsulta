@@ -12,7 +12,7 @@
 .change-user-role-component {
     margin: 0 auto;
     padding: 20px;
-    background: var(--bg);
+    background: #ffffff;
     border-radius: var(--radius);
     border: 1px solid var(--select-color);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -72,6 +72,30 @@ input:focus {
 .role-options input[type="radio"]:checked + label {
     background: var(--select-color);
     color: white;
+}
+
+/*Selecionar */
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    color: var(--text);
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234e83bc' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 10px center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    appearance: none;
+    transition: all var(--t);
+}
+
+select:is(:hover, :focus) {
+    border-color: var(--select-color);
+    box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
+    outline: none;
+}
+
+select option {
+    padding: 10px;
 }
 
 /* Botão */

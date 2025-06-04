@@ -1,9 +1,16 @@
+:root {
+    --select-color: #4e83bc;    /* Cor principal */
+    --hover: #2f77c4;      /* Cor hover */
+    --radius: 10px;       /* Arredondamento */
+    --t: 0.3s;            /* Transição */
+}
 .update-user-data-component {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+        border: 1px solid var(--select-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .update-user-data-component h2 {
@@ -27,19 +34,25 @@
     font-size: 1rem;
 }
 
-.update-user-data-component .search-section button {
-    padding: 10px 20px;
-    background-color: #4a90e2;
+/* Botão */
+.update-user-data-component .search-section button  {
+    width: 30%;
+    padding: 12px;
+    margin: 10px auto;
+    background: var(--select-color);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius);
     cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
+    display: block;
+    transition: all var(--t);
+    font-size: 16px;
 }
 
-.update-user-data-component .search-section button:hover {
-    background-color: #357abd;
+.update-user-data-component .search-section button :hover {
+    background: var(--hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .update-user-data-component form {
