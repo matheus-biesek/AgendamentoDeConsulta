@@ -1,92 +1,420 @@
+/* ===== SEARCH ROOM COMPONENT - ESTILO MODERNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Manter compatibilidade com código antigo */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --radius: 10px;
+    --t: 0.3s;
+}
+
+/* ===== COMPONENTE PRINCIPAL ===== */
 .search-room-container {
-    background-color: #ffffff;
-    padding: 20px;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
-    border: 1px solid #4e83bc;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin: 20px auto;
-    max-width: 550px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 650px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
+    padding: 20px;
 }
 
+/* Efeito de borda animada */
+.search-room-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro */
+.search-room-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.search-room-container:hover::before {
+    left: 100%;
+}
+
+/* ===== HEADER MODERNO ===== */
 .search-room-container h2 {
-    color: #333;
-    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
     font-size: 1.5rem;
+    font-weight: 600;
     text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
+/* Efeito shimmer no header */
+.search-room-container h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.search-room-container:hover h2::after {
+    left: 100%;
+}
+
+/* ===== GRID DE SALAS MODERNO ===== */
 .search-room-grid {
     overflow-x: auto;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: var(--white);
+    transition: all 0.3s ease;
 }
 
+.search-room-container:hover .search-room-grid {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(255,255,255,1));
+    border-color: var(--blue);
+}
+
+/* ===== TABELA MODERNA ===== */
 .search-room-grid table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin: 0;
+    font-family: var(--font-family);
 }
 
 .search-room-grid th,
 .search-room-grid td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
 }
 
 .search-room-grid th {
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, var(--gray-light), #f8fafc);
     font-weight: 600;
-    color: #333;
+    color: var(--gray-dark);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    border-bottom: 2px solid var(--blue);
+}
+
+.search-room-grid th::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--blue-dark);
+    transition: width 0.3s ease;
+}
+
+.search-room-container:hover .search-room-grid th::after {
+    width: 100%;
+}
+
+/* ===== LINHAS DA TABELA ===== */
+.search-room-grid tr {
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 .search-room-grid tr:hover {
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(255,255,255,1));
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
+.search-room-grid tr::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: var(--blue);
+    transition: width 0.3s ease;
+}
+
+.search-room-grid tr:hover::before {
+    width: 3px;
+}
+
+/* ===== ESTADOS DAS SALAS MODERNOS ===== */
+.search-room-grid .room-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.search-room-grid .room-status::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.search-room-grid .room-status:hover::before {
+    left: 100%;
+}
+
+/* Status Ocupado */
+.search-room-grid .room-status.occupied {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #991b1b;
+    border: 1px solid #f87171;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.search-room-grid .room-status.occupied::after {
+    content: '🔴';
+    font-size: 0.8rem;
+}
+
+.search-room-grid .room-status.occupied:hover {
+    background: linear-gradient(135deg, #fecaca, #f87171);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Status Disponível */
+.search-room-grid .room-status.available {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    border: 1px solid #34d399;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.search-room-grid .room-status.available::after {
+    content: '🟢';
+    font-size: 0.8rem;
+}
+
+.search-room-grid .room-status.available:hover {
+    background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* ===== LOADING STATE MODERNO ===== */
 .search-room-grid .loading {
     text-align: center;
-    color: #666;
-    padding: 20px;
-}
-
-.search-room-grid .room-status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    color: var(--gray);
+    padding: 40px 20px;
+    font-family: var(--font-family);
     font-weight: 500;
+    position: relative;
 }
 
-.search-room-grid .room-status.occupied {
-    background-color: #f8d7da;
-    color: #721c24;
+.search-room-grid .loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--gray-light);
+    border-top: 3px solid var(--blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-top: -20px;
 }
 
-.search-room-grid .room-status.available {
-    background-color: #d4edda;
-    color: #155724;
+.search-room-grid .loading::after {
+    content: 'Carregando salas...';
+    display: block;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: var(--gray-dark);
 }
 
-/* Responsividade */
+/* ===== ANIMAÇÃO DE CARREGAMENTO ===== */
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
     .search-room-container {
+        max-width: 100%;
+        margin: 1rem;
         padding: 15px;
     }
-
+    
+    .search-room-container h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
     .search-room-grid th,
     .search-room-grid td {
         padding: 8px;
         font-size: 0.9rem;
     }
+    
+    .search-room-grid .room-status {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .search-room-grid tr:hover {
+        transform: none;
+    }
 }
 
 @media (max-width: 480px) {
     .search-room-container {
+        margin: 0.5rem;
         padding: 10px;
     }
-
+    
+    .search-room-container:hover {
+        transform: translateY(-3px);
+    }
+    
     .search-room-grid th,
     .search-room-grid td {
         padding: 6px;
         font-size: 0.85rem;
     }
+    
+    .search-room-grid .room-status {
+        padding: 3px 6px;
+        font-size: 0.75rem;
+        gap: 3px;
+    }
+    
+    .search-room-grid .room-status::after {
+        font-size: 0.7rem;
+    }
+    
+    .search-room-grid tr:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* ===== EFEITOS ESPECIAIS ===== */
+.search-room-grid table {
+    animation: slideIn 0.5s ease-out;
+}
+
+.search-room-grid tr {
+    animation: slideIn 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+.search-room-grid tr:nth-child(1) { animation-delay: 0.1s; }
+.search-room-grid tr:nth-child(2) { animation-delay: 0.2s; }
+.search-room-grid tr:nth-child(3) { animation-delay: 0.3s; }
+.search-room-grid tr:nth-child(4) { animation-delay: 0.4s; }
+.search-room-grid tr:nth-child(5) { animation-delay: 0.5s; }
+
+/* ===== SCROLL PERSONALIZADO ===== */
+.search-room-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.search-room-grid::-webkit-scrollbar-track {
+    background: var(--gray-light);
+    border-radius: 4px;
+}
+
+.search-room-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark));
+    border-radius: 4px;
+}
+
+.search-room-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, var(--blue-dark), #1e40af);
+}
+
+/* ===== MELHORIAS VISUAIS ===== */
+.search-room-container {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.search-room-grid tr:last-child td {
+    border-bottom: none;
+}
+
+.search-room-grid th:first-child,
+.search-room-grid td:first-child {
+    padding-left: 16px;
+}
+
+.search-room-grid th:last-child,
+.search-room-grid td:last-child {
+    padding-right: 16px;
 }

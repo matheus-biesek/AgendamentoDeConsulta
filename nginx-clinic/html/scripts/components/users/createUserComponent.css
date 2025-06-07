@@ -1,198 +1,386 @@
+/* ===== CREATE USER COMPONENT - ESTILO MODERNO REFATORADO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-    --select-color: #4e83bc;     /* Azul */
-    --hover: #2f77c4;       /* Hover */
-    --border: #ccc;         /* Bordas */
-    --bg: #f9f9f9;         /* Fundo */
-    --label-color: #313131;   /* Texto */
-    --radius: 12px;        /* Bordas */
-    --t: 0.3s;             /* Tempo */
-    --error: #ff3333;        /* Cor de erro */
-    --error-shadow: rgba(255, 51, 51, 0.3); /* Sombra do erro */
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Compatibilidade com código original */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --border: #ccc;
+    --bg: #f9f9f9;
+    --label-color: #313131;
+    --radius: 12px;
+    --t: 0.3s;
+    --error: #ff3333;
+    --error-shadow: rgba(255, 51, 51, 0.3);
 }
 
-/* Container */
+/* ===== COMPONENTE PRINCIPAL ===== */
 .create-user-component {
-    background-color: #ffffff;
-    padding: 20px;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
-    border: 1px solid #4e83bc;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    margin-top: 20px;
-    min-width: 700px; /* Largura mínima */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    min-width: 900px;
+    margin: 2rem auto;
+    padding: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
 }
 
-/* Título */
+/* Efeitos hover unificados */
+.create-user-component::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+.create-user-component:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    background: var(--white);
+    animation: pulse-glow 2s infinite;
+}
+
+.create-user-component:hover::before {
+    left: 100%;
+}
+
+/* ===== HEADER ===== */
 .create-user-component h2 {
-    color: #333;
-    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
     font-size: 1.5rem;
+    font-weight: 600;
     text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
-/* Grupos */
-.form-group {
+.create-user-component h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.create-user-component:hover h2::after {
+    left: 100%;
+}
+
+/* ===== FORM GROUPS E LABELS ===== */
+.create-user-component .form-group {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 15px;
+    width: 100%;
 }
 
-/* Campos */
-.form-group label {
+.create-user-component .form-group label {
     font-weight: 600;
-    color: #555;
+    color: var(--gray-dark);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-family);
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"] {
+/* ===== INPUTS UNIFICADOS ===== */
+.create-user-component .form-group input,
+.create-user-component select {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
     font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-}
-
-/* Opções de Role */
-.role-options {
-    display: flex;
-    gap: 15px;
-    margin-top: 5px;
-}
-
-.role-options label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.create-user-component select {
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%233b82f6' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 10px center;
     cursor: pointer;
-}
-
-/* Botão */
-button {
-    width: 40%;
-    padding: 12px;
-    margin: 10px auto;
-    background: var(--select-color);
-    color: white;
-    border: none;
+    appearance: none;
+    color: var(--label-color);
+    font-size: 14px;
     border-radius: var(--radius);
-    cursor: pointer;
-    display: block;
-    transition: all var(--t);
-    font-size: 16px;
 }
 
-button:hover {
-    background: var(--hover);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.create-user-component .form-group input:focus,
+.create-user-component select:focus,
+.create-user-component select:hover {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* Estados de erro */
-.form-group input.input-error {
+.create-user-component .form-group input:focus {
+    transform: scale(1.02);
+}
+
+/* ===== ESTADOS DE ERRO ===== */
+.create-user-component .form-group input.input-error {
     border-color: var(--error);
-    box-shadow: 0 0 5px var(--error-shadow);
+    box-shadow: 0 0 0 3px rgba(255, 51, 51, 0.1);
+    animation: shake 0.5s ease-in-out;
 }
 
-.form-group input.input-error:focus {
-    border-color: var(--error);
-    box-shadow: 0 0 8px var(--error-shadow);
-}
-
-/* Mensagem de erro */
-.error-message {
+.create-user-component .error-message {
     color: var(--error);
     font-size: 12px;
     margin-top: 5px;
     display: none;
+    font-family: var(--font-family);
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
 }
 
-.error-message.visible {
+.create-user-component .error-message.visible {
     display: block;
 }
 
-/* Mensagens */
-.message {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 4px;
+/* ===== RADIO BUTTONS ===== */
+.create-user-component .role-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.create-user-component .role-options input[type="radio"] {
     display: none;
 }
 
-.message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    display: block;
-}
-
-.message.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    display: block;
-}
-
-/*Selecionar */
-select {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    color: var(--label-color);
-    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234e83bc' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 10px center;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+.create-user-component .role-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
     cursor: pointer;
-    appearance: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: var(--gray-dark);
+    background: white;
+    font-family: var(--font-family);
+    position: relative;
+    overflow: hidden;
+}
+
+.create-user-component .role-options label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.create-user-component .role-options label:hover {
+    border-color: var(--blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.create-user-component .role-options label:hover::before {
+    left: 100%;
+}
+
+.create-user-component .role-options input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: white;
+    border-color: var(--blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+/* ===== BOTÃO ===== */
+.create-user-component button {
+    width: 40%;
+    min-width: 200px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
     transition: all var(--t);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    display: block;
+    margin: 10px auto;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-select:is(:hover, :focus) {
-    border-color: var(--select-color);
-    box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
-    outline: none;
+.create-user-component button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
 }
 
-select option {
-    padding: 10px;
+.create-user-component button:hover {
+    background: linear-gradient(135deg, var(--blue-dark), #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
-/* Responsividade */
+.create-user-component button:hover::before {
+    left: 100%;
+}
+
+.create-user-component button:active {
+    transform: translateY(0);
+}
+
+/* ===== MENSAGENS ===== */
+.create-user-component .message {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    display: none;
+    font-weight: 500;
+    font-family: var(--font-family);
+    align-items: center;
+    gap: 8px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.create-user-component .message.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    display: flex;
+}
+
+.create-user-component .message.success::before {
+    content: '✅';
+    font-size: 1.1rem;
+}
+
+.create-user-component .message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    display: flex;
+}
+
+.create-user-component .message.error::before {
+    content: '❌';
+    font-size: 1.1rem;
+}
+
+/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
     .create-user-component {
+        max-width: 100%;
+        margin: 1rem;
         padding: 15px;
+        min-width: auto;
     }
-
-    .role-options {
+    
+    .create-user-component h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
+    .create-user-component .role-options {
         flex-direction: column;
         gap: 10px;
+    }
+    
+    .create-user-component .role-options label {
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .create-user-component button {
+        width: 100%;
+        min-width: auto;
     }
 }
 
 @media (max-width: 480px) {
     .create-user-component {
+        margin: 0.5rem;
         padding: 10px;
     }
-
-    .form-group label {
+    
+    .create-user-component:hover {
+        transform: translateY(-3px);
+    }
+    
+    .create-user-component .form-group label {
         font-size: 14px;
     }
-
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"] {
+    
+    .create-user-component .form-group input {
         padding: 8px;
         font-size: 14px;
     }
-
-    #create-user-button {
+    
+    .create-user-component button {
         padding: 10px 20px;
         font-size: 14px;
     }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15); }
+    50% { box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25); }
 }

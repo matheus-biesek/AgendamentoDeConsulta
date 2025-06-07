@@ -1,57 +1,188 @@
+/* ===== CÓDIGO UNIFICADO - MELHOR DOS DOIS ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-    --select-color: #4e83bc;    /* Cor principal */
-    --hover: #2f77c4;      /* Cor hover */
-    --radius: 10px;       /* Arredondamento */
-    --t: 0.3s;            /* Transição */
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Manter compatibilidade com código antigo */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --radius: 10px;
+    --t: 0.3s;
 }
 
 .search-user-data-by-cpf-component {
-    background-color: #ffffff;
-    padding: 20px;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
-    border: 1px solid #4e83bc;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    min-width: 700px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 700px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
+    padding: 20px;
 }
 
+/* Efeito de borda animada */
+.search-user-data-by-cpf-component::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro com efeitos espelhados */
+.search-user-data-by-cpf-component:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.search-user-data-by-cpf-component:hover::before {
+    left: 100%;
+}
+
+/* Header moderno com gradiente e efeito shimmer */
 .search-user-data-by-cpf-component h2 {
-    color: #333;
-    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
     font-size: 1.5rem;
+    font-weight: 600;
     text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
+/* Efeito shimmer no header */
+.search-user-data-by-cpf-component h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.search-user-data-by-cpf-component:hover h2::after {
+    left: 100%;
+}
+
+/* Estrutura do form com efeito hover */
 .search-user-data-by-cpf-component form {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.search-user-data-by-cpf-component:hover form {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(255,255,255,1));
 }
 
 .search-user-data-by-cpf-component label {
     font-weight: 600;
-    color: #555;
+    color: var(--gray-dark);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-family);
 }
 
 .search-user-data-by-cpf-component input {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
     font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
 .search-user-data-by-cpf-component input:focus {
     outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: scale(1.02);
 }
 
+/* Botão moderno com efeito shimmer */
+.search-user-data-by-cpf-component button {
+    min-width: 43%;
+    width: auto;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--t);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    display: block;
+    margin: 10px auto;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-user-data-by-cpf-component button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.search-user-data-by-cpf-component button:hover {
+    background: linear-gradient(135deg, var(--blue-dark), #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.search-user-data-by-cpf-component button:hover::before {
+    left: 100%;
+}
+
+.search-user-data-by-cpf-component button:active {
+    transform: translateY(0);
+}
+
+/* Manter TODOS os estilos do user-data-display do original */
 .user-data-display {
     margin-top: 20px;
     padding: 15px;
     background-color: #f8f9fa;
     border-radius: 4px;
     display: none;
+    animation: slideIn 0.3s ease-out;
 }
 
 .user-data-display.active {
@@ -61,8 +192,10 @@
 .user-data-display p {
     margin: 5px 0;
     color: #333;
+    font-family: var(--font-family);
 }
 
+/* Manter status-container e todos os badges do original */
 .status-container {
     display: flex;
     gap: 20px;
@@ -76,6 +209,12 @@
     font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.status-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .status-badge.active {
@@ -84,12 +223,7 @@
     border: 1px solid #c3e6cb;
 }
 
-.status-badge.inactive {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
+.status-badge.inactive,
 .status-badge.blocked {
     background-color: #f8d7da;
     color: #721c24;
@@ -102,6 +236,7 @@
     border: 1px solid #c3e6cb;
 }
 
+/* Manter roles do original com efeitos */
 .roles {
     display: flex;
     flex-wrap: wrap;
@@ -115,25 +250,80 @@
     border-radius: 4px;
     font-size: 0.9rem;
     color: #495057;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Botão */
-.search-user-data-by-cpf-component button {
-    min-width: 43%;
-    padding: 12px;
-    margin: 10px auto;
-    background-color: var(--select-color); /* Use a variável CSS */
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    display: block;
-    transition: all var(--t);
-    font-size: 16px;
+.role-tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(73, 80, 87, 0.1), transparent);
+    transition: left 0.5s ease;
 }
 
-.search-user-data-by-cpf-component button:hover {
-    background-color: var(--hover); /* Use a variável CSS */
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.role-tag:hover {
+    background-color: #dee2e6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.role-tag:hover::before {
+    left: 100%;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 768px) {
+    .search-user-data-by-cpf-component {
+        max-width: 100%;
+        margin: 1rem;
+        min-width: auto;
+        padding: 15px;
+    }
+    
+    .search-user-data-by-cpf-component h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
+    .search-user-data-by-cpf-component button {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-user-data-by-cpf-component {
+        margin: 0.5rem;
+        padding: 10px;
+    }
+    
+    .search-user-data-by-cpf-component:hover {
+        transform: translateY(-3px);
+    }
+}
+
+/* ===== ANIMAÇÕES ESPELHADAS ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
 }

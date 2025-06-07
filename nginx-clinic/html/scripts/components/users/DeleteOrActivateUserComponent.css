@@ -1,94 +1,338 @@
+/* ===== DELETE OR ACTIVATE USER COMPONENT - ESTILO MODERNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Manter compatibilidade com código original */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --border: #ccc;
+    --bg: #f9f9f9;
+    --text: #313131;
+    --radius: 10px;
+    --t: 0.3s;
+}
+
+/* ===== COMPONENTE PRINCIPAL ===== */
 .delete-or-activate-user-component {
-    background-color: #ffffff;
-    padding: 20px;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 700px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
+    padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid #4e83bc;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    min-width: 700px; /* Largura mínima */
 }
 
+/* Efeito de borda animada */
+.delete-or-activate-user-component::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro */
+.delete-or-activate-user-component:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.delete-or-activate-user-component:hover::before {
+    left: 100%;
+}
+
+/* ===== HEADER MODERNO ===== */
 .delete-or-activate-user-component h2 {
-    color: #333;
-    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
     font-size: 1.5rem;
+    font-weight: 600;
     text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
+/* Efeito shimmer no header */
+.delete-or-activate-user-component h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.delete-or-activate-user-component:hover h2::after {
+    left: 100%;
+}
+
+/* ===== FORMULÁRIO ===== */
 .delete-or-activate-user-component form {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding: 0;
+    transition: all 0.3s ease;
 }
 
+.delete-or-activate-user-component:hover form {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(255,255,255,1));
+}
+
+/* ===== LABELS ===== */
 .delete-or-activate-user-component label {
     font-weight: 600;
-    color: #555;
+    color: var(--gray-dark);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-family);
 }
 
+/* ===== INPUTS ===== */
 .delete-or-activate-user-component input {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
     font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
 }
 
 .delete-or-activate-user-component input:focus {
     outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: scale(1.02);
 }
 
+/* ===== BOTÕES DE AÇÃO ===== */
 .delete-or-activate-user-component .action-buttons {
     display: flex;
     gap: 10px;
     margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .delete-or-activate-user-component button {
     padding: 12px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--radius);
     cursor: pointer;
-    transition: background-color 0.2s;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all var(--t);
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 150px;
+    flex: 1;
+    max-width: 200px;
 }
 
+/* Efeito shimmer nos botões */
+.delete-or-activate-user-component button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.delete-or-activate-user-component button:hover::before {
+    left: 100%;
+}
+
+/* ===== BOTÃO ATIVAR ===== */
 .delete-or-activate-user-component .activate-btn {
-    background-color: #4e83bc;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
     color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
 }
 
 .delete-or-activate-user-component .activate-btn:hover {
-    background-color: #2f77c4;
+    background: linear-gradient(135deg, var(--blue-dark), #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
 }
 
+.delete-or-activate-user-component .activate-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== BOTÃO DELETAR ===== */
 .delete-or-activate-user-component .delete-btn {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, var(--red), #dc2626);
     color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
 }
 
 .delete-or-activate-user-component .delete-btn:hover {
-    background-color: #c82333;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
 }
 
+.delete-or-activate-user-component .delete-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== MENSAGENS DE FEEDBACK ===== */
 .delete-or-activate-user-component .message {
     margin-top: 15px;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 12px;
+    border-radius: 8px;
     display: none;
+    font-weight: 500;
+    font-family: var(--font-family);
+    align-items: center;
+    gap: 8px;
+    animation: slideIn 0.3s ease-out;
 }
 
 .delete-or-activate-user-component .message.success {
-    background-color: #dff0d8;
-    color: #3c763d;
-    border: 1px solid #ccc;
-    display: block;
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    display: flex;
+}
+
+.delete-or-activate-user-component .message.success::before {
+    content: '✅';
+    font-size: 1.1rem;
 }
 
 .delete-or-activate-user-component .message.error {
-    background-color: #f2dede;
-    color: #a94442;
-    border: 1px solid #ccc;
-    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    display: flex;
 }
 
+.delete-or-activate-user-component .message.error::before {
+    content: '❌';
+    font-size: 1.1rem;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .delete-or-activate-user-component {
+        max-width: 100%;
+        margin: 1rem;
+        padding: 15px;
+        min-width: auto;
+    }
+    
+    .delete-or-activate-user-component h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
+    .delete-or-activate-user-component .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .delete-or-activate-user-component button {
+        width: 100%;
+        min-width: auto;
+        max-width: none;
+        flex: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .delete-or-activate-user-component {
+        margin: 0.5rem;
+        padding: 10px;
+    }
+    
+    .delete-or-activate-user-component:hover {
+        transform: translateY(-3px);
+    }
+    
+    .delete-or-activate-user-component label {
+        font-size: 14px;
+    }
+    
+    .delete-or-activate-user-component input {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    .delete-or-activate-user-component button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+.delete-or-activate-user-component button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.delete-or-activate-user-component button:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ===== EFEITOS ADICIONAIS ===== */
+.delete-or-activate-user-component .action-buttons:hover {
+    gap: 15px;
+}

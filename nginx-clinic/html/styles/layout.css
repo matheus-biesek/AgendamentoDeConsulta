@@ -5,6 +5,8 @@
 :root {
     --primary-color: #6191c5;
     --secondary-color: #2468b1;
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
     --footer-color: #18518e;
     --hover-bg: white;
     --text-color: white;
@@ -20,7 +22,7 @@ body {
 }
 
 header {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--blue-dark), #1e40af);
     flex-shrink: 0;
     display: flex;
     flex-direction: row;
@@ -130,6 +132,6 @@ footer p, footer span, footer a {
 }
 /*Imagem Outras Páginas*/
 body{
-    background: url('../images/90d0f266-21fd-4042-876e-9ebd23cd742b.png');
+    background: rgb(234, 233, 233);
     background-attachment: fixed;
 }
