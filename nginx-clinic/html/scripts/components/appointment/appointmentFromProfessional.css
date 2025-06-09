@@ -1,80 +1,253 @@
+/* ===== APPOINTMENT FROM PROFESSIONAL - ESTILO MODERNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ===== COMPONENTE PRINCIPAL ===== */
 .professional-appointment-component {
-    background-color: #fff;
-    border: 2px solid #e2e8f0;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 900px;
+    min-width: 900px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
     padding: 20px;
-    margin: 20px auto;
-    max-width: 1200px;
-}
-
-.professional-appointment-component h2 {
-    color: #2d3748;
     margin-bottom: 20px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 600;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 10px;
 }
 
-.professional-appointment-component .message {
-    padding: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    margin: 15px 0;
+/* Efeito de borda animada */
+.professional-appointment-component::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro */
+.professional-appointment-component:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.professional-appointment-component:hover::before {
+    left: 100%;
+}
+
+/* Header moderno */
+.professional-appointment-component h2 {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: -20px -20px 20px -20px;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
     text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
+    border: none;
+}
+
+.professional-appointment-component h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.professional-appointment-component:hover h2::after {
+    left: 100%;
+}
+
+/* ===== MENSAGENS ===== */
+.professional-appointment-component .message {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 8px;
+    display: none;
+    font-weight: 500;
+    font-family: var(--font-family);
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
 }
 
 .professional-appointment-component .message.error {
-    background-color: #fff5f5;
-    color: #e53e3e;
-    border-color: #feb2b2;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    display: block;
 }
 
+.professional-appointment-component .message.error::before {
+    content: '❌';
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+/* ===== LISTA DE AGENDAMENTOS ===== */
 .professional-appointment-component .appointments-list {
     margin-top: 20px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    animation: slideIn 0.3s ease-out;
 }
 
 .professional-appointment-component .appointments-table {
     width: 100%;
     border-collapse: collapse;
+    font-family: var(--font-family);
 }
 
 .professional-appointment-component .appointments-table th,
 .professional-appointment-component .appointments-table td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e5e7eb;
+    color: var(--gray-dark);
 }
 
 .professional-appointment-component .appointments-table th {
-    background-color: #f7fafc;
+    background: linear-gradient(135deg, var(--gray-light), #f1f5f9);
     font-weight: 600;
-    color: #2d3748;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-dark);
+}
+
+.professional-appointment-component .appointments-table tr:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(255,255,255,1));
+    transform: scale(1.01);
+    transition: all 0.3s ease;
 }
 
 .professional-appointment-component .appointments-table tr:last-child td {
     border-bottom: none;
 }
 
+/* ===== STATUS BADGES ===== */
 .professional-appointment-component .appointment-status {
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 12px;
-    font-weight: 500;
-    border: 1px solid;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.professional-appointment-component .appointment-status::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.professional-appointment-component .appointment-status:hover::before {
+    left: 100%;
 }
 
 .professional-appointment-component .appointment-status.active {
-    background-color: #c6f6d5;
-    color: #2f855a;
-    border-color: #9ae6b4;
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    border: 1px solid #10b981;
 }
 
 .professional-appointment-component .appointment-status.inactive {
-    background-color: #fed7d7;
-    color: #c53030;
-    border-color: #feb2b2;
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .professional-appointment-component {
+        max-width: 100%;
+        margin: 1rem;
+        min-width: auto;
+        padding: 15px;
+    }
+    
+    .professional-appointment-component h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+        margin: -15px -15px 20px -15px;
+    }
+
+    .professional-appointment-component .appointments-table th,
+    .professional-appointment-component .appointments-table td {
+        padding: 8px;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .professional-appointment-component {
+        margin: 0.5rem;
+        padding: 10px;
+    }
+    
+    .professional-appointment-component:hover {
+        transform: translateY(-3px);
+    }
+    
+    .professional-appointment-component h2 {
+        margin: -10px -10px 20px -10px;
+    }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
 }

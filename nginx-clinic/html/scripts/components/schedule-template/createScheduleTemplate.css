@@ -1,130 +1,331 @@
+/* ===== CREATE SCHEDULE TEMPLATE - ESTILO MODERNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-    --select-color: #4e83bc;    /* Cor principal */
-    --hover: #2f77c4;      /* Cor hover */
-    --border: #ccc;        /* Bordas */
-    --bg: #f9f9f9;        /* Fundo */
-    --text: #313131;      /* Texto */
-    --radius: 10px;       /* Arredondamento */
-    --input-radius: 4px;  /* Arredondamento para inputs */
-    --t: 0.3s;            /* Transição */
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Manter compatibilidade com código original */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --border: #ccc;
+    --bg: #f9f9f9;
+    --text: #313131;
+    --radius: 10px;
+    --input-radius: 4px;
+    --t: 0.3s;
 }
 
+/* ===== COMPONENTE PRINCIPAL ===== */
 .create-schedule-template-container {
-    background-color: #ffffff;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 900px;
+    min-width: 900px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
     padding: 20px;
-    border-radius: var(--radius);
-    border: 1px solid var(--select-color);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin: 20px auto;
-    min-width: 700px; /* Largura ajustada */
-}
-
-.create-schedule-template-container h2 {
-    color: var(--text);
     margin-bottom: 20px;
-    font-size: 1.5rem;
-    text-align: center;
-    font-weight: bold;
 }
 
+/* Efeito de borda animada */
+.create-schedule-template-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro com efeitos espelhados */
+.create-schedule-template-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.create-schedule-template-container:hover::before {
+    left: 100%;
+}
+
+/* Header moderno com gradiente e efeito shimmer */
+.create-schedule-template-container h2 {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
+}
+
+/* Efeito shimmer no header */
+.create-schedule-template-container h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.create-schedule-template-container:hover h2::after {
+    left: 100%;
+}
+
+/* ===== FORMULÁRIO ===== */
 #create-schedule-template-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    width: 100%; /* Largura ajustada */
+    gap: 10px;
+    width: 100%;
+    padding: 0;
+    transition: all 0.3s ease;
 }
 
+.create-schedule-template-container:hover #create-schedule-template-form {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(255,255,255,1));
+}
+
+/* ===== FORM GROUPS ===== */
 .template-form-group {
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
-    width: 100%; /* Largura ajustada */
 }
 
 .template-form-group label {
     font-weight: 600;
-    color: var(--text);
-    margin-bottom: 5px;
+    color: var(--gray-dark);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-family);
 }
 
-.template-form-group input {
+/* ===== INPUTS E SELECTS ===== */
+.template-form-group input,
+.template-form-group select {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--input-radius);
-    transition: all var(--t);
-    font-size: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
     color: var(--text);
 }
 
-.template-form-group input:focus {
-    border-color: var(--select-color);
-    box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
+.template-form-group input:focus,
+.template-form-group select:focus {
     outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: scale(1.02);
 }
 
-/* Botão */
+.template-form-group select {
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%233b82f6' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 10px center;
+    cursor: pointer;
+    appearance: none;
+}
+
+.template-form-group select:hover {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.template-form-group select option {
+    padding: 10px;
+    font-family: var(--font-family);
+    background: white;
+    color: var(--text);
+}
+
+/* ===== BOTÃO MODERNO ===== */
 .template-btn {
     width: 40%;
-    padding: 12px;
-    margin: 10px auto;
-    background: var(--select-color);
-    color: white;
+    min-width: 200px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
     border: none;
+    padding: 12px 24px;
     border-radius: var(--radius);
-    cursor: pointer;
-    display: block;
-    transition: all var(--t);
     font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--t);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    display: block;
+    margin: 10px auto;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.template-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
 }
 
 .template-btn:hover {
-    background: var(--hover);
+    background: linear-gradient(135deg, var(--blue-dark), #1e40af);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
+.template-btn:hover::before {
+    left: 100%;
+}
+
+.template-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== MENSAGENS DE FEEDBACK ===== */
 .template-message {
     margin-top: 15px;
-    padding: 10px;
-    border-radius: var(--input-radius);
-    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
     display: none;
+    font-weight: 500;
+    font-family: var(--font-family);
+    align-items: center;
+    gap: 8px;
+    animation: slideIn 0.3s ease-out;
+    text-align: center;
 }
 
 .template-message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    display: block;
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    display: flex;
+}
+
+.template-message.success::before {
+    content: '✅';
+    font-size: 1.1rem;
 }
 
 .template-message.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    display: block;
-}
-/*Selecionar */
-select {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    color: var(--text);
-    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234e83bc' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 10px center;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    appearance: none;
-    transition: all var(--t);
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    display: flex;
 }
 
-select:is(:hover, :focus) {
-    border-color: var(--select-color);
-    box-shadow: 0 0 5px rgba(78, 131, 188, 0.3);
-    outline: none;
+.template-message.error::before {
+    content: '❌';
+    font-size: 1.1rem;
 }
 
-select option {
-    padding: 10px;
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .create-schedule-template-container {
+        max-width: 100%;
+        margin: 1rem;
+        min-width: auto;
+        padding: 15px;
+    }
+    
+    .create-schedule-template-container h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
+    .template-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .create-schedule-template-container {
+        margin: 0.5rem;
+        padding: 10px;
+    }
+    
+    .create-schedule-template-container:hover {
+        transform: translateY(-3px);
+    }
+    
+    .template-form-group label {
+        font-size: 14px;
+    }
+    
+    .template-form-group input,
+    .template-form-group select {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    .template-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* ===== ANIMAÇÕES ESPELHADAS ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+.template-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.template-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
 }

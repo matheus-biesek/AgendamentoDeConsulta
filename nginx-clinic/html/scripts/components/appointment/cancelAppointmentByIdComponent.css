@@ -1,43 +1,119 @@
+/* ===== CANCEL APPOINTMENT - ESTILO MODERNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-    --select-color: #4e83bc;    /* Cor principal */
-    --hover: #2f77c4;      /* Cor hover */
-    --border: #ccc;        /* Bordas */
-    --bg: #f9f9f9;        /* Fundo */
-    --text: #313131;      /* Texto */
-    --radius: 10px;       /* Arredondamento */
-    --input-radius: 4px;  /* Arredondamento para inputs */
-    --t: 0.3s;            /* Transição */
-    --cancel-color: #dc3545;  /* Cor do botão cancelar */
-    --cancel-hover: #c82333;  /* Cor hover do botão cancelar */
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --red-dark: #dc2626;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Manter compatibilidade com código original */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --border: #ccc;
+    --bg: #f9f9f9;
+    --text: #313131;
+    --radius: 10px;
+    --input-radius: 4px;
+    --t: 0.3s;
+    --cancel-color: #dc3545;
+    --cancel-hover: #c82333;
 }
 
-/* Layout base */
+/* ===== COMPONENTE PRINCIPAL ===== */
 .cancel-appointment-container {
-    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 800px;
+    min-width: 800px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
     padding: 20px;
-    background: #ffffff;
-    border-radius: var(--radius);
-    border: 1px solid var(--select-color);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    min-width: 700px;
-    margin-top: 20px;
-}
-
-.cancel-appointment-container h2 {
-    text-align: center;
     margin-bottom: 20px;
-    color: var(--text);
-    font-weight: bold;
-    font-size: 1.5rem;
 }
 
+/* Efeito de borda animada - azul como outros componentes */
+.cancel-appointment-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro com efeitos espelhados */
+.cancel-appointment-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.cancel-appointment-container:hover::before {
+    left: 100%;
+}
+
+/* Header moderno com gradiente azul e efeito shimmer */
+.cancel-appointment-container h2 {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
+}
+
+/* Efeito shimmer no header */
+.cancel-appointment-container h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.cancel-appointment-container:hover h2::after {
+    left: 100%;
+}
+
+/* ===== FORMULÁRIO ===== */
 #cancel-appointment-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
+    padding: 0;
+    transition: all 0.3s ease;
 }
 
+.cancel-appointment-container:hover #cancel-appointment-form {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(255,255,255,1));
+}
+
+/* ===== FORM GROUPS ===== */
 .cancel-appointment-form-group {
     width: 100%;
     display: flex;
@@ -47,64 +123,191 @@
 
 .cancel-appointment-form-group label {
     font-weight: 600;
-    color: var(--text);
-    margin-bottom: 5px;
+    color: var(--gray-dark);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-family);
 }
 
+/* ===== INPUTS - azul ===== */
 .cancel-appointment-form-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--input-radius);
-    transition: all var(--t);
-    font-size: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
     color: var(--text);
 }
 
 .cancel-appointment-form-group input:focus {
-    border-color: var(--cancel-color);
-    box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
     outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: scale(1.02);
 }
 
+/* ===== BOTÃO MODERNO - TEMA VERMELHO ===== */
 .cancel-appointment-btn {
     width: 40%;
-    padding: 12px;
-    margin: 10px auto;
-    background: var(--cancel-color);
-    color: white;
+    min-width: 200px;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: var(--white);
     border: none;
+    padding: 12px 24px;
     border-radius: var(--radius);
-    cursor: pointer;
-    display: block;
-    transition: all var(--t);
     font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--t);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+    display: block;
+    margin: 10px auto;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cancel-appointment-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
 }
 
 .cancel-appointment-btn:hover {
-    background: var(--cancel-hover);
+    background: linear-gradient(135deg, var(--red-dark), #b91c1c);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.2);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
 }
 
+.cancel-appointment-btn:hover::before {
+    left: 100%;
+}
+
+.cancel-appointment-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== MENSAGENS DE FEEDBACK ===== */
 .cancel-appointment-message {
     margin-top: 15px;
-    padding: 10px;
-    border-radius: var(--input-radius);
-    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
     display: none;
+    font-weight: 500;
+    font-family: var(--font-family);
+    align-items: center;
+    gap: 8px;
+    animation: slideIn 0.3s ease-out;
+    text-align: center;
 }
 
 .cancel-appointment-message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    display: block;
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    display: flex;
+}
+
+.cancel-appointment-message.success::before {
+    content: '✅';
+    font-size: 1.1rem;
 }
 
 .cancel-appointment-message.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    display: flex;
+}
+
+.cancel-appointment-message.error::before {
+    content: '❌';
+    font-size: 1.1rem;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .cancel-appointment-container {
+        max-width: 100%;
+        margin: 1rem;
+        min-width: auto;
+        padding: 15px;
+    }
+    
+    .cancel-appointment-container h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
+    .cancel-appointment-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .cancel-appointment-container {
+        margin: 0.5rem;
+        padding: 10px;
+    }
+    
+    .cancel-appointment-container:hover {
+        transform: translateY(-3px);
+    }
+    
+    .cancel-appointment-form-group label {
+        font-size: 14px;
+    }
+    
+    .cancel-appointment-form-group input {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    .cancel-appointment-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* ===== ANIMAÇÕES ESPELHADAS ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+.cancel-appointment-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.cancel-appointment-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
 }

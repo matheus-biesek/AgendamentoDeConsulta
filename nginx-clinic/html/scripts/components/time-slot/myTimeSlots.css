@@ -1,94 +1,356 @@
+/* ===== MY TIME SLOTS - ESTILO MODERNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --green: #10b981;
+    --red: #ef4444;
+    --gray-light: #f3f4f6;
+    --gray: #6b7280;
+    --gray-dark: #374151;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif, BlinkMac, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Manter compatibilidade com código original */
+    --select-color: #4e83bc;
+    --hover: #2f77c4;
+    --border: #ccc;
+    --bg: #f9f9f9;
+    --text: #313131;
+    --radius: 10px;
+    --input-radius: 4px;
+    --t: 0.3s;
+}
+
+/* ===== COMPONENTE PRINCIPAL ===== */
 .my-time-slots-component {
-    background-color: #fff;
-    border: 2px solid #e2e8f0;
+    background: var(--white);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 900px;
+    min-width: 900px;
+    margin: 2rem auto;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: var(--font-family);
     padding: 20px;
-    margin: 20px 0;
-}
-
-.my-time-slots-component h2 {
-    color: #2d3748;
     margin-bottom: 20px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 600;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 10px;
 }
 
-.my-time-slots-message {
-    padding: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    margin: 15px 0;
+/* Efeito de borda animada */
+.my-time-slots-component::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-dark), var(--green));
+    transition: left 0.5s ease;
+}
+
+/* Hover no componente inteiro com efeitos espelhados */
+.my-time-slots-component:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+    animation: pulse-glow 2s infinite;
+}
+
+.my-time-slots-component:hover::before {
+    left: 100%;
+}
+
+/* Header moderno com gradiente e efeito shimmer */
+.my-time-slots-component h2 {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: var(--white);
+    margin: 0 0 20px 0;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
     text-align: center;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
+    border: none;
+}
+
+/* Efeito shimmer no header */
+.my-time-slots-component h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.my-time-slots-component:hover h2::after {
+    left: 100%;
+}
+
+/* ===== MENSAGENS DE FEEDBACK ===== */
+.my-time-slots-message {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 8px;
+    display: none;
+    font-weight: 500;
+    font-family: var(--font-family);
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
 }
 
 .my-time-slots-message.error {
-    background-color: #fff5f5;
-    color: #e53e3e;
-    border-color: #feb2b2;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    display: block;
 }
 
+.my-time-slots-message.error::before {
+    content: '❌';
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+/* ===== CONTAINER DE TIME SLOTS ===== */
 .my-time-slots-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    animation: slideIn 0.3s ease-out;
 }
 
+.my-time-slots-container:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(255,255,255,1));
+}
+
+/* ===== GRUPOS POR DATA ===== */
 .my-time-slots-date-group {
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.my-time-slots-date-group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+    border-color: var(--blue);
 }
 
 .my-time-slots-date {
-    background-color: #f7fafc;
-    padding: 10px 15px;
+    background: linear-gradient(135deg, var(--gray-light), #f1f5f9);
+    padding: 12px 15px;
     margin: 0;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
-    color: #2d3748;
-    border-bottom: 1px solid #e2e8f0;
+    color: var(--gray-dark);
+    border-bottom: 1px solid #e5e7eb;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
 }
 
+.my-time-slots-date::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.my-time-slots-date-group:hover .my-time-slots-date::before {
+    left: 100%;
+}
+
+/* ===== LISTA DE TIME SLOTS ===== */
 .my-time-slots-list {
-    padding: 10px;
+    padding: 15px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    background: var(--white);
 }
 
 .my-time-slots-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    background-color: #fff;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: var(--white);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.my-time-slots-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.my-time-slots-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    border-color: var(--blue);
+}
+
+.my-time-slots-item:hover::before {
+    left: 100%;
 }
 
 .my-time-slots-time {
-    font-weight: 500;
-    color: #2d3748;
+    font-weight: 600;
+    color: var(--gray-dark);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
 }
 
+/* ===== STATUS BADGES MODERNOS ===== */
 .my-time-slots-status {
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.my-time-slots-status::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.my-time-slots-status:hover::before {
+    left: 100%;
 }
 
 .my-time-slots-status.active {
-    background-color: #c6f6d5;
-    color: #2f855a;
-    border: 1px solid #9ae6b4;
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    border: 1px solid #10b981;
 }
 
 .my-time-slots-status.inactive {
-    background-color: #fed7d7;
-    color: #c53030;
-    border: 1px solid #feb2b2;
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .my-time-slots-component {
+        max-width: 100%;
+        margin: 1rem;
+        min-width: auto;
+        padding: 15px;
+    }
+    
+    .my-time-slots-component h2 {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+    
+    .my-time-slots-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .my-time-slots-item {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .my-time-slots-component {
+        margin: 0.5rem;
+        padding: 10px;
+    }
+    
+    .my-time-slots-component:hover {
+        transform: translateY(-3px);
+    }
+    
+    .my-time-slots-date {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .my-time-slots-time {
+        font-size: 0.85rem;
+    }
+    
+    .my-time-slots-status {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+}
+
+/* ===== ANIMAÇÕES ESPELHADAS ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+.my-time-slots-component:empty {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-time-slots-component:empty::after {
+    content: 'Nenhum time slot encontrado';
+    color: var(--gray);
+    font-style: italic;
+    font-family: var(--font-family);
 }
